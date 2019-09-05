@@ -1,0 +1,6 @@
+framework module MJGridView {
+  umbrella header "MJGridView-umbrella.h"
+
+  export *
+  module * { export * }
+}

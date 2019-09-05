@@ -1,0 +1,16 @@
+PODS:
+  - MJGridView (0.1.0)
+
+DEPENDENCIES:
+  - MJGridView (from `../`)
+
+EXTERNAL SOURCES:
+  MJGridView:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  MJGridView: feef2a114087222ceef4f3f2052f6f15c2297dee
+
+PODFILE CHECKSUM: e782bd097cae45201f70f2cb22e8c823ecc523f1
+
+COCOAPODS: 1.6.2

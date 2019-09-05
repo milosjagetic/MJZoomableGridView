@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'MJGridView_Example' do
+  pod 'MJGridView', :path => '../'
+
+  target 'MJGridView_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
