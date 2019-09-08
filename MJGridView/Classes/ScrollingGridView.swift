@@ -41,6 +41,7 @@ open class ScrollingGridView: UIView
     {
         let scrollView: UIScrollView = UIScrollView(frame: bounds)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.backgroundColor = .clear
         scrollView.delegate = self
         
         addSubview(scrollView)
@@ -50,12 +51,13 @@ open class ScrollingGridView: UIView
 
         let gridView: TilingGridView = TilingGridView(frame: bounds)
         gridView.translatesAutoresizingMaskIntoConstraints = false
+        gridView.backgroundColor = .clear
         
         scrollView.addSubview(gridView)
         scrollView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[gridView]|", options: [], metrics: nil, views: ["gridView" : gridView]))
         scrollView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[gridView]|", options: [], metrics: nil, views: ["gridView" : gridView]))
-        scrollView.heightAnchor.constraint(equalTo: gridView.heightAnchor, multiplier: 0).isActive = true
-        scrollView.widthAnchor.constraint(equalTo: gridView.widthAnchor, multiplier: 0).isActive = true
+        scrollView.heightAnchor.constraint(equalTo: gridView.heightAnchor, multiplier: 1).isActive = true
+        scrollView.widthAnchor.constraint(equalTo: gridView.widthAnchor, multiplier: 1).isActive = true
         
         self.gridView = gridView
     }
