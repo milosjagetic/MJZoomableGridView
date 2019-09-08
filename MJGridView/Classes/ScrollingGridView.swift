@@ -41,7 +41,8 @@ open class ScrollingGridView: UIView
     {
         let scrollView: UIScrollView = UIScrollView(frame: bounds)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-
+        scrollView.delegate = self
+        
         addSubview(scrollView)
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[scrollView]|", options: [], metrics: nil, views: ["scrollView" : scrollView]))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[scrollView]|", options: [], metrics: nil, views: ["scrollView" : scrollView]))
@@ -50,11 +51,25 @@ open class ScrollingGridView: UIView
         let gridView: TilingGridView = TilingGridView(frame: bounds)
         gridView.translatesAutoresizingMaskIntoConstraints = false
         
-        addSubview(gridView)
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[gridView]|", options: [], metrics: nil, views: ["gridView" : gridView]))
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[gridView]|", options: [], metrics: nil, views: ["gridView" : gridView]))
+        scrollView.addSubview(gridView)
+        scrollView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[gridView]|", options: [], metrics: nil, views: ["gridView" : gridView]))
+        scrollView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[gridView]|", options: [], metrics: nil, views: ["gridView" : gridView]))
+        scrollView.heightAnchor.constraint(equalTo: gridView.heightAnchor, multiplier: 0).isActive = true
+        scrollView.widthAnchor.constraint(equalTo: gridView.widthAnchor, multiplier: 0).isActive = true
         
         self.gridView = gridView
+    }
+}
+
+
+//  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
+//  MARK: UIScrollViewDelegate protocol implementation -
+//  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
+extension ScrollingGridView: UIScrollViewDelegate
+{
+    public func viewForZooming(in scrollView: UIScrollView) -> UIView?
+    {
+        return gridView
     }
 }
 
