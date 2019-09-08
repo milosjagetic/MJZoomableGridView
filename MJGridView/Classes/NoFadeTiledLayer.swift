@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MJTiledLayer: CATiledLayer
+internal class NoFadeTiledLayer: CATiledLayer
 {
     override class func fadeDuration() -> CFTimeInterval
     {

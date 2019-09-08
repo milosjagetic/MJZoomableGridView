@@ -6,7 +6,7 @@ private extension UIColor
     }
 }
 
-open class MJTilingGridView: UIView
+open class TilingGridView: UIView
 {
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Public properties -
@@ -35,7 +35,7 @@ open class MJTilingGridView: UIView
 
     open override class var layerClass: AnyClass
     {
-        return MJTiledLayer.self
+        return NoFadeTiledLayer.self
     }
     
 

@@ -10,7 +10,7 @@ open class ScrollingGridView: UIView
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Public properties -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
-    open weak var gridView: MJTilingGridView!
+    open weak var gridView: TilingGridView!
     open weak var scrollView: UIScrollView!
     
     
@@ -47,7 +47,7 @@ open class ScrollingGridView: UIView
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[scrollView]|", options: [], metrics: nil, views: ["scrollView" : scrollView]))
         self.scrollView = scrollView
 
-        let gridView: MJTilingGridView = MJTilingGridView(frame: bounds)
+        let gridView: TilingGridView = TilingGridView(frame: bounds)
         gridView.translatesAutoresizingMaskIntoConstraints = false
         
         addSubview(gridView)
