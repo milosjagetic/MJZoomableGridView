@@ -13,7 +13,8 @@ open class ScrollingGridView: UIView
     open weak var gridView: TilingGridView!
     open weak var scrollView: UIScrollView!
     
-    
+    @IBInspectable var maximumZoomScale: CGFloat = 1 {didSet {scrollView.maximumZoomScale = maximumZoomScale}}
+    @IBInspectable var minimumZoomScale: CGFloat = 1 {didSet {scrollView.minimumZoomScale = minimumZoomScale}}
     
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Lifecycle -
