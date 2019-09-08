@@ -15,14 +15,14 @@ open class TilingGridView: UIView
     
     open var verticalLineAttributes: [LineAttributes] = [LineAttributes(color: .blue, divisor: 3, dashes: [], lineWidth: 1)]
     
-    open var originPlacement: OriginPlacement = .center
+    open var originPlacement: OriginPlacement = .center { didSet { setNeedsDisplay() } }
     
     open var pixelsPerLine: Int = 50
     open var linesPerTile: Int = 2
     open var sideLength: CGFloat = 100
     open var lineWidth: CGFloat = 1 / UIScreen.main.scale
     open var lineColor: UIColor = .black
-    open var scale: CGFloat = 20
+    open var scale: CGFloat = 2
     
     open var lastReportedBounds: CGRect = .zero
     {
@@ -112,8 +112,9 @@ open class TilingGridView: UIView
         for i in min(prevCount, (maxCount - prevCount))..<maxCount
         {
             var x: CGFloat = CGFloat(i) * adjustedSpacing
+            print("\(x)")
             let attributes: LineAttributes? = verticalLineAttributes.first(where: {(x / scale).truncatingRemainder(dividingBy: CGFloat($0.divisor)) == 0})
-            if attributes != nil
+            if x == 150
             {
                 
             }
@@ -145,6 +146,10 @@ open class TilingGridView: UIView
         {
             var y: CGFloat = CGFloat(i) * adjustedSpacing
             let attributes: LineAttributes? = horizontalLineAttributes.first(where: {(y / scale).truncatingRemainder(dividingBy: CGFloat($0.divisor)) == 0})
+            if attributes != nil
+            {
+                
+            }
             let lineWidth: CGFloat = attributes?.lineWidth ?? self.lineWidth
             y += globalSpacing + (lineWidth > 1 ? 0 : ((lineWidth / zoomScale) / 2))
             
@@ -185,6 +190,16 @@ open class TilingGridView: UIView
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Private -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
+    private func originRelativeX(for absoulteX: CGFloat) -> CGFloat
+    {
+        return (absoulteX - originPlacement.origin(in: bounds).x) / 20
+    }
+    
+    private func originRelativeY(for absoluteY: CGFloat) -> CGFloat
+    {
+        return (absoluteY - originPlacement.origin(in: bounds).y) / 20
+    }
+    
     private func drawRandomSquares(_ rect: CGRect, context: CGContext)
     {
         var rect: CGRect = rect
