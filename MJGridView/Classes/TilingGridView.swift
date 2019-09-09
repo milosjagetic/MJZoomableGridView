@@ -11,15 +11,15 @@ open class TilingGridView: UIView
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Public properties -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
-    open var horizontalLineAttributes: [LineAttributes] = [LineAttributes(color: .red, divisor: 4, dashes: [10,10], lineWidth: 5), LineAttributes(color: .green, divisor: 2, dashes: [], lineWidth: 1)]
+    open var horizontalLineAttributes: [LineAttributes] = [LineAttributes(color: .red, divisor: 3, dashes: [16, 16], lineWidth: 5)]
     
     open var verticalLineAttributes: [LineAttributes] = [LineAttributes(color: .blue, divisor: 3, dashes: [], lineWidth: 1)]
     
     open var originPlacement: OriginPlacement = .center { didSet { setNeedsDisplay() } }
     
-    open var pixelsPerLine: Int = 50
-    open var linesPerTile: Int = 2
-    open var sideLength: CGFloat = 100
+    open var pixelsPerLine: Int = 32
+    open var linesPerTile: Int = 4
+    open var sideLength: CGFloat = 128
     open var lineWidth: CGFloat = 1 / UIScreen.main.scale
     open var lineColor: UIColor = .black
     open var scale: CGFloat = 2
@@ -109,25 +109,24 @@ open class TilingGridView: UIView
         
         guard maxCount > prevCount else {return}
         
-        for i in min(prevCount, (maxCount - prevCount))..<maxCount
+        for i in prevCount..<(maxCount + 1)
         {
             var x: CGFloat = CGFloat(i) * adjustedSpacing
-            print("\(x)")
-            let attributes: LineAttributes? = verticalLineAttributes.first(where: {(x / scale).truncatingRemainder(dividingBy: CGFloat($0.divisor)) == 0})
-            if x == 150
-            {
-                
-            }
+            let relativeX: CGFloat = originRelativeX(for: x)
+
+            let attributes: LineAttributes? = verticalLineAttributes.first(where: {relativeX.truncatingRemainder(dividingBy: CGFloat($0.divisor)) == 0})
             let lineWidth: CGFloat = attributes?.lineWidth ?? self.lineWidth
-            x += globalSpacing + (lineWidth > 1 ? 0 : ((lineWidth / zoomScale) / 2))
-            
+//            x += globalSpacing + ((lineWidth / zoomScale) / 2)
+                        x += globalSpacing + (lineWidth > 1 ? 0 : ((lineWidth / zoomScale) / 2))
+
             context.move(to: CGPoint(x:  x, y: rect.origin.y))
             context.addLine(to: CGPoint(x: x, y: rect.maxY))
             
             
             context.setStrokeColor((attributes?.color ?? lineColor).cgColor)
             context.setLineDash(phase: 0, lengths: attributes?.dashes.map({$0 / zoomScale}) ?? [])
-            context.setLineWidth((attributes?.lineWidth ?? lineWidth) / zoomScale)
+            context.setLineWidth(lineWidth / zoomScale)
+            
             context.strokePath()
         }
     }
@@ -140,26 +139,26 @@ open class TilingGridView: UIView
         let maxCount: Int = Int(ceil((rect.maxY - globalSpacing) / adjustedSpacing))
         let prevCount: Int = Int(ceil((rect.maxY - rect.height - globalSpacing) / adjustedSpacing))
         
-        guard maxCount > prevCount else {return}
-        
-        for i in min(prevCount, (maxCount - prevCount))..<maxCount
+        guard maxCount  > prevCount else {return}
+        for i in prevCount..<(maxCount + 1)
         {
             var y: CGFloat = CGFloat(i) * adjustedSpacing
-            let attributes: LineAttributes? = horizontalLineAttributes.first(where: {(y / scale).truncatingRemainder(dividingBy: CGFloat($0.divisor)) == 0})
+            let relativeY: CGFloat = originRelativeY(for: y)
+            let attributes: LineAttributes? = horizontalLineAttributes.first(where: {relativeY.truncatingRemainder(dividingBy: CGFloat($0.divisor)) == 0})
             if attributes != nil
             {
                 
             }
             let lineWidth: CGFloat = attributes?.lineWidth ?? self.lineWidth
-            y += globalSpacing + (lineWidth > 1 ? 0 : ((lineWidth / zoomScale) / 2))
+            y += globalSpacing + (lineWidth > 1 ? 0 : ((lineWidth / zoomScale) / 2)) // this solution is "accurate"
+//            y += globalSpacing + ((lineWidth / zoomScale) / 2) // this solution fixes every other width being half width
             
             context.move(to: CGPoint(x:  rect.origin.x, y: y))
             context.addLine(to: CGPoint(x: rect.maxX, y: y))
             
-            
             context.setStrokeColor((attributes?.color ?? lineColor).cgColor)
             context.setLineDash(phase: 0, lengths: attributes?.dashes.map({$0 / zoomScale}) ?? [])
-            context.setLineWidth((attributes?.lineWidth ?? lineWidth) / zoomScale)
+            context.setLineWidth(lineWidth / zoomScale)
             context.strokePath()
         }
     }
@@ -192,12 +191,12 @@ open class TilingGridView: UIView
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     private func originRelativeX(for absoulteX: CGFloat) -> CGFloat
     {
-        return (absoulteX - originPlacement.origin(in: bounds).x) / 20
+        return (absoulteX - originPlacement.origin(in: lastReportedBounds).x) / scale
     }
     
     private func originRelativeY(for absoluteY: CGFloat) -> CGFloat
     {
-        return (absoluteY - originPlacement.origin(in: bounds).y) / 20
+        return (absoluteY - originPlacement.origin(in: lastReportedBounds).y) / scale
     }
     
     private func drawRandomSquares(_ rect: CGRect, context: CGContext)
