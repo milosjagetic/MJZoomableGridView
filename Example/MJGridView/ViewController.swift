@@ -7,18 +7,19 @@
 //
 
 import UIKit
+import MJGridView
 
-class ViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+class ViewController: UIViewController
+{
+    @IBOutlet weak var gridView: ScrollingGridView!
+    
+    
+    @IBAction func stepperChanged(_ stepper: UIStepper!)
+    {
+        let placements: [OriginPlacement] = [.center, .topCenter, .topRight, .centerRight, .bottomRight, .bottomCenter, .bottomLeft, .centerLeft, .topLeft]
+        gridView.gridView.originPlacement = placements[Int(stepper.value) % placements.count]
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 
 }
 
