@@ -23,7 +23,7 @@ open class TilingGridView: UIView
     open var sideLength: CGFloat = 46
     open var lineWidth: CGFloat = 1 / UIScreen.main.scale
     open var lineColor: UIColor = .black
-    open var scale: CGFloat = 2
+    open var scale: CGFloat = 20
     
     open var lastReportedBounds: CGRect = .zero
     {
@@ -179,13 +179,13 @@ open class TilingGridView: UIView
             context.strokePath()
 //
 //
-//            if relativeY == 0
-//            {
-//                let font: UIFont = UIFont.systemFont(ofSize: 20 / zoomScale)
-//                let string: NSAttributedString = NSAttributedString(string: Int(originRelativeX(for: rect.maxX)).description, attributes: [.font : font])
-//                let size: CGSize = string.size()
-//                string.draw(in: CGRect(x: rect.maxX - size.width, y: rect.midY, width: size.width, height: size.height))
-//            }
+            if relativeY == 0
+            {
+                let font: UIFont = UIFont.systemFont(ofSize: 14 / zoomScale)
+                let string: NSAttributedString = NSAttributedString(string: originRelativeX(for: rect.maxX, globalSpacing: 0).description, attributes: [.font : font])
+                let size: CGSize = string.size()
+                string.draw(in: CGRect(x: rect.maxX - size.width, y: rect.midY, width: size.width, height: size.height))
+            }
         }
     }
 
