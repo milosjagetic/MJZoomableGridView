@@ -16,7 +16,7 @@ open class TilingGridView: UIView
     open var verticalLineAttributes: [LineAttributes] = [LineAttributes(color: .blue, divisor: 3, dashes: [], lineWidth: 1)]
     open var verticalAxisAttributes: LineAttributes? = LineAttributes(color: .brown, divisor: 0, dashes: [], lineWidth: 10)
     
-    open var originPlacement: OriginPlacement = .topRight { didSet { setNeedsDisplay() } }
+    open var originPlacement: OriginPlacement = .center { didSet { setNeedsDisplay() } }
     
     open var pixelsPerLine: Int = 23
     open var linesPerTile: Int = 2
@@ -25,15 +25,6 @@ open class TilingGridView: UIView
     open var lineColor: UIColor = .black
     open var scale: CGFloat = 20
     
-    open var lastReportedBounds: CGRect = .zero
-    {
-        didSet
-        {
-            remainderOnEachEnd.x = lastReportedBounds.width.truncatingRemainder(dividingBy: sideLength)
-            remainderOnEachEnd.y = lastReportedBounds.height.truncatingRemainder(dividingBy: sideLength)
-        }
-    }
-
     open override class var layerClass: AnyClass
     {
         return NoFadeTiledLayer.self
@@ -41,10 +32,9 @@ open class TilingGridView: UIView
     
 
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
-    //  MARK: Private properties -
+    //  MARK: Private/Internal properties -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
-    private var remainderOnEachEnd: CGPoint = .zero
-    private var lastReportedTileFrame: CGRect = .zero
+    internal var layoutProperties: LayoutProperties = .init()
 
     
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
@@ -85,11 +75,11 @@ open class TilingGridView: UIView
             static var zoomScale: CGFloat = 0
         }
         
-        if lastReportedTileFrame.size != rect.size && rect.maxX < lastReportedBounds.maxX && rect.maxY < lastReportedBounds.maxY
-        {
-            lastReportedTileFrame = rect
-        }
-        
+//        if lastReportedTileFrame.size != rect.size && rect.maxX < lastReportedBounds.maxX && rect.maxY < lastReportedBounds.maxY
+//        {
+//            lastReportedTileFrame = rect
+//        }
+//
         let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
         let adjustedLineWidth: CGFloat =  lineWidth / zoomScale
         let adjustedSpacing: CGFloat = CGFloat(pixelsPerLine) / zoomScale
@@ -104,7 +94,7 @@ open class TilingGridView: UIView
     {
         let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
         
-        let globalSpacing: CGFloat = remainderOnEachEnd.x / 2
+        let globalSpacing: CGFloat = layoutProperties.remainderOnEachEnd.x / 2
 //        switch originPlacement
 //        {
 //        case .topCenter, .bottomCenter, .center: globalSpacing = remainderOnEachEnd.x / 2
@@ -146,7 +136,7 @@ open class TilingGridView: UIView
     {
         let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
         
-        let globalSpacing: CGFloat = remainderOnEachEnd.y / 2
+        let globalSpacing: CGFloat = layoutProperties.remainderOnEachEnd.y / 2
         let maxCount: Int = Int(ceil((rect.maxY - globalSpacing) / adjustedSpacing))
         let prevCount: Int = Int(ceil((rect.maxY - rect.height - globalSpacing) / adjustedSpacing))
         
@@ -196,7 +186,8 @@ open class TilingGridView: UIView
     open override func layoutSubviews()
     {
         super.layoutSubviews()
-        lastReportedBounds = bounds
+        
+        layoutProperties.setLastReportedBounds(lastReportedBounds: bounds, tileSideLength: sideLength)
         setNeedsDisplay()
     }
     
@@ -224,9 +215,14 @@ open class TilingGridView: UIView
         case .bottomLeft, .centerLeft, .topLeft: correction = -globalSpacing
         default: correction = 0
         }
-        return (absoulteX + correction - originPlacement.origin(in: lastReportedBounds).x) / scale
+        return (absoulteX + correction - originPlacement.origin(in: layoutProperties.lastReportedBounds).x) / scale
     }
     
+    private func originRelativeX(for lineIndex: Int, globalSpacing: CGFloat) -> CGFloat
+    {
+        return 0
+    }
+
     private func originRelativeY(for absoluteY: CGFloat, globalSpacing: CGFloat) -> CGFloat
     {
         let correction: CGFloat
@@ -236,7 +232,7 @@ open class TilingGridView: UIView
         case .bottomLeft, .bottomRight, .bottomCenter: correction = globalSpacing
         default: correction = 0
         }
-        return (absoluteY + correction - originPlacement.origin(in: lastReportedBounds).y) / scale
+        return (absoluteY + correction - originPlacement.origin(in: layoutProperties.lastReportedBounds).y) / scale
     }
     
     ///Draws a grid of randomly colored squares. Corresponds to placement of tiles. For debug purposes only
