@@ -18,11 +18,12 @@ open class TilingGridView: UIView
     
     open var originPlacement: OriginPlacement = .center { didSet { setNeedsDisplay() } }
     
-    open var pixelsPerLine: Int = 23
-    open var linesPerTile: Int = 2
-    open var sideLength: CGFloat = 46
+    open var pixelsPerLine: UInt = 23 { didSet { updateLayoutProperties() } }
+    
     open var lineWidth: CGFloat = 1 / UIScreen.main.scale
+    
     open var lineColor: UIColor = .black
+    
     open var scale: CGFloat = 20
     
     open override class var layerClass: AnyClass
@@ -35,6 +36,8 @@ open class TilingGridView: UIView
     //  MARK: Private/Internal properties -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     internal var layoutProperties: LayoutProperties = .init()
+
+    private let sideLength: CGFloat = 46
 
     
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
@@ -187,7 +190,7 @@ open class TilingGridView: UIView
     {
         super.layoutSubviews()
         
-        layoutProperties.setLastReportedBounds(lastReportedBounds: bounds, tileSideLength: sideLength)
+        updateLayoutProperties()
         setNeedsDisplay()
     }
     
@@ -243,5 +246,10 @@ open class TilingGridView: UIView
         rect.origin.y = rect.origin.y > bounds.height ? 0 : rect.origin.y
         context.setFillColor(UIColor.randomOpaque.withAlphaComponent(0.3).cgColor)
         context.fill(rect)
+    }
+    
+    private func updateLayoutProperties()
+    {
+        layoutProperties.setLastReportedBounds(lastReportedBounds: bounds, tileSideLength: sideLength, pointsPerLine: pixelsPerLine)
     }
 }
