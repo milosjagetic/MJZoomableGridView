@@ -239,6 +239,7 @@ open class TilingGridView: UIView
         return (absoluteY + correction - originPlacement.origin(in: lastReportedBounds).y) / scale
     }
     
+    ///Draws a grid of randomly colored squares. Corresponds to placement of tiles. For debug purposes only
     private func drawRandomSquares(_ rect: CGRect, context: CGContext)
     {
         var rect: CGRect = rect
