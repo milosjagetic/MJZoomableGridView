@@ -207,7 +207,7 @@ open class TilingGridView: UIView
         context.saveGState()
         defer {context.restoreGState()}
         
-//        drawRandomSquares(rect, context: context)
+        drawRandomSquares(rect, context: context)
         drawGrid(rect, context: context)
     }
 
@@ -245,7 +245,7 @@ open class TilingGridView: UIView
         var rect: CGRect = rect
         rect.origin.x = rect.origin.x > bounds.width ? 0 : rect.origin.x
         rect.origin.y = rect.origin.y > bounds.height ? 0 : rect.origin.y
-        context.setFillColor(UIColor.randomOpaque.cgColor)
+        context.setFillColor(UIColor.randomOpaque.withAlphaComponent(0.3).cgColor)
         context.fill(rect)
     }
 }
