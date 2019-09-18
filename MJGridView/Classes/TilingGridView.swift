@@ -122,24 +122,33 @@ open class TilingGridView: UIView
     {
         let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
         
+        // if the lines don't line up evenly to view bounds, this is the leftover space / 2
         let globalSpacing: CGFloat = layoutProperties.remainderOnEachEnd.y / 2
+        // index of the last line in the rect
         let maxCount: Int = Int(ceil((rect.maxY - globalSpacing) / adjustedSpacing))
+        // index of the last line in the 'previous' rect
         let prevCount: Int = Int(ceil((rect.maxY - rect.height - globalSpacing) / adjustedSpacing))
         
         guard maxCount > prevCount else {return}
-        //+1 is added because lines at the beggining of the next tile will be cut in half, so additional line at the end of the current (also cut in half) is added (this should be changed because it's probably problematic in certain cases)
+        // draw lines with indexes contained within the given rect
+        // +1 is added because lines at the beggining of the next tile will be cut in half, so additional line at the end of the current (also cut in half) is added (this should be changed because it's probably problematic in certain cases)
         for i in prevCount..<(maxCount + 1)
         {
             var y: CGFloat = CGFloat(i) * adjustedSpacing + globalSpacing
             let relativeY: CGFloat = originRelativeY(for: y, globalSpacing: globalSpacing)
 
+            // get appropriate attributes for the current line index
             var attributes: LineAttributes?
             if relativeY == 0 { attributes = horintalAxisAttributes }
             if attributes == nil { attributes = horizontalLineAttributes.first(where: {relativeY.truncatingRemainder(dividingBy: CGFloat($0.divisor)) == 0}) }
             
+            // determine line width
             let lineWidth: CGFloat = attributes?.lineWidth ?? self.lineWidth
+
+            // TODO: Maybe change this
             y += lineWidth > 1 ? 0 : ((lineWidth / zoomScale) / 2)
             
+            // actually draw the line
             context.move(to: CGPoint(x:  rect.origin.x, y: y))
             context.addLine(to: CGPoint(x: rect.maxX, y: y))
             
@@ -148,6 +157,7 @@ open class TilingGridView: UIView
             context.setLineWidth(lineWidth / zoomScale)
             context.strokePath()
 
+            // draw text on the origin axis
             if relativeY == 0
             {
                 let font: UIFont = UIFont.systemFont(ofSize: 14 / zoomScale)
