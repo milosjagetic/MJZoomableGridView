@@ -72,17 +72,6 @@ open class TilingGridView: UIView
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     open func drawGrid(_ rect: CGRect, context: CGContext)
     {
-        ///This exists because "last" CGRects on the far end of x and y axis are almos always smaller than regular tile size. Relying on scrollViews.zoomScale results in bad behaviour when zoomin, due to multithreded nature of this drawing process
-        struct SaneData
-        {
-            static var zoomScale: CGFloat = 0
-        }
-        
-//        if lastReportedTileFrame.size != rect.size && rect.maxX < lastReportedBounds.maxX && rect.maxY < lastReportedBounds.maxY
-//        {
-//            lastReportedTileFrame = rect
-//        }
-//
         let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
         let adjustedLineWidth: CGFloat =  lineWidth / zoomScale
         let adjustedSpacing: CGFloat = CGFloat(pixelsPerLine) / zoomScale
@@ -98,12 +87,6 @@ open class TilingGridView: UIView
         let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
         
         let globalSpacing: CGFloat = layoutProperties.remainderOnEachEnd.x / 2
-//        switch originPlacement
-//        {
-//        case .topCenter, .bottomCenter, .center: globalSpacing = remainderOnEachEnd.x / 2
-//        case .centerRight, .topRight, .bottomRight: globalSpacing = -remainderOnEachEnd.x / 2
-//        default: globalSpacing = 0
-//        }
         
         let maxCount: Int = Int(ceil((rect.maxX - globalSpacing) / adjustedSpacing))
         let prevCount: Int = Int(ceil((rect.maxX - rect.width - globalSpacing) / adjustedSpacing))
@@ -149,19 +132,13 @@ open class TilingGridView: UIView
         {
             var y: CGFloat = CGFloat(i) * adjustedSpacing + globalSpacing
             let relativeY: CGFloat = originRelativeY(for: y, globalSpacing: globalSpacing)
-            
-            if relativeY == 0
-            {
-                
-            }
+
             var attributes: LineAttributes?
             if relativeY == 0 { attributes = horintalAxisAttributes }
             if attributes == nil { attributes = horizontalLineAttributes.first(where: {relativeY.truncatingRemainder(dividingBy: CGFloat($0.divisor)) == 0}) }
             
             let lineWidth: CGFloat = attributes?.lineWidth ?? self.lineWidth
-            y += lineWidth > 1 ? 0 : ((lineWidth / zoomScale) / 2) // this solution is "accurate"
-//            y += globalSpacing + ((lineWidth / zoomScale) / 2) // this solution fixes every other width being half width
-            //though it has been fixed by adding a 'half' line in the preceeding tile
+            y += lineWidth > 1 ? 0 : ((lineWidth / zoomScale) / 2)
             
             context.move(to: CGPoint(x:  rect.origin.x, y: y))
             context.addLine(to: CGPoint(x: rect.maxX, y: y))
@@ -170,8 +147,7 @@ open class TilingGridView: UIView
             context.setLineDash(phase: 0, lengths: attributes?.dashes.map({$0 / zoomScale}) ?? [])
             context.setLineWidth(lineWidth / zoomScale)
             context.strokePath()
-//
-//
+
             if relativeY == 0
             {
                 let font: UIFont = UIFont.systemFont(ofSize: 14 / zoomScale)
@@ -223,6 +199,7 @@ open class TilingGridView: UIView
     
     private func originRelativeX(for lineIndex: Int, globalSpacing: CGFloat) -> CGFloat
     {
+        
         return 0
     }
 
