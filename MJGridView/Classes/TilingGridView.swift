@@ -18,7 +18,7 @@ open class TilingGridView: UIView
     
     open var originPlacement: OriginPlacement = .center { didSet { setNeedsDisplay() } }
     
-    open var pixelsPerLine: UInt = 23 { didSet { updateLayoutProperties() } }
+    open var pixelsPerLine: UInt = 112 { didSet { updateLayoutProperties() } }
     
     open var lineWidth: CGFloat = 1 / UIScreen.main.scale
     
@@ -207,11 +207,18 @@ open class TilingGridView: UIView
         return (absoulteX + correction - originPlacement.origin(in: layoutProperties.lastReportedBounds).x) / scale
     }
     
-    private func originRelativeX(for lineIndex: Int, globalSpacing: CGFloat) -> CGFloat
-    {
-        
-        return 0
-    }
+//    private func originRelativeX(for absoluteLineIndex: UInt, globalSpacing: CGFloat) -> CGFloat
+//    {
+//        let relativeLineIndex: Int
+//        let lastAbsoluteIndex: UInt = layoutProperties.verticalLineCount - 1
+//        switch originPlacement
+//        {
+//        case .center, .topCenter, .bottomCenter:
+//        default:
+//            <#code#>
+//        }
+//        return 0
+//    }
 
     private func originRelativeY(for absoluteY: CGFloat, globalSpacing: CGFloat) -> CGFloat
     {
@@ -237,6 +244,6 @@ open class TilingGridView: UIView
     
     private func updateLayoutProperties()
     {
-        layoutProperties.setLastReportedBounds(lastReportedBounds: bounds, tileSideLength: sideLength, pointsPerLine: pixelsPerLine)
+        layoutProperties.calculateLayoutProperties(lastReportedBounds: bounds, tileSideLength: sideLength, pointsPerLine: pixelsPerLine, originPlacement: originPlacement)
     }
 }
