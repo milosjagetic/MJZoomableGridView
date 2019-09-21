@@ -57,7 +57,7 @@ internal struct LayoutProperties
         case .topLeft, .topCenter, .topRight:
             remaindersOnEachEnd.bottom = lastReportedBounds.height.truncatingRemainder(dividingBy: pointsPerLine)
         case .centerLeft, .center, .centerRight:
-            remaindersOnEachEnd.top = (lastReportedBounds.width / 2).truncatingRemainder(dividingBy: pointsPerLine)
+            remaindersOnEachEnd.top = (lastReportedBounds.height / 2).truncatingRemainder(dividingBy: pointsPerLine)
             remaindersOnEachEnd.bottom = remaindersOnEachEnd.top
         case .bottomRight, .bottomCenter, .bottomLeft:
             remaindersOnEachEnd.top = lastReportedBounds.height.truncatingRemainder(dividingBy: pointsPerLine)

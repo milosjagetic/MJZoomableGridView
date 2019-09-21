@@ -16,7 +16,14 @@ open class TilingGridView: UIView
     open var verticalLineAttributes: [LineAttributes] = [LineAttributes(color: .blue, divisor: 3, dashes: [], lineWidth: 1)]
     open var verticalAxisAttributes: LineAttributes? = LineAttributes(color: .brown, divisor: 0, dashes: [], lineWidth: 10)
     
-    open var originPlacement: OriginPlacement = .center { didSet { setNeedsDisplay() } }
+    open var originPlacement: OriginPlacement = .center
+    {
+        didSet
+        {
+            updateLayoutProperties()
+            setNeedsDisplay()
+        }
+    }
     
     open var pixelsPerLine: UInt = 112 { didSet { updateLayoutProperties() } }
     
@@ -73,10 +80,7 @@ open class TilingGridView: UIView
     open func drawGrid(_ rect: CGRect, context: CGContext)
     {
         let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
-        let adjustedLineWidth: CGFloat =  lineWidth / zoomScale
         let adjustedSpacing: CGFloat = CGFloat(pixelsPerLine) / zoomScale
-        
-        context.setLineWidth(adjustedLineWidth)
         
         drawVerticalLines(in: rect, adjustedSpacing: adjustedSpacing, context: context)
         drawHorizontalLines(in: rect, adjustedSpacing: adjustedSpacing, context: context)
@@ -86,10 +90,10 @@ open class TilingGridView: UIView
     {
         let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
         
-        let globalSpacing: CGFloat = layoutProperties.remainderOnEachEnd.x / 2
+        let globalSpacing: CGFloat = layoutProperties.remaindersOnEachEnd.left
         
         let maxCount: Int = Int(ceil((rect.maxX - globalSpacing) / adjustedSpacing))
-        let prevCount: Int = Int(ceil((rect.maxX - rect.width - globalSpacing) / adjustedSpacing))
+        let prevCount: Int = Int(ceil(max(0, rect.minX - globalSpacing) / adjustedSpacing))
         
         guard maxCount > prevCount else {return}
         
@@ -122,12 +126,12 @@ open class TilingGridView: UIView
     {
         let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
         
-        // if the lines don't line up evenly to view bounds, this is the leftover space / 2
-        let globalSpacing: CGFloat = layoutProperties.remainderOnEachEnd.y / 2
+        // if the lines don't line up evenly to view bounds, this is the leftover space, depends on origin placement too
+        let globalSpacing: CGFloat = layoutProperties.remaindersOnEachEnd.top
         // index of the last line in the rect
         let maxCount: Int = Int(ceil((rect.maxY - globalSpacing) / adjustedSpacing))
         // index of the last line in the 'previous' rect
-        let prevCount: Int = Int(ceil((rect.maxY - rect.height - globalSpacing) / adjustedSpacing))
+        let prevCount: Int = Int(ceil(max(0, rect.minY - globalSpacing) / adjustedSpacing))
         
         guard maxCount > prevCount else {return}
         // draw lines with indexes contained within the given rect
@@ -137,6 +141,7 @@ open class TilingGridView: UIView
             var y: CGFloat = CGFloat(i) * adjustedSpacing + globalSpacing
             let relativeY: CGFloat = originRelativeY(for: y, globalSpacing: globalSpacing)
 
+            print("y: \(y), relativeY: \(relativeY)")
             // get appropriate attributes for the current line index
             var attributes: LineAttributes?
             if relativeY == 0 { attributes = horintalAxisAttributes }
