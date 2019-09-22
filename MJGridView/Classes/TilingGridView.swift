@@ -92,10 +92,11 @@ open class TilingGridView: UIView
         let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
         
         let isEndCase: Bool = [OriginPlacement.topRight, .centerRight, .bottomRight].contains(originPlacement)
-        let globalSpacing: CGFloat = isEndCase ? layoutProperties.remaindersOnEachEnd.right :  layoutProperties.remaindersOnEachEnd.left
+        let globalSpacing: CGFloat = layoutProperties.remaindersOnEachEnd.left
         
-        let maxCount: Int = Int(ceil((rect.maxX - globalSpacing) / adjustedSpacing))
-        let prevCount: Int = Int(ceil(max(0, rect.minX - globalSpacing) / adjustedSpacing))
+        let spacingForCount: CGFloat = isEndCase ? globalSpacing - adjustedLineWidth : globalSpacing
+        let maxCount: Int = Int(ceil((rect.maxX - spacingForCount) / adjustedSpacing))
+        let prevCount: Int = Int(ceil(max(0, rect.minX - spacingForCount) / adjustedSpacing))
         
         guard maxCount > prevCount else {return}
         
@@ -103,7 +104,7 @@ open class TilingGridView: UIView
         {
             var x: CGFloat = CGFloat(i) * adjustedSpacing + globalSpacing
             
-            let relativeX: CGFloat = originRelativeX(for: x, globalSpacing: globalSpacing)
+            let relativeX: CGFloat = originRelativeX(for: x, globalSpacing: isEndCase ? layoutProperties.remaindersOnEachEnd.right : layoutProperties.remaindersOnEachEnd.left)
 
             var attributes: LineAttributes?
             if relativeX == 0 { attributes = verticalAxisAttributes }
