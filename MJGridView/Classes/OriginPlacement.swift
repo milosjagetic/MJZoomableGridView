@@ -8,7 +8,7 @@
 
 import UIKit
 
-public enum OriginPlacement: Equatable
+public enum OriginPlacement: CaseIterable
 {
     case center
     case topCenter
