@@ -24,7 +24,7 @@ open class TilingGridView: UIView
             setNeedsDisplay()
         }
     }
-    open var pixelsPerLine: UInt = 46
+    open var pixelsPerLine: UInt = 112
     {
         didSet
         {
@@ -47,7 +47,7 @@ open class TilingGridView: UIView
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     internal var layoutProperties: LayoutProperties = .init()
 
-    private let sideLength: CGFloat = 100
+    private let sideLength: CGFloat = 46
 
     
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
@@ -90,6 +90,7 @@ open class TilingGridView: UIView
         [NSLayoutConstraint.Axis.horizontal, .vertical].forEach({drawLines($0, rect: rect, adjustedSpacing: adjustedSpacing, adjustedLineWidth: adjustedLineWidth, context: context)})
     }
 
+    /// axis = horizontal->draw horizontal line
     open func drawLines(_ axis: NSLayoutConstraint.Axis, rect: CGRect, adjustedSpacing: CGFloat, adjustedLineWidth: CGFloat, context: CGContext)
     {
         let isAxisHorizontal: Bool = axis == .horizontal
@@ -111,12 +112,13 @@ open class TilingGridView: UIView
         
         // draw lines with indexes contained within the given rect
         // +1 is added because lines at the beggining of the next tile will be cut in half, so additional line at the end of the current (also cut in half) is added (this should be changed because it's probably problematic in certain cases)
-        for i in prevCount..<(maxCount + 1)
+        for i in prevCount..<(maxCount)
         {
             var coordinate: CGFloat = CGFloat(i) * adjustedSpacing + globalSpacing
-            let relativeCoordinate: CGFloat = isAxisHorizontal ?
-                originRelativeY(for: coordinate, globalSpacing: isEndCase ? layoutProperties.remaindersOnEachEnd.bottom : layoutProperties.remaindersOnEachEnd.top)
-                : originRelativeX(for: coordinate, globalSpacing: isEndCase ? layoutProperties.remaindersOnEachEnd.right : layoutProperties.remaindersOnEachEnd.left)
+//            let relativeCoordinate: CGFloat = isAxisHorizontal ?
+//                originRelativeY(for: coordinate, globalSpacing: isEndCase ? layoutProperties.remaindersOnEachEnd.bottom : layoutProperties.remaindersOnEachEnd.top)
+//                : originRelativeX(for: coordinate, globalSpacing: isEndCase ? layoutProperties.remaindersOnEachEnd.right : layoutProperties.remaindersOnEachEnd.left)
+            let relativeCoordinate: CGFloat = isAxisHorizontal ? originRelativeY(for: i) : originRelativeX(for: i)
             
             // get appropriate attributes for the current line index
             var attributes: LineAttributes?
@@ -132,8 +134,8 @@ open class TilingGridView: UIView
             coordinate += lineWidth > 1 ? 0 : (adjustedLineWidth / 2)
             
             // TODO: if line width too big can be rendered outside
-            coordinate -= isEndCase ? .leastNormalMagnitude : 0
-            
+            coordinate -= isEndCase ? 1 : 0
+//            if isAxisHorizontal { print(coordinate)}
             // actually draw the line
             context.move(to: CGPoint(x: isAxisHorizontal ? rect.origin.x : coordinate, y: isAxisHorizontal ? coordinate : rect.origin.y))
             context.addLine(to: CGPoint(x: isAxisHorizontal ? rect.maxX : coordinate, y: isAxisHorizontal ? coordinate : rect.maxY))
@@ -147,7 +149,7 @@ open class TilingGridView: UIView
             if relativeCoordinate == 0 && isAxisHorizontal
             {
                 let font: UIFont = UIFont.systemFont(ofSize: 14 / zoomScale)
-                let string: NSAttributedString = NSAttributedString(string: originRelativeX(for: rect.maxX, globalSpacing: 0).description, attributes: [.font : font])
+                let string: NSAttributedString = NSAttributedString(string: relativeCoordinate.description, attributes: [.font : font])
                 let size: CGSize = string.size()
                 string.draw(in: CGRect(x: rect.maxX - size.width, y: rect.midY, width: size.width, height: size.height))
             }
@@ -173,7 +175,7 @@ open class TilingGridView: UIView
         context.saveGState()
         defer {context.restoreGState()}
         
-        drawRandomSquares(rect, context: context)
+//        drawRandomSquares(rect, context: context)
         drawGrid(rect, context: context)
     }
 
@@ -195,25 +197,28 @@ open class TilingGridView: UIView
     
     private func originRelativeX(for absoluteLineIndex: UInt) -> CGFloat
     {
+        let n: UInt = layoutProperties.verticalLineCount
         let relativeLineIndex: Int
         switch originPlacement
         {
         case .bottomLeft, .centerLeft, .topLeft: relativeLineIndex = Int(absoluteLineIndex)
-        case .bottomRight, .centerRight, .topRight: relativeLineIndex = Int(layoutProperties.verticalLineCount - absoluteLineIndex)
-        default: relativeLineIndex = Int(absoluteLineIndex) - Int((layoutProperties.verticalLineCount + 1) / 2)
+        case .bottomRight, .centerRight, .topRight: relativeLineIndex = Int(n - absoluteLineIndex) - 1
+        default: relativeLineIndex = Int(absoluteLineIndex) - Int((n - (n.isMultiple(of: 2) ? 0 : 1)) / 2)
         }
         return CGFloat(relativeLineIndex) * scale
     }
     
     private func originRelativeY(for absoluteLineIndex: UInt) -> CGFloat
     {
+        let n: UInt = layoutProperties.horizontalLineCount
         let relativeLineIndex: Int
         switch originPlacement
         {
         case .topLeft, .topRight, .topCenter: relativeLineIndex = Int(absoluteLineIndex)
-        case .bottomLeft, .bottomCenter, .bottomRight: relativeLineIndex = Int(layoutProperties.horizontalLineCount - absoluteLineIndex)
-        default: relativeLineIndex = Int(absoluteLineIndex) - Int((layoutProperties.horizontalLineCount + 1) / 2) //TODO: Maybe change this relies on line count to be odd
+        case .bottomLeft, .bottomCenter, .bottomRight: relativeLineIndex = Int(n - absoluteLineIndex) - 1
+        default: relativeLineIndex = Int(absoluteLineIndex) - Int((n - (n.isMultiple(of: 2) ? 0 : 1)) / 2) //TODO: Maybe change this relies on line count to be odd
         }
+        print("abs: \(absoluteLineIndex), rel:\(relativeLineIndex)")
         return CGFloat(relativeLineIndex) * scale
     }
 
