@@ -30,25 +30,86 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="8rB-P4-rHn">
-                                <rect key="frame" x="300" y="100" width="94" height="29"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <action selector="stepperChanged:" destination="vXZ-lx-hvc" eventType="valueChanged" id="dHK-Nb-f7G"/>
-                                </connections>
-                            </stepper>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9HJ-wN-HVk" userLabel="controlsView">
+                                <rect key="frame" x="0.0" y="822" width="414" height="114"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Spacing: 50" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g0Y-os-xWe">
+                                        <rect key="frame" x="16" y="48" width="96" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="50" minValue="5" maxValue="200" translatesAutoresizingMaskIntoConstraints="NO" id="S1y-xf-yJW">
+                                        <rect key="frame" x="118" y="43.5" width="290" height="31"/>
+                                        <connections>
+                                            <action selector="spacingChangedWithSlider:" destination="vXZ-lx-hvc" eventType="valueChanged" id="PpR-wf-cYg"/>
+                                        </connections>
+                                    </slider>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placement: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oMH-2t-RLY">
+                                        <rect key="frame" x="16" y="77" width="105" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="50" minValue="5" maxValue="200" translatesAutoresizingMaskIntoConstraints="NO" id="WlL-U3-Bhq">
+                                        <rect key="frame" x="127" y="72.5" width="281" height="31"/>
+                                        <connections>
+                                            <action selector="originPlacementChangedWithSlider:" destination="vXZ-lx-hvc" eventType="valueChanged" id="tbv-rg-BTd"/>
+                                        </connections>
+                                    </slider>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qKz-ia-uQJ">
+                                        <rect key="frame" x="176" y="0.0" width="62" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="15"/>
+                                        <state key="normal" title="TOGGLE"/>
+                                        <connections>
+                                            <action selector="toolboxButtonTappedWithButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="QT3-8F-M1P"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="S1y-xf-yJW" firstAttribute="leading" secondItem="g0Y-os-xWe" secondAttribute="trailing" constant="8" id="64m-ka-Zf3"/>
+                                    <constraint firstItem="WlL-U3-Bhq" firstAttribute="leading" secondItem="oMH-2t-RLY" secondAttribute="trailing" constant="8" id="Akh-ZB-wkl"/>
+                                    <constraint firstItem="WlL-U3-Bhq" firstAttribute="centerY" secondItem="oMH-2t-RLY" secondAttribute="centerY" id="Cg1-uZ-1f8"/>
+                                    <constraint firstAttribute="trailing" secondItem="S1y-xf-yJW" secondAttribute="trailing" constant="8" id="J5l-I6-bcP"/>
+                                    <constraint firstItem="oMH-2t-RLY" firstAttribute="top" secondItem="g0Y-os-xWe" secondAttribute="bottom" constant="8" id="WmB-W6-Jyl"/>
+                                    <constraint firstItem="qKz-ia-uQJ" firstAttribute="top" secondItem="9HJ-wN-HVk" secondAttribute="top" id="WrQ-VB-Imn"/>
+                                    <constraint firstItem="g0Y-os-xWe" firstAttribute="leading" secondItem="9HJ-wN-HVk" secondAttribute="leading" constant="16" id="e7E-KW-WE6"/>
+                                    <constraint firstItem="WlL-U3-Bhq" firstAttribute="leading" secondItem="oMH-2t-RLY" secondAttribute="trailing" constant="8" id="eeS-Xx-j9D"/>
+                                    <constraint firstItem="qKz-ia-uQJ" firstAttribute="centerX" secondItem="9HJ-wN-HVk" secondAttribute="centerX" id="jHV-6t-L8Z"/>
+                                    <constraint firstAttribute="bottom" secondItem="oMH-2t-RLY" secondAttribute="bottom" constant="16" id="oLR-Si-Ig0"/>
+                                    <constraint firstAttribute="trailing" secondItem="WlL-U3-Bhq" secondAttribute="trailing" constant="8" id="oyh-fF-heJ"/>
+                                    <constraint firstItem="S1y-xf-yJW" firstAttribute="centerY" secondItem="g0Y-os-xWe" secondAttribute="centerY" id="qXQ-Ke-jGk"/>
+                                    <constraint firstItem="oMH-2t-RLY" firstAttribute="leading" secondItem="9HJ-wN-HVk" secondAttribute="leading" constant="16" id="rek-qd-F8b"/>
+                                    <constraint firstItem="g0Y-os-xWe" firstAttribute="top" secondItem="9HJ-wN-HVk" secondAttribute="top" constant="48" id="xZ6-vf-JyM"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                        <integer key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="C3Y-ks-5je" secondAttribute="bottom" id="5Jk-o4-JOM"/>
+                            <constraint firstItem="9HJ-wN-HVk" firstAttribute="leading" secondItem="Sti-wf-h0t" secondAttribute="leading" id="E9b-9o-AQl"/>
                             <constraint firstItem="C3Y-ks-5je" firstAttribute="leading" secondItem="Sti-wf-h0t" secondAttribute="leading" id="ODY-Yo-GEB"/>
                             <constraint firstItem="C3Y-ks-5je" firstAttribute="trailing" secondItem="Sti-wf-h0t" secondAttribute="trailing" id="Zpu-Km-M6Q"/>
+                            <constraint firstItem="9HJ-wN-HVk" firstAttribute="top" secondItem="Sti-wf-h0t" secondAttribute="bottom" priority="750" constant="-40" id="hIh-Dj-fC5"/>
+                            <constraint firstItem="Sti-wf-h0t" firstAttribute="bottom" secondItem="9HJ-wN-HVk" secondAttribute="bottom" priority="500" id="mua-hK-6Sv"/>
                             <constraint firstItem="C3Y-ks-5je" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="nG8-RG-Uag"/>
+                            <constraint firstItem="Sti-wf-h0t" firstAttribute="trailing" secondItem="9HJ-wN-HVk" secondAttribute="trailing" id="yjT-F8-27S"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Sti-wf-h0t"/>
                     </view>
                     <connections>
                         <outlet property="gridView" destination="C3Y-ks-5je" id="dUn-7d-d9w"/>
+                        <outlet property="placementLabel" destination="oMH-2t-RLY" id="Rs3-Tx-6u5"/>
+                        <outlet property="placementSlider" destination="WlL-U3-Bhq" id="bEV-4L-ykZ"/>
+                        <outlet property="spacingLabel" destination="g0Y-os-xWe" id="FxX-wc-saN"/>
+                        <outlet property="spacingSlider" destination="S1y-xf-yJW" id="sMW-kV-Xj3"/>
+                        <outlet property="toolboxHidden" destination="hIh-Dj-fC5" id="E1t-mc-yLi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
