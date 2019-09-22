@@ -193,18 +193,29 @@ open class TilingGridView: UIView
         return (absoulteX + correction - originPlacement.origin(in: layoutProperties.lastReportedBounds).x) / scale
     }
     
-//    private func originRelativeX(for absoluteLineIndex: UInt, globalSpacing: CGFloat) -> CGFloat
-//    {
-//        let relativeLineIndex: Int
-//        let lastAbsoluteIndex: UInt = layoutProperties.verticalLineCount - 1
-//        switch originPlacement
-//        {
-//        case .center, .topCenter, .bottomCenter:
-//        default:
-//            <#code#>
-//        }
-//        return 0
-//    }
+    private func originRelativeX(for absoluteLineIndex: UInt) -> CGFloat
+    {
+        let relativeLineIndex: Int
+        switch originPlacement
+        {
+        case .bottomLeft, .centerLeft, .topLeft: relativeLineIndex = Int(absoluteLineIndex)
+        case .bottomRight, .centerRight, .topRight: relativeLineIndex = Int(layoutProperties.verticalLineCount - absoluteLineIndex)
+        default: relativeLineIndex = Int(absoluteLineIndex) - Int((layoutProperties.verticalLineCount + 1) / 2)
+        }
+        return CGFloat(relativeLineIndex) * scale
+    }
+    
+    private func originRelativeY(for absoluteLineIndex: UInt) -> CGFloat
+    {
+        let relativeLineIndex: Int
+        switch originPlacement
+        {
+        case .topLeft, .topRight, .topCenter: relativeLineIndex = Int(absoluteLineIndex)
+        case .bottomLeft, .bottomCenter, .bottomRight: relativeLineIndex = Int(layoutProperties.horizontalLineCount - absoluteLineIndex)
+        default: relativeLineIndex = Int(absoluteLineIndex) - Int((layoutProperties.horizontalLineCount + 1) / 2) //TODO: Maybe change this relies on line count to be odd
+        }
+        return CGFloat(relativeLineIndex) * scale
+    }
 
     private func originRelativeY(for absoluteY: CGFloat, globalSpacing: CGFloat) -> CGFloat
     {
