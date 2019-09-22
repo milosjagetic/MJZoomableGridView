@@ -42,14 +42,14 @@ internal struct LayoutProperties
         case .topCenter, .center, .bottomCenter:
             if remaindersOnEachEnd.left == 0
             {
-                horizontalLineCount = UInt(lastReportedBounds.width / pointsPerLine)
+                verticalLineCount = UInt(lastReportedBounds.width / pointsPerLine)
             }
             else
             {
-                horizontalLineCount = UInt((lastReportedBounds.width - remaindersOnEachEnd.left - remaindersOnEachEnd.right) / pointsPerLine) + 1
+                verticalLineCount = UInt((lastReportedBounds.width - remaindersOnEachEnd.left - remaindersOnEachEnd.right) / pointsPerLine) + 1
             }
         default:
-            horizontalLineCount = UInt(ceil(lastReportedBounds.width / pointsPerLine))
+            verticalLineCount = UInt(ceil(lastReportedBounds.width / pointsPerLine))
         }
         
         
@@ -72,14 +72,14 @@ internal struct LayoutProperties
         case .centerLeft, .center, .centerRight:
             if remaindersOnEachEnd.top == 0
             {
-                verticalLineCount = UInt(lastReportedBounds.height / pointsPerLine)
+                horizontalLineCount = UInt(lastReportedBounds.height / pointsPerLine)
             }
             else
             {
-                verticalLineCount = UInt((lastReportedBounds.height - remaindersOnEachEnd.top - remaindersOnEachEnd.bottom) / pointsPerLine) + 1
+                horizontalLineCount = UInt((lastReportedBounds.height - remaindersOnEachEnd.top - remaindersOnEachEnd.bottom) / pointsPerLine) + 1
             }
         default:
-            verticalLineCount = UInt(ceil(lastReportedBounds.height / pointsPerLine))
+            horizontalLineCount = UInt(ceil(lastReportedBounds.height / pointsPerLine))
         }
     }
 }
