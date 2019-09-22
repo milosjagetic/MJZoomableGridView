@@ -14,7 +14,7 @@ open class TilingGridView: UIView
     open var horizontalLineAttributes: [LineAttributes] = [LineAttributes(color: .red, divisor: 3, dashes: [16, 16], lineWidth: 5)]
     open var horintalAxisAttributes: LineAttributes? = LineAttributes(color: .green, divisor: 0, dashes: [], lineWidth: 10)
     open var verticalLineAttributes: [LineAttributes] = [LineAttributes(color: .blue, divisor: 3, dashes: [], lineWidth: 1)]
-    open var verticalAxisAttributes: LineAttributes? = LineAttributes(color: .brown, divisor: 0, dashes: [], lineWidth: 10)
+    open var verticalAxisAttributes: LineAttributes? = LineAttributes(color: .cyan, divisor: 0, dashes: [], lineWidth: 10)
     
     open var originPlacement: OriginPlacement = .center
     {
@@ -79,18 +79,20 @@ open class TilingGridView: UIView
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     open func drawGrid(_ rect: CGRect, context: CGContext)
     {
-        let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
+        let zoomScale: CGFloat = abs(context.ctm.a) / UIScreen.main.scale
         let adjustedSpacing: CGFloat = CGFloat(pixelsPerLine) / zoomScale
+        let adjustedLineWidth: CGFloat = lineWidth / zoomScale
         
-        drawVerticalLines(in: rect, adjustedSpacing: adjustedSpacing, context: context)
-        drawHorizontalLines(in: rect, adjustedSpacing: adjustedSpacing, context: context)
+        drawVerticalLines(in: rect, adjustedSpacing: adjustedSpacing, adjustedLineWidth: adjustedLineWidth, context: context)
+        drawHorizontalLines(in: rect, adjustedSpacing: adjustedSpacing, adjustedLineWidth: adjustedLineWidth, context: context)
     }
     
-    open func drawVerticalLines(in rect: CGRect, adjustedSpacing: CGFloat, context: CGContext)
+    open func drawVerticalLines(in rect: CGRect, adjustedSpacing: CGFloat, adjustedLineWidth: CGFloat, context: CGContext)
     {
         let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
         
-        let globalSpacing: CGFloat = layoutProperties.remaindersOnEachEnd.left
+        let isEndCase: Bool = [OriginPlacement.topRight, .centerRight, .bottomRight].contains(originPlacement)
+        let globalSpacing: CGFloat = isEndCase ? layoutProperties.remaindersOnEachEnd.right :  layoutProperties.remaindersOnEachEnd.left
         
         let maxCount: Int = Int(ceil((rect.maxX - globalSpacing) / adjustedSpacing))
         let prevCount: Int = Int(ceil(max(0, rect.minX - globalSpacing) / adjustedSpacing))
@@ -108,7 +110,7 @@ open class TilingGridView: UIView
             if attributes == nil { attributes = verticalLineAttributes.first(where: {relativeX.truncatingRemainder(dividingBy: CGFloat($0.divisor)) == 0}) }
 
             let lineWidth: CGFloat = attributes?.lineWidth ?? self.lineWidth
-            x += lineWidth > 1 ? 0 : ((lineWidth / zoomScale) / 2)
+            x += lineWidth > 1 ? 0 : (adjustedLineWidth / 2)
 
             context.move(to: CGPoint(x:  x, y: rect.origin.y))
             context.addLine(to: CGPoint(x: x, y: rect.maxY))
@@ -122,37 +124,44 @@ open class TilingGridView: UIView
         }
     }
     
-    open func drawHorizontalLines(in rect: CGRect, adjustedSpacing: CGFloat, context: CGContext)
+    open func drawHorizontalLines(in rect: CGRect, adjustedSpacing: CGFloat, adjustedLineWidth: CGFloat, context: CGContext)
     {
         let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
         
+        let isEndCase: Bool = [OriginPlacement.bottomCenter, .bottomLeft, .bottomRight].contains(originPlacement)
         // if the lines don't line up evenly to view bounds, this is the leftover space, depends on origin placement too
+        // if the origin is at the "end" of the axis, it actually ends up "after the end", move it back by the line width
         let globalSpacing: CGFloat = layoutProperties.remaindersOnEachEnd.top
         // index of the last line in the rect
-        let maxCount: Int = Int(ceil((rect.maxY - globalSpacing) / adjustedSpacing))
+        let maxCount: Int = Int(ceil((rect.maxY - (isEndCase ? globalSpacing - adjustedLineWidth : globalSpacing)) / adjustedSpacing))
         // index of the last line in the 'previous' rect
-        let prevCount: Int = Int(ceil(max(0, rect.minY - globalSpacing) / adjustedSpacing))
-        
+        let prevCount: Int = Int(ceil(max(0, rect.minY - (isEndCase ? globalSpacing - adjustedLineWidth : globalSpacing)) / adjustedSpacing))
+
         guard maxCount > prevCount else {return}
         // draw lines with indexes contained within the given rect
         // +1 is added because lines at the beggining of the next tile will be cut in half, so additional line at the end of the current (also cut in half) is added (this should be changed because it's probably problematic in certain cases)
-        for i in prevCount..<(maxCount + 1)
+        for i in prevCount..<(maxCount + (isEndCase ? 0 : 1))
         {
-            var y: CGFloat = CGFloat(i) * adjustedSpacing + globalSpacing
-            let relativeY: CGFloat = originRelativeY(for: y, globalSpacing: globalSpacing)
+            var y: CGFloat = CGFloat(i) * adjustedSpacing + (isEndCase ? globalSpacing : globalSpacing)
+            let relativeY: CGFloat = originRelativeY(for: y, globalSpacing: isEndCase ? layoutProperties.remaindersOnEachEnd.bottom : globalSpacing)
 
-            print("y: \(y), relativeY: \(relativeY)")
             // get appropriate attributes for the current line index
             var attributes: LineAttributes?
-            if relativeY == 0 { attributes = horintalAxisAttributes }
+            if abs(relativeY) < 1 { attributes = horintalAxisAttributes }
             if attributes == nil { attributes = horizontalLineAttributes.first(where: {relativeY.truncatingRemainder(dividingBy: CGFloat($0.divisor)) == 0}) }
             
             // determine line width
             let lineWidth: CGFloat = attributes?.lineWidth ?? self.lineWidth
 
             // TODO: Maybe change this
-            y += lineWidth > 1 ? 0 : ((lineWidth / zoomScale) / 2)
+            y += lineWidth > 1 ? 0 : (adjustedLineWidth / 2)
+            // TODO: important for "end" cases
+            print("y: \(y)")
+
+            y -= isEndCase ? lineWidth / 2 : 0
             
+            print("y: \(y), relativeY: \(relativeY), lw: \(lineWidth)")
+
             // actually draw the line
             context.move(to: CGPoint(x:  rect.origin.x, y: y))
             context.addLine(to: CGPoint(x: rect.maxX, y: y))
