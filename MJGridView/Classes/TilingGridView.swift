@@ -150,7 +150,7 @@ open class TilingGridView: UIView
 
             // get appropriate attributes for the current line index
             var attributes: LineAttributes?
-            if abs(relativeY) < 1 { attributes = horintalAxisAttributes }
+            if relativeY == 0 { attributes = horintalAxisAttributes }
             if attributes == nil { attributes = horizontalLineAttributes.first(where: {relativeY.truncatingRemainder(dividingBy: CGFloat($0.divisor)) == 0}) }
             
             // determine line width
