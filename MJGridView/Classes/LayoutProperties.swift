@@ -24,16 +24,17 @@ internal struct LayoutProperties
         
         remaindersOnEachEnd = .zero
         
+        let widthPplRemainder: CGFloat = lastReportedBounds.width.truncatingRemainder(dividingBy: pointsPerLine)
         //do horizontal axis
         switch originPlacement
         {
         case .topLeft, .centerLeft, .bottomLeft:
-            remaindersOnEachEnd.right = lastReportedBounds.width.truncatingRemainder(dividingBy: pointsPerLine)
+            remaindersOnEachEnd.right = widthPplRemainder == 0 ? pointsPerLine : widthPplRemainder
         case .topCenter, .center, .bottomCenter:
             remaindersOnEachEnd.left = (lastReportedBounds.width / 2).truncatingRemainder(dividingBy: pointsPerLine)
             remaindersOnEachEnd.right = remaindersOnEachEnd.left
         case .topRight, .centerRight, .bottomRight:
-            remaindersOnEachEnd.left = lastReportedBounds.width.truncatingRemainder(dividingBy: pointsPerLine)
+            remaindersOnEachEnd.left = widthPplRemainder == 0 ? pointsPerLine : widthPplRemainder
         }
         
         switch originPlacement
@@ -51,16 +52,19 @@ internal struct LayoutProperties
             horizontalLineCount = UInt(ceil(lastReportedBounds.width / pointsPerLine))
         }
         
+        
+        let heightPplRemainder: CGFloat = lastReportedBounds.height.truncatingRemainder(dividingBy: pointsPerLine)
+        
         // vertical axis
         switch originPlacement
         {
         case .topLeft, .topCenter, .topRight:
-            remaindersOnEachEnd.bottom = lastReportedBounds.height.truncatingRemainder(dividingBy: pointsPerLine)
+            remaindersOnEachEnd.bottom = heightPplRemainder == 0 ? pointsPerLine : heightPplRemainder
         case .centerLeft, .center, .centerRight:
             remaindersOnEachEnd.top = (lastReportedBounds.height / 2).truncatingRemainder(dividingBy: pointsPerLine)
             remaindersOnEachEnd.bottom = remaindersOnEachEnd.top
         case .bottomRight, .bottomCenter, .bottomLeft:
-            remaindersOnEachEnd.top = lastReportedBounds.height.truncatingRemainder(dividingBy: pointsPerLine)
+            remaindersOnEachEnd.top = heightPplRemainder == 0 ? pointsPerLine : heightPplRemainder
         }
         
         switch originPlacement
