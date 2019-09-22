@@ -302,8 +302,8 @@ open class TilingGridView: UIView
     private func drawRandomSquares(_ rect: CGRect, context: CGContext)
     {
         var rect: CGRect = rect
-        rect.origin.x = rect.origin.x > bounds.width ? 0 : rect.origin.x
-        rect.origin.y = rect.origin.y > bounds.height ? 0 : rect.origin.y
+        rect.origin.x = rect.origin.x > layoutProperties.lastReportedBounds.width ? 0 : rect.origin.x
+        rect.origin.y = rect.origin.y > layoutProperties.lastReportedBounds.height ? 0 : rect.origin.y
         context.setFillColor(UIColor.randomOpaque.withAlphaComponent(0.3).cgColor)
         context.fill(rect)
     }
