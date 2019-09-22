@@ -24,14 +24,17 @@ open class TilingGridView: UIView
             setNeedsDisplay()
         }
     }
-    
-    open var pixelsPerLine: UInt = 112 { didSet { updateLayoutProperties() } }
-    
-    open var lineWidth: CGFloat = 1 / UIScreen.main.scale
-    
-    open var lineColor: UIColor = .black
-    
-    open var scale: CGFloat = 20
+    open var pixelsPerLine: UInt = 46
+    {
+        didSet
+        {
+            updateLayoutProperties()
+            setNeedsDisplay()
+        }
+    }
+    open var lineWidth: CGFloat = 1 / UIScreen.main.scale { didSet { setNeedsDisplay() } }
+    open var lineColor: UIColor = .black { didSet { setNeedsDisplay() } }
+    open var scale: CGFloat = 20 { didSet { setNeedsDisplay() } }
     
     open override class var layerClass: AnyClass
     {
