@@ -140,10 +140,10 @@ open class TilingGridView: UIView
         guard maxCount > prevCount else {return}
         // draw lines with indexes contained within the given rect
         // +1 is added because lines at the beggining of the next tile will be cut in half, so additional line at the end of the current (also cut in half) is added (this should be changed because it's probably problematic in certain cases)
-        for i in prevCount..<(maxCount + (isEndCase ? 0 : 1))
+        for i in prevCount..<(maxCount + 1)
         {
-            var y: CGFloat = CGFloat(i) * adjustedSpacing + (isEndCase ? globalSpacing : globalSpacing)
-            let relativeY: CGFloat = originRelativeY(for: y, globalSpacing: isEndCase ? layoutProperties.remaindersOnEachEnd.bottom : globalSpacing)
+            var y: CGFloat = CGFloat(i) * adjustedSpacing + globalSpacing
+            let relativeY: CGFloat = originRelativeY(for: y, globalSpacing: isEndCase ? layoutProperties.remaindersOnEachEnd.bottom : layoutProperties.remaindersOnEachEnd.top)
 
             // get appropriate attributes for the current line index
             var attributes: LineAttributes?
@@ -156,11 +156,13 @@ open class TilingGridView: UIView
             // TODO: Maybe change this
             y += lineWidth > 1 ? 0 : (adjustedLineWidth / 2)
             // TODO: important for "end" cases
-            print("y: \(y)")
+//            print("y: \(y)")
 
-            y -= isEndCase ? lineWidth / 2 : 0
             
-            print("y: \(y), relativeY: \(relativeY), lw: \(lineWidth)")
+            // TODO: if line width too big can be rendered outside
+            y -= isEndCase ? lineWidth/2 : 0
+            
+//            print("y: \(y), relativeY: \(relativeY), lw: \(lineWidth)")
 
             // actually draw the line
             context.move(to: CGPoint(x:  rect.origin.x, y: y))
