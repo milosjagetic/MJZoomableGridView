@@ -112,6 +112,8 @@ open class TilingGridView: UIView
 
             let lineWidth: CGFloat = attributes?.lineWidth ?? self.lineWidth
             x += lineWidth > 1 ? 0 : (adjustedLineWidth / 2)
+            
+            x -= isEndCase ? .leastNormalMagnitude : 0
 
             context.move(to: CGPoint(x:  x, y: rect.origin.y))
             context.addLine(to: CGPoint(x: x, y: rect.maxY))
@@ -157,13 +159,13 @@ open class TilingGridView: UIView
             // TODO: Maybe change this
             y += lineWidth > 1 ? 0 : (adjustedLineWidth / 2)
             // TODO: important for "end" cases
-//            print("y: \(y)")
+            print("y: \(y)")
 
             
             // TODO: if line width too big can be rendered outside
-            y -= isEndCase ? lineWidth/2 : 0
+            y -= isEndCase ? .leastNormalMagnitude : 0
             
-//            print("y: \(y), relativeY: \(relativeY), lw: \(lineWidth)")
+            print("y: \(y), relativeY: \(relativeY), lw: \(lineWidth)")
 
             // actually draw the line
             context.move(to: CGPoint(x:  rect.origin.x, y: y))
