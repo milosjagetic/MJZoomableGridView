@@ -99,7 +99,7 @@ open class TilingGridView: UIView
         //end cases are cases where origin is at the other end (right / bottom depending on the axis). in these cases we shift rendering by a linewidth to make them renderable. not shifting would cause rendering outside bounds
         let isEndCase: Bool = (isAxisHorizontal ? [OriginPlacement.bottomCenter, .bottomLeft, .bottomRight] : [OriginPlacement.topRight, .centerRight, .bottomRight]).contains(originPlacement)
         // if the lines don't line up evenly to view bounds, this is the leftover space, depends on origin placement too
-        let globalSpacing: CGFloat = isAxisHorizontal ? layoutProperties.remaindersOnEachEnd.top : layoutProperties.remaindersOnEachEnd.left
+        let globalSpacing: CGFloat = (isAxisHorizontal ? layoutProperties.remaindersOnEachEnd.top : layoutProperties.remaindersOnEachEnd.left) / zoomScale
         //spacing relevant to calculating index/number of lines when rendering
         let spacingForCount: CGFloat = isEndCase ? globalSpacing - adjustedLineWidth : globalSpacing
         //number of lines at the end of given rect
