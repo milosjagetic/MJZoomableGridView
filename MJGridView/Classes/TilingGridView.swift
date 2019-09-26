@@ -34,7 +34,7 @@ open class TilingGridView: UIView
     }
     open var lineWidth: CGFloat = 1 / UIScreen.main.scale { didSet { setNeedsDisplay() } }
     open var lineColor: UIColor = .black { didSet { setNeedsDisplay() } }
-    open var scale: CGFloat = 20 { didSet { setNeedsDisplay() } }
+    open var scale: CGFloat = 1 { didSet { setNeedsDisplay() } }
     
     open override class var layerClass: AnyClass
     {
@@ -95,7 +95,7 @@ open class TilingGridView: UIView
     {
         let isAxisHorizontal: Bool = axis == .horizontal
         let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
-        
+
         //end cases are cases where origin is at the other end (right / bottom depending on the axis). in these cases we shift rendering by a linewidth to make them renderable. not shifting would cause rendering outside bounds
         let isEndCase: Bool = (isAxisHorizontal ? [OriginPlacement.bottomCenter, .bottomLeft, .bottomRight] : [OriginPlacement.topRight, .centerRight, .bottomRight]).contains(originPlacement)
         // if the lines don't line up evenly to view bounds, this is the leftover space, depends on origin placement too
@@ -118,7 +118,7 @@ open class TilingGridView: UIView
 //            let relativeCoordinate: CGFloat = isAxisHorizontal ?
 //                originRelativeY(for: coordinate, globalSpacing: isEndCase ? layoutProperties.remaindersOnEachEnd.bottom : layoutProperties.remaindersOnEachEnd.top)
 //                : originRelativeX(for: coordinate, globalSpacing: isEndCase ? layoutProperties.remaindersOnEachEnd.right : layoutProperties.remaindersOnEachEnd.left)
-            let relativeCoordinate: CGFloat = isAxisHorizontal ? originRelativeY(for: i) : originRelativeX(for: i)
+            let relativeCoordinate: CGFloat = isAxisHorizontal ? originRelativeY(for: i, zoomScale: zoomScale) : originRelativeX(for: i, zoomScale: zoomScale)
             
             // get appropriate attributes for the current line index
             var attributes: LineAttributes?
@@ -126,9 +126,9 @@ open class TilingGridView: UIView
             if attributes == nil
             {
                 attributes = (isAxisHorizontal ? horizontalLineAttributes : verticalLineAttributes)
-                    .first(where: {relativeCoordinate.truncatingRemainder(dividingBy: CGFloat($0.divisor)) == 0})
+                    .first(where: {relativeCoordinate.truncatingRemainder(dividingBy: CGFloat($0.divisor) * zoomScale) == 0})
             }
-            
+
             // determine line width
             let lineWidth: CGFloat = attributes?.lineWidth ?? self.lineWidth
             coordinate += lineWidth > 1 ? 0 : (adjustedLineWidth / 2)
@@ -195,31 +195,30 @@ open class TilingGridView: UIView
         return (absoulteX + correction - originPlacement.origin(in: layoutProperties.lastReportedBounds).x) / scale
     }
     
-    private func originRelativeX(for absoluteLineIndex: UInt) -> CGFloat
+    private func originRelativeX(for absoluteLineIndex: UInt, zoomScale: CGFloat) -> CGFloat
     {
-        let n: UInt = layoutProperties.verticalLineCount
-        let relativeLineIndex: Int
+        let n: CGFloat = CGFloat(layoutProperties.verticalLineCount) * zoomScale
+        let relativeLineIndex: CGFloat
         switch originPlacement
         {
-        case .bottomLeft, .centerLeft, .topLeft: relativeLineIndex = Int(absoluteLineIndex)
-        case .bottomRight, .centerRight, .topRight: relativeLineIndex = Int(n - absoluteLineIndex) - 1
-        default: relativeLineIndex = Int(absoluteLineIndex) - Int((n - (n.isMultiple(of: 2) ? 0 : 1)) / 2)
+        case .bottomLeft, .centerLeft, .topLeft: relativeLineIndex = CGFloat(absoluteLineIndex)
+        case .bottomRight, .centerRight, .topRight: relativeLineIndex = n - CGFloat(absoluteLineIndex) - 1
+        default: relativeLineIndex = CGFloat(absoluteLineIndex) - ((n - (layoutProperties.verticalLineCount.isMultiple(of: 2) ? 0 : 1 * zoomScale)) / 2)
         }
         return CGFloat(relativeLineIndex) * scale
     }
     
-    private func originRelativeY(for absoluteLineIndex: UInt) -> CGFloat
+    private func originRelativeY(for absoluteLineIndex: UInt, zoomScale: CGFloat) -> CGFloat
     {
-        let n: UInt = layoutProperties.horizontalLineCount
-        let relativeLineIndex: Int
+        let n: CGFloat = CGFloat(layoutProperties.horizontalLineCount) * zoomScale
+        let relativeLineIndex: CGFloat
         switch originPlacement
         {
-        case .topLeft, .topRight, .topCenter: relativeLineIndex = Int(absoluteLineIndex)
-        case .bottomLeft, .bottomCenter, .bottomRight: relativeLineIndex = Int(n - absoluteLineIndex) - 1
-        default: relativeLineIndex = Int(absoluteLineIndex) - Int((n - (n.isMultiple(of: 2) ? 0 : 1)) / 2) //TODO: Maybe change this relies on line count to be odd
+        case .topLeft, .topRight, .topCenter: relativeLineIndex = CGFloat(absoluteLineIndex)
+        case .bottomLeft, .bottomCenter, .bottomRight: relativeLineIndex = n - CGFloat(absoluteLineIndex) - 1
+        default: relativeLineIndex = CGFloat(absoluteLineIndex) - ((n - (layoutProperties.horizontalLineCount.isMultiple(of: 2) ? 0 : 1 * zoomScale)) / 2) //TODO: Maybe change this relies on line count to be odd
         }
-        print("abs: \(absoluteLineIndex), rel:\(relativeLineIndex)")
-        return CGFloat(relativeLineIndex) * scale
+        return relativeLineIndex * scale
     }
 
     private func originRelativeY(for absoluteY: CGFloat, globalSpacing: CGFloat) -> CGFloat
