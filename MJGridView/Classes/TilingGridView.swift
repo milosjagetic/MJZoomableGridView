@@ -103,21 +103,18 @@ open class TilingGridView: UIView
         //spacing relevant to calculating index/number of lines when rendering
         let spacingForCount: CGFloat = isEndCase ? globalSpacing - adjustedLineWidth : globalSpacing
         //number of lines at the end of given rect
-        let maxCount: UInt = UInt(ceil(max(0, (isAxisHorizontal ? rect.maxY : rect.maxX) - spacingForCount) / adjustedSpacing))
+        let maxCount: UInt = UInt(ceil(max(0, (isAxisHorizontal ? rect.maxY : rect.maxX) - spacingForCount) / adjustedSpacing)) + 1
         //number of lines at the begging of given rect
-        let prevCount: UInt = UInt(ceil(max(0, (isAxisHorizontal ? rect.minY : rect.minX) - spacingForCount) / adjustedSpacing))
-        
+        let prevCount: UInt = UInt(max(0, ceil(max(0, (isAxisHorizontal ? rect.minY : rect.minX) - spacingForCount) / adjustedSpacing) - 1))
+        // -1/+1 is added because lines at the beggining of the next tile will be cut in half, so additional line at the end/begginging of the current (also cut in half) is added (this should be changed because it's probably problematic in certain cases)
+
         //skip rects with no lines
         guard maxCount > prevCount else {return}
         
         // draw lines with indexes contained within the given rect
-        // +1 is added because lines at the beggining of the next tile will be cut in half, so additional line at the end of the current (also cut in half) is added (this should be changed because it's probably problematic in certain cases)
-        for i in prevCount..<(maxCount)
+        for i in prevCount..<maxCount
         {
             var coordinate: CGFloat = CGFloat(i) * adjustedSpacing + globalSpacing
-//            let relativeCoordinate: CGFloat = isAxisHorizontal ?
-//                originRelativeY(for: coordinate, globalSpacing: isEndCase ? layoutProperties.remaindersOnEachEnd.bottom : layoutProperties.remaindersOnEachEnd.top)
-//                : originRelativeX(for: coordinate, globalSpacing: isEndCase ? layoutProperties.remaindersOnEachEnd.right : layoutProperties.remaindersOnEachEnd.left)
             let relativeCoordinate: CGFloat = isAxisHorizontal ? originRelativeY(for: i, zoomScale: zoomScale) : originRelativeX(for: i, zoomScale: zoomScale)
             
             // get appropriate attributes for the current line index
@@ -175,7 +172,7 @@ open class TilingGridView: UIView
         context.saveGState()
         defer {context.restoreGState()}
         
-//        drawRandomSquares(rect, context: context)
+        drawRandomSquares(rect, context: context)
         drawGrid(rect, context: context)
     }
 
