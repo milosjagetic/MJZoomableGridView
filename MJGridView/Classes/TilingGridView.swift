@@ -11,43 +11,32 @@ open class TilingGridView: UIView
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Public properties -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
-    open var horizontalLineAttributes: [LineAttributes] = [LineAttributes(color: .red, divisor: 3, dashes: [16, 16], lineWidth: 5)]
-    open var horintalAxisAttributes: LineAttributes? = LineAttributes(color: .green, divisor: 0, dashes: [], lineWidth: 10)
-    open var verticalLineAttributes: [LineAttributes] = [LineAttributes(color: .blue, divisor: 3, dashes: [], lineWidth: 1)]
-    open var verticalAxisAttributes: LineAttributes? = LineAttributes(color: .cyan, divisor: 0, dashes: [], lineWidth: 10)
-    
-    open var originPlacement: OriginPlacement = .center
+    open var gridProperties: GridProperties = GridProperties()
     {
         didSet
         {
+            generateImages()
             updateLayoutProperties()
             setNeedsDisplay()
         }
     }
-    open var pixelsPerLine: UInt = 112
-    {
-        didSet
-        {
-            updateLayoutProperties()
-            setNeedsDisplay()
-        }
-    }
-    open var lineWidth: CGFloat = 1 / UIScreen.main.scale { didSet { setNeedsDisplay() } }
-    open var lineColor: UIColor = .black { didSet { setNeedsDisplay() } }
-    open var scale: CGFloat = 1 { didSet { setNeedsDisplay() } }
     
     open override class var layerClass: AnyClass
     {
         return NoFadeTiledLayer.self
     }
+//
+//    open weak var imageView: UIImageView!
+//
     
-
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Private/Internal properties -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     internal var layoutProperties: LayoutProperties = .init()
 
-    private let sideLength: CGFloat = 46
+    private let sideLength: CGFloat = 256
+
+    private var images: [UIImage] = []
 
     
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
@@ -67,6 +56,12 @@ open class TilingGridView: UIView
     
     open func myinit()
     {
+//        let imageView: UIImageView = UIImageView(frame: bounds)
+//        imageView.translatesAutoresizingMaskIntoConstraints = true
+//        imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        addSubview(imageView)
+//        self.imageView = imageView
+//
         guard let layer: CATiledLayer = self.layer as? CATiledLayer else {return}
         
         let scale: CGFloat = UIScreen.main.scale
@@ -81,11 +76,11 @@ open class TilingGridView: UIView
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Public -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
-    open func drawGrid(_ rect: CGRect, context: CGContext)
+    open func drawGrid(_ rect: CGRect, context: CGContext, zoomScale: CGFloat)
     {
-        let zoomScale: CGFloat = abs(context.ctm.a) / UIScreen.main.scale
-        let adjustedSpacing: CGFloat = CGFloat(pixelsPerLine) / zoomScale
-        let adjustedLineWidth: CGFloat = lineWidth / zoomScale
+        let zoomScale: CGFloat = abs(zoomScale) / UIScreen.main.scale
+        let adjustedSpacing: CGFloat = CGFloat(gridProperties.pixelsPerLine) / zoomScale
+        let adjustedLineWidth: CGFloat = gridProperties.lineWidth / zoomScale
         
         [NSLayoutConstraint.Axis.horizontal, .vertical].forEach({drawLines($0, rect: rect, adjustedSpacing: adjustedSpacing, adjustedLineWidth: adjustedLineWidth, context: context)})
     }
@@ -97,7 +92,7 @@ open class TilingGridView: UIView
         let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
 
         //end cases are cases where origin is at the other end (right / bottom depending on the axis). in these cases we shift rendering by a linewidth to make them renderable. not shifting would cause rendering outside bounds
-        let isEndCase: Bool = (isAxisHorizontal ? [OriginPlacement.bottomCenter, .bottomLeft, .bottomRight] : [OriginPlacement.topRight, .centerRight, .bottomRight]).contains(originPlacement)
+        let isEndCase: Bool = (isAxisHorizontal ? [OriginPlacement.bottomCenter, .bottomLeft, .bottomRight] : [OriginPlacement.topRight, .centerRight, .bottomRight]).contains(gridProperties.originPlacement)
         // if the lines don't line up evenly to view bounds, this is the leftover space, depends on origin placement too
         let globalSpacing: CGFloat = (isAxisHorizontal ? layoutProperties.remaindersOnEachEnd.top : layoutProperties.remaindersOnEachEnd.left) / zoomScale
         //spacing relevant to calculating index/number of lines when rendering
@@ -122,15 +117,15 @@ open class TilingGridView: UIView
             
             // get appropriate attributes for the current line index
             var attributes: LineAttributes?
-            if relativeCoordinate == 0 { attributes = isAxisHorizontal ? horintalAxisAttributes : verticalAxisAttributes }
+            if relativeCoordinate == 0 { attributes = isAxisHorizontal ? gridProperties.horintalAxisAttributes : gridProperties.verticalAxisAttributes }
             if attributes == nil
             {
-                attributes = (isAxisHorizontal ? horizontalLineAttributes : verticalLineAttributes)
+                attributes = (isAxisHorizontal ? gridProperties.horizontalLineAttributes : gridProperties.verticalLineAttributes)
                     .first(where: {relativeCoordinate.truncatingRemainder(dividingBy: CGFloat($0.divisor) * zoomScale) == 0})
             }
 
             // determine line width
-            let lineWidth: CGFloat = attributes?.lineWidth ?? self.lineWidth
+            let lineWidth: CGFloat = attributes?.lineWidth ?? self.gridProperties.lineWidth
             coordinate += lineWidth > 1 ? 0 : (adjustedLineWidth / 2)
             
             // TODO: if line width too big can be rendered outside
@@ -140,7 +135,7 @@ open class TilingGridView: UIView
             context.move(to: CGPoint(x: isAxisHorizontal ? rect.origin.x : coordinate, y: isAxisHorizontal ? coordinate : rect.origin.y))
             context.addLine(to: CGPoint(x: isAxisHorizontal ? rect.maxX : coordinate, y: isAxisHorizontal ? coordinate : rect.maxY))
             
-            context.setStrokeColor((attributes?.color ?? lineColor).cgColor)
+            context.setStrokeColor((attributes?.color ?? gridProperties.lineColor).cgColor)
             context.setLineDash(phase: 0, lengths: attributes?.dashes.map({$0 / zoomScale}) ?? [])
             context.setLineWidth(lineWidth / zoomScale)
             context.strokePath()
@@ -164,73 +159,106 @@ open class TilingGridView: UIView
     {
         super.layoutSubviews()
         
+        generateImages()
         updateLayoutProperties()
         setNeedsDisplay()
     }
     
-    
     open override func draw(_ rect: CGRect)
     {
+        super.draw(rect)
         guard let context: CGContext = UIGraphicsGetCurrentContext() else {return}
-        context.saveGState()
-        defer {context.restoreGState()}
+        let imageIndex: Int = Int(log2(context.ctm.a / UIScreen.main.scale))
         
-//        drawRandomSquares(rect, context: context)
-        drawGrid(rect, context: context)
+        guard let cgImage = images[imageIndex].cgImage,
+            let cropped = cgImage.cropping(to: rect) else
+        {
+            print("image error")
+            return}
+        context.draw(cropped, in: rect)
     }
+    
+    
+//    open override func draw(_ rect: CGRect)
+//    {
+//        guard let context: CGContext = UIGraphicsGetCurrentContext() else {return}
+//        context.saveGState()
+//        defer {context.restoreGState()}
+//
+////        drawRandomSquares(rect, context: context)
+//        drawGrid(rect, context: context)
+//    }
 
     
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Private -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
+    private func generateImages()
+    {
+        images = []
+        
+        for current in 0...3
+        {
+            let currentFloat: CGFloat = .init(current)
+            let size: CGSize = CGSize(width: bounds.size.width * pow(2, currentFloat), height: bounds.size.height * pow(2, currentFloat))
+            UIGraphicsBeginImageContext(size)
+            guard let context = UIGraphicsGetCurrentContext() else {return}
+
+            drawGrid(CGRect(x: 0, y: 0, width: size.width, height: size.height), context: context, zoomScale: pow(2, currentFloat))
+            
+            guard let cgImage: CGImage = context.makeImage() else {return}
+            images.append(UIImage(cgImage: cgImage))
+        }
+    }
+    
     private func originRelativeX(for absoulteX: CGFloat, globalSpacing: CGFloat) -> CGFloat
     {
         let correction: CGFloat
-        switch originPlacement
+        switch gridProperties.originPlacement
         {
         case .bottomRight, .centerRight, .topRight: correction = globalSpacing
         case .bottomLeft, .centerLeft, .topLeft: correction = -globalSpacing
         default: correction = 0
         }
-        return (absoulteX + correction - originPlacement.origin(in: layoutProperties.lastReportedBounds).x) / scale
+        return (absoulteX + correction - gridProperties.originPlacement.origin(in: layoutProperties.lastReportedBounds).x) / gridProperties.scale
     }
     
     private func originRelativeX(for absoluteLineIndex: UInt, zoomScale: CGFloat) -> CGFloat
     {
         let n: CGFloat = CGFloat(layoutProperties.verticalLineCount) * zoomScale
         let relativeLineIndex: CGFloat
-        switch originPlacement
+        switch gridProperties.originPlacement
         {
         case .bottomLeft, .centerLeft, .topLeft: relativeLineIndex = CGFloat(absoluteLineIndex)
         case .bottomRight, .centerRight, .topRight: relativeLineIndex = n - CGFloat(absoluteLineIndex) - 1
         default: relativeLineIndex = CGFloat(absoluteLineIndex) - ((n - (layoutProperties.verticalLineCount.isMultiple(of: 2) ? 0 : 1 * zoomScale)) / 2)
         }
-        return CGFloat(relativeLineIndex) * scale
+        return CGFloat(relativeLineIndex) * gridProperties.scale
     }
     
     private func originRelativeY(for absoluteLineIndex: UInt, zoomScale: CGFloat) -> CGFloat
     {
         let n: CGFloat = CGFloat(layoutProperties.horizontalLineCount) * zoomScale
         let relativeLineIndex: CGFloat
-        switch originPlacement
+        switch gridProperties.originPlacement
         {
         case .topLeft, .topRight, .topCenter: relativeLineIndex = CGFloat(absoluteLineIndex)
         case .bottomLeft, .bottomCenter, .bottomRight: relativeLineIndex = n - CGFloat(absoluteLineIndex) - 1
         default: relativeLineIndex = CGFloat(absoluteLineIndex) - ((n - (layoutProperties.horizontalLineCount.isMultiple(of: 2) ? 0 : 1 * zoomScale)) / 2) //TODO: Maybe change this relies on line count to be odd
         }
-        return relativeLineIndex * scale
+        return relativeLineIndex * gridProperties.scale
     }
 
     private func originRelativeY(for absoluteY: CGFloat, globalSpacing: CGFloat) -> CGFloat
     {
         let correction: CGFloat
-        switch originPlacement
+        switch gridProperties.originPlacement
         {
         case .topLeft, .topCenter, .topRight: correction = -globalSpacing
         case .bottomLeft, .bottomRight, .bottomCenter: correction = globalSpacing
         default: correction = 0
         }
-        return (absoluteY + correction - originPlacement.origin(in: layoutProperties.lastReportedBounds).y) / scale
+        return (absoluteY + correction - gridProperties.originPlacement.origin(in: layoutProperties.lastReportedBounds).y) / gridProperties.scale
     }
     
     ///Draws a grid of randomly colored squares. Corresponds to placement of tiles. For debug purposes only
@@ -245,6 +273,6 @@ open class TilingGridView: UIView
     
     private func updateLayoutProperties()
     {
-        layoutProperties.calculateLayoutProperties(lastReportedBounds: bounds, tileSideLength: sideLength, pointsPerLine: pixelsPerLine, originPlacement: originPlacement)
+        layoutProperties.calculateLayoutProperties(lastReportedBounds: bounds, tileSideLength: sideLength, pointsPerLine: gridProperties.pixelsPerLine, originPlacement: gridProperties.originPlacement)
     }
 }
