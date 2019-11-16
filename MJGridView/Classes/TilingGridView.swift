@@ -125,15 +125,6 @@ open class TilingGridView: UIView
             context.setLineDash(phase: 0, lengths: attributes?.dashes.map({$0 / zoomScale}) ?? [])
             context.setLineWidth(lineWidth / zoomScale)
             context.strokePath()
-            
-            //do labelling
-//            if relativeCoordinate == 0 && isAxisHorizontal
-//            {
-//                let font: UIFont = UIFont.systemFont(ofSize: 14 / zoomScale)
-//                let string: NSAttributedString = NSAttributedString(string: relativeCoordinate.description, attributes: [.font : font])
-//                let size: CGSize = string.size()
-//                string.draw(in: CGRect(x: rect.maxX - size.width, y: rect.midY, width: size.width, height: size.height))
-//            }
         }
     }
 
