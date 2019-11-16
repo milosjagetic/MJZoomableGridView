@@ -11,8 +11,8 @@ import UIKit
 
 public struct LineAttributes
 {
-    var color: UIColor
-    var divisor: Int
-    var dashes: [CGFloat]
-    var lineWidth: CGFloat
+    public var color: UIColor
+    public var divisor: Int
+    public var dashes: [CGFloat]
+    public var lineWidth: CGFloat
 }
