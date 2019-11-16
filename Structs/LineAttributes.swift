@@ -15,4 +15,12 @@ public struct LineAttributes
     public var divisor: Int
     public var dashes: [CGFloat]
     public var lineWidth: CGFloat
+    
+    public init(color: UIColor, divisor: Int, dashes: [CGFloat], lineWidth: CGFloat)
+    {
+        self.color = color
+        self.divisor = divisor
+        self.dashes = dashes
+        self.lineWidth = lineWidth
+    }
 }

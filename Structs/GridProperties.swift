@@ -23,4 +23,6 @@ public struct GridProperties
     public var scale: CGFloat = 1
     
     public var originPlacement: OriginPlacement = .center
+    
+    public init() {}
 }
