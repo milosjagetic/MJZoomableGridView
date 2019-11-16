@@ -15,8 +15,24 @@ open class ScrollingGridView: UIView
     
     open var gridProperties: GridProperties = .init() {didSet {gridView.gridProperties = gridProperties}}
     
-    @IBInspectable var maximumZoomScale: CGFloat = 1 {didSet {scrollView.maximumZoomScale = maximumZoomScale}}
-    @IBInspectable var minimumZoomScale: CGFloat = 1 {didSet {scrollView.minimumZoomScale = minimumZoomScale}}
+    @IBInspectable var maximumZoomScale: CGFloat = 1
+    {
+        didSet
+        {
+            scrollView.maximumZoomScale = maximumZoomScale
+            gridView.updateLevelsOfDetail(minZoom: minimumZoomScale, maxZoom: maximumZoomScale)
+        }
+    }
+    
+    @IBInspectable var minimumZoomScale: CGFloat = 1
+    {
+        didSet
+        {
+            scrollView.minimumZoomScale = minimumZoomScale
+            gridView.updateLevelsOfDetail(minZoom: minimumZoomScale, maxZoom: maximumZoomScale)
+        }
+    }
+
     
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Lifecycle -

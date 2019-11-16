@@ -56,9 +56,6 @@ open class TilingGridView: UIView
         let scale: CGFloat = UIScreen.main.scale
         layer.contentsScale = scale
         layer.tileSize = CGSize(width: sideLength * scale, height: sideLength * scale)
-        //TODO: make dependent on zoom
-        layer.levelsOfDetail = 4
-        layer.levelsOfDetailBias = 3
     }
 
     
@@ -151,8 +148,22 @@ open class TilingGridView: UIView
 
     
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
-    //  MARK: Private -
+    //  MARK: Private/Internal -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
+    internal func updateLevelsOfDetail(minZoom: CGFloat, maxZoom: CGFloat)
+    {
+        guard let layer = self.layer as? NoFadeTiledLayer else {return}
+        
+        //using ceil might be problematic
+        let zoomInLevelsOfDetail: Int = Int(ceil(log2(maxZoom)))
+        let zoomOutLevelsOfDetail: Int = Int(ceil(abs(log2(minZoom))))
+        
+        layer.levelsOfDetail = zoomInLevelsOfDetail + zoomOutLevelsOfDetail + 1
+        layer.levelsOfDetailBias = zoomInLevelsOfDetail
+        
+        setNeedsDisplay()
+    }
+    
     private func originRelativeX(for absoluteLineIndex: UInt, zoomScale: CGFloat) -> CGFloat
     {
         let n: CGFloat = CGFloat(layoutProperties.verticalLineCount) * zoomScale
