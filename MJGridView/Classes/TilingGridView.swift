@@ -11,31 +11,6 @@ open class TilingGridView: UIView
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Public properties -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
-//    open var horizontalLineAttributes: [LineAttributes] = [LineAttributes(color: .red, divisor: 3, dashes: [36, 36], lineWidth: 5)]
-//    open var horintalAxisAttributes: LineAttributes? = LineAttributes(color: .green, divisor: 0, dashes: [], lineWidth: 10)
-//    open var verticalLineAttributes: [LineAttributes] = [LineAttributes(color: .blue, divisor: 3, dashes: [], lineWidth: 1)]
-//    open var verticalAxisAttributes: LineAttributes? = LineAttributes(color: .cyan, divisor: 0, dashes: [], lineWidth: 10)
-//
-//    open var originPlacement: OriginPlacement = .center
-//    {
-//        didSet
-//        {
-//            updateLayoutProperties()
-//            setNeedsDisplay()
-//        }
-//    }
-//    open var pixelsPerLine: UInt = 112
-//    {
-//        didSet
-//        {
-//            updateLayoutProperties()
-//            setNeedsDisplay()
-//        }
-//    }
-//    open var lineWidth: CGFloat = 1 / UIScreen.main.scale { didSet { setNeedsDisplay() } }
-//    open var lineColor: UIColor = .black { didSet { setNeedsDisplay() } }
-//    open var scale: CGFloat = 1 { didSet { setNeedsDisplay() } }
-    
     open var gridProperties: GridProperties = .init()
     {
         didSet
