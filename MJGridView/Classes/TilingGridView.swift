@@ -114,9 +114,8 @@ open class TilingGridView: UIView
             let lineWidth: CGFloat = attributes?.lineWidth ?? gridProperties.lineWidth
             coordinate += lineWidth > 1 ? 0 : (adjustedLineWidth / 2)
             
-            // TODO: if line width too big can be rendered outside
             coordinate -= isEndCase ? 1 : 0
-//            if isAxisHorizontal { print(coordinate)}
+
             // actually draw the line
             context.move(to: CGPoint(x: isAxisHorizontal ? rect.origin.x : coordinate, y: isAxisHorizontal ? coordinate : rect.origin.y))
             context.addLine(to: CGPoint(x: isAxisHorizontal ? rect.maxX : coordinate, y: isAxisHorizontal ? coordinate : rect.maxY))
