@@ -13,6 +13,8 @@ open class ScrollingGridView: UIView
     open weak var gridView: TilingGridView!
     open weak var scrollView: UIScrollView!
     
+    open var gridProperties: GridProperties = .init() {didSet {gridView.gridProperties = gridProperties}}
+    
     @IBInspectable var maximumZoomScale: CGFloat = 1 {didSet {scrollView.maximumZoomScale = maximumZoomScale}}
     @IBInspectable var minimumZoomScale: CGFloat = 1 {didSet {scrollView.minimumZoomScale = minimumZoomScale}}
     

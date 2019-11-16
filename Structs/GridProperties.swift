@@ -9,18 +9,18 @@ import Foundation
 
 public struct GridProperties
 {
-    var horizontalLineAttributes: [LineAttributes] = []
-    var horizontalAxisAttributes: LineAttributes?
+    public var horizontalLineAttributes: [LineAttributes] = []
+    public var horizontalAxisAttributes: LineAttributes?
     
-    var verticalLineAttributes: [LineAttributes] = []
-    var verticalAxisAttributes: [LineAttributes] = []
+    public var verticalLineAttributes: [LineAttributes] = []
+    public var verticalAxisAttributes: LineAttributes?
     
-    var lineWidth: CGFloat = 1 / UIScreen.main.scale
-    var lineColor: UIColor = .black
+    public var lineWidth: CGFloat = 1 / UIScreen.main.scale
+    public var lineColor: UIColor = .black
     
-    var pixelsPerLine: UInt = 112
+    public var pixelsPerLine: UInt = 112
     
-    var scale: CGFloat = 1
+    public var scale: CGFloat = 1
     
-    var originPlacement: OriginPlacement = .center
+    public var originPlacement: OriginPlacement = .center
 }

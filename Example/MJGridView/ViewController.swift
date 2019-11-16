@@ -47,16 +47,16 @@ class ViewController: UIViewController
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     @IBAction func spacingChanged(slider: UISlider!)
     {
-        gridView.gridView.pixelsPerLine = UInt(slider.value)
-        spacingLabel.text = "Spacing: \(gridView.gridView.pixelsPerLine)"
+        gridView.gridProperties.pixelsPerLine = UInt(slider.value)
+        spacingLabel.text = "Spacing: \(gridView.gridProperties.pixelsPerLine)"
     }
 
     @IBAction func originPlacementChanged(slider: UISlider!)
     {
         let index: Int = Int(slider.value) % OriginPlacement.allCases.count
-        guard index != OriginPlacement.allCases.lastIndex(of: gridView.gridView.originPlacement) else {return}
+        guard index != OriginPlacement.allCases.lastIndex(of: gridView.gridProperties.originPlacement) else {return}
         
-        gridView.gridView.originPlacement = OriginPlacement.allCases[index]
+        gridView.gridProperties.originPlacement = OriginPlacement.allCases[index]
         placementLabel.text = "Placement: \(String.placementIcons.components(separatedBy: " ")[index])"
     }
     
