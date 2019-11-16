@@ -140,7 +140,6 @@ open class TilingGridView: UIView
         setNeedsDisplay()
     }
     
-    
     open override func draw(_ rect: CGRect)
     {
         guard let context: CGContext = UIGraphicsGetCurrentContext() else {return}
@@ -155,18 +154,6 @@ open class TilingGridView: UIView
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Private -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
-    private func originRelativeX(for absoulteX: CGFloat, globalSpacing: CGFloat) -> CGFloat
-    {
-        let correction: CGFloat
-        switch gridProperties.originPlacement
-        {
-        case .bottomRight, .centerRight, .topRight: correction = globalSpacing
-        case .bottomLeft, .centerLeft, .topLeft: correction = -globalSpacing
-        default: correction = 0
-        }
-        return (absoulteX + correction - gridProperties.originPlacement.origin(in: layoutProperties.lastReportedBounds).x) / gridProperties.scale
-    }
-    
     private func originRelativeX(for absoluteLineIndex: UInt, zoomScale: CGFloat) -> CGFloat
     {
         let n: CGFloat = CGFloat(layoutProperties.verticalLineCount) * zoomScale
@@ -191,18 +178,6 @@ open class TilingGridView: UIView
         default: relativeLineIndex = CGFloat(absoluteLineIndex) - ((n - (layoutProperties.horizontalLineCount.isMultiple(of: 2) ? 0 : 1 * zoomScale)) / 2) //TODO: Maybe change this relies on line count to be odd
         }
         return relativeLineIndex * gridProperties.scale
-    }
-
-    private func originRelativeY(for absoluteY: CGFloat, globalSpacing: CGFloat) -> CGFloat
-    {
-        let correction: CGFloat
-        switch gridProperties.originPlacement
-        {
-        case .topLeft, .topCenter, .topRight: correction = -globalSpacing
-        case .bottomLeft, .bottomRight, .bottomCenter: correction = globalSpacing
-        default: correction = 0
-        }
-        return (absoluteY + correction - gridProperties.originPlacement.origin(in: layoutProperties.lastReportedBounds).y) / gridProperties.scale
     }
     
     ///Draws a grid of randomly colored squares. Corresponds to placement of tiles. For debug purposes only
