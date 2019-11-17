@@ -118,7 +118,7 @@ open class TilingGridView: UIView
             context.addLine(to: CGPoint(x: isAxisHorizontal ? rect.maxX : coordinate, y: isAxisHorizontal ? coordinate : rect.maxY))
             
             context.setStrokeColor((attributes?.color ?? gridProperties.lineColor).cgColor)
-            context.setLineDash(phase: 0, lengths: attributes?.dashes.map({$0 / zoomScale}) ?? [])
+            context.setLineDash(phase: isAxisHorizontal ? rect.minX : rect.minY, lengths: attributes?.dashes.map({$0 / zoomScale}) ?? [])
             context.setLineWidth(lineWidth / zoomScale)
             context.strokePath()
         }
