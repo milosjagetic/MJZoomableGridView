@@ -41,7 +41,7 @@ class ViewController: UIViewController
         originPlacementChanged(slider: placementSlider)
 
         gridView.gridProperties.lineColor = UIColor(red: 85/255, green: 83/255, blue: 88/255, alpha: 1)
-        gridView.gridProperties.horizontalLineAttributes = [LineAttributes(color: .red, divisor: 3, dashes: [36, 36], lineWidth: 5, roundedCap: false)]
+        gridView.gridProperties.horizontalLineAttributes = [LineAttributes(color: .red, divisor: 3, dashes: [36, 36], lineWidth: 5, roundedCap: true)]
         gridView.gridProperties.horizontalAxisAttributes = LineAttributes(color: UIColor(red: 237/255, green: 37/255, blue: 78/255, alpha: 1), divisor: 0, dashes: [48, 36, 0, 36], lineWidth: 10, roundedCap: true)
         gridView.gridProperties.verticalLineAttributes = [LineAttributes(color: .blue, divisor: 3, dashes: [], lineWidth: 1, roundedCap: false)]
         gridView.gridProperties.verticalAxisAttributes = LineAttributes(color: UIColor(red: 249/255, green: 220/255, blue: 92/255, alpha: 1), divisor: 0, dashes: [], lineWidth: 10, roundedCap: false)

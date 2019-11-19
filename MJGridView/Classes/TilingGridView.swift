@@ -6,6 +6,15 @@ private extension UIColor
     }
 }
 
+private extension Range
+where Bound == CGFloat
+{
+    var magnitude: CGFloat
+    {
+        return upperBound - lowerBound
+    }
+}
+
 open class TilingGridView: UIView
 {
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
@@ -31,7 +40,7 @@ open class TilingGridView: UIView
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     internal var layoutProperties: LayoutProperties = .init()
 
-    private let sideLength: CGFloat = 256
+    private let sideLength: CGFloat = 64
 
     
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
@@ -113,13 +122,47 @@ open class TilingGridView: UIView
             
             coordinate -= isEndCase ? 1 : 0
 
+            let lineColor: CGColor = (attributes?.color ?? gridProperties.lineColor).cgColor
+
+            let tileRange: Range<CGFloat> = isAxisHorizontal ? rect.minX..<rect.maxX : rect.minY..<rect.maxY
+            
+            //find line segments which have their caps cut off, eg. segments which line segments are rendered on the edges of the tiles
+            //draw circles to fix cut off caps
+            if attributes?.roundedCap == true
+            {
+                // TOO TIME CONSUMING, THINK OF A BETTER WAY
+                attributes?.lineSegments.forEach
+                {
+                    let halfWidth: CGFloat = lineWidth / 2
+
+                    let leadingCapRange: Range<CGFloat> = ($0.lowerBound - halfWidth)..<$0.lowerBound
+                    let trailingCapRange: Range<CGFloat> = $0.upperBound..<($0.upperBound + halfWidth)
+
+
+                    for currentCapRange in [leadingCapRange, trailingCapRange]
+                    {
+                        let currentOverlap: CGFloat = currentCapRange.clamped(to: tileRange).magnitude
+                        guard currentOverlap > 0 && !$0.overlaps(tileRange) else {continue}
+
+                        let isTrailing: Bool = currentCapRange == trailingCapRange
+                        let ellipseFrame: CGRect = CGRect(x: isAxisHorizontal ? currentCapRange.lowerBound - (isTrailing ? halfWidth : 0) : coordinate - halfWidth,
+                                                          y: isAxisHorizontal ? coordinate - halfWidth : currentCapRange.lowerBound,
+                                                          width: lineWidth,
+                                                          height: lineWidth)
+                        context.setFillColor(lineColor)
+                        context.fillEllipse(in: ellipseFrame)
+                    }
+                }
+                
+            }
+            
             // actually draw the line
             context.move(to: CGPoint(x: isAxisHorizontal ? rect.origin.x : coordinate, y: isAxisHorizontal ? coordinate : rect.origin.y))
             context.addLine(to: CGPoint(x: isAxisHorizontal ? rect.maxX : coordinate, y: isAxisHorizontal ? coordinate : rect.maxY))
 
 
-            context.setStrokeColor((attributes?.color ?? gridProperties.lineColor).cgColor)
-            context.setLineDash(phase: (isAxisHorizontal ? rect.minX : rect.minY) + 2, lengths: attributes?.dashes.map({$0 / zoomScale}) ?? [])
+            context.setStrokeColor(lineColor)
+            context.setLineDash(phase: (isAxisHorizontal ? rect.minX : rect.minY), lengths: attributes?.dashes.map({$0 / zoomScale}) ?? [])
             context.setLineCap(attributes?.roundedCap == true ? .round : .butt)
             context.setLineWidth(lineWidth / zoomScale)
             context.strokePath()
