@@ -35,12 +35,11 @@ public class LineAttributes
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     internal var lineSegments: [Range<CGFloat>] = []
     
-    internal func calculateLineSegments(maxOffset: CGFloat)    {
-        guard dashes.count > 1 else
-        {
-            lineSegments = []
-            return
-        }
+    internal func calculateLineSegments(maxOffset: CGFloat)
+    {
+        lineSegments = []
+
+        guard dashes.count > 1 else {return}
         
         var currentOffset: CGFloat = 0
         
