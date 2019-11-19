@@ -162,7 +162,7 @@ open class TilingGridView: UIView
 
 
             context.setStrokeColor(lineColor)
-            context.setLineDash(phase: (isAxisHorizontal ? rect.minX : rect.minY), lengths: attributes?.dashes.map({$0 / zoomScale}) ?? [])
+            context.setLineDash(phase: (isAxisHorizontal ? rect.minX : rect.minY), lengths: attributes?.dashes ?? [])
             context.setLineCap(attributes?.roundedCap == true ? .round : .butt)
             context.setLineWidth(lineWidth / zoomScale)
             context.strokePath()
