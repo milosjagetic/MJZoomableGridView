@@ -219,7 +219,7 @@ open class TilingGridView: UIView
         case .bottomRight, .centerRight, .topRight: relativeLineIndex = n - CGFloat(absoluteLineIndex) - 1
         default: relativeLineIndex = CGFloat(absoluteLineIndex) - ((n - (layoutProperties.verticalLineCount.isMultiple(of: 2) ? 0 : 1 * zoomScale)) / 2)
         }
-        return CGFloat(relativeLineIndex) * gridProperties.scale
+        return relativeLineIndex * gridProperties.scale
     }
     
     private func originRelativeY(for absoluteLineIndex: UInt, zoomScale: CGFloat) -> CGFloat
