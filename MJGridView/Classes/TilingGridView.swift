@@ -31,7 +31,7 @@ open class TilingGridView: UIView
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     internal var layoutProperties: LayoutProperties = .init()
 
-    private let sideLength: CGFloat = 46
+    private let sideLength: CGFloat = 256
 
     
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
