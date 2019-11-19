@@ -109,7 +109,7 @@ open class TilingGridView: UIView
 
             // determine line width
             let lineWidth: CGFloat = attributes?.lineWidth ?? gridProperties.lineWidth
-            coordinate += lineWidth > 1 ? 0 : (adjustedLineWidth / 2)
+            coordinate += lineWidth >= 1 ? 0 : (adjustedLineWidth / 2)
             
             coordinate -= isEndCase ? 1 : 0
 
