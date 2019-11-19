@@ -40,8 +40,10 @@ open class TilingGridView: UIView
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     internal var layoutProperties: LayoutProperties = .init()
 
-    private let sideLength: CGFloat = 64
-
+    private let sideLength: CGFloat = 256
+    private var startedRenderingDate: Date = Date()
+    private var renderedArea: CGFloat = 0
+    private var averageTme: TimeInterval = 0
     
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Lifecycle -
@@ -117,7 +119,7 @@ open class TilingGridView: UIView
             }
 
             // determine line width
-            let lineWidth: CGFloat = attributes?.lineWidth ?? gridProperties.lineWidth
+            let lineWidth: CGFloat = (attributes?.lineWidth ?? gridProperties.lineWidth) / zoomScale
             coordinate += lineWidth >= 1 ? 0 : (adjustedLineWidth / 2)
             
             coordinate -= isEndCase ? 1 : 0
@@ -130,11 +132,13 @@ open class TilingGridView: UIView
             //draw circles to fix cut off caps
             if attributes?.roundedCap == true
             {
+                let halfWidth: CGFloat = lineWidth / 2
+
+                context.setFillColor(lineColor)
+
                 // TOO TIME CONSUMING, THINK OF A BETTER WAY
                 attributes?.lineSegments.forEach
                 {
-                    let halfWidth: CGFloat = lineWidth / 2
-
                     let leadingCapRange: Range<CGFloat> = ($0.lowerBound - halfWidth)..<$0.lowerBound
                     let trailingCapRange: Range<CGFloat> = $0.upperBound..<($0.upperBound + halfWidth)
 
@@ -149,11 +153,11 @@ open class TilingGridView: UIView
                                                           y: isAxisHorizontal ? coordinate - halfWidth : currentCapRange.lowerBound,
                                                           width: lineWidth,
                                                           height: lineWidth)
-                        context.setFillColor(lineColor)
+
                         context.fillEllipse(in: ellipseFrame)
                     }
                 }
-                
+
             }
             
             // actually draw the line
@@ -164,7 +168,7 @@ open class TilingGridView: UIView
             context.setStrokeColor(lineColor)
             context.setLineDash(phase: (isAxisHorizontal ? rect.minX : rect.minY), lengths: attributes?.dashes ?? [])
             context.setLineCap(attributes?.roundedCap == true ? .round : .butt)
-            context.setLineWidth(lineWidth / zoomScale)
+            context.setLineWidth(lineWidth)
             context.strokePath()
         }
     }
@@ -187,8 +191,27 @@ open class TilingGridView: UIView
         context.saveGState()
         defer {context.restoreGState()}
         
-        drawRandomSquares(rect, context: context)
+//        drawRandomSquares(rect, context: context)
         drawGrid(rect, context: context)
+        
+        renderedArea += rect.width * rect.height
+        if renderedArea == layoutProperties.boundsArea
+        {
+            let time: TimeInterval = Date().timeIntervalSince(startedRenderingDate)
+            averageTme = averageTme == 0 ? time : (averageTme + time) / 2
+            
+            print(String(format: "+++time %.4f, average: %.3f", time, averageTme))
+        }
+    }
+    
+    open override func setNeedsDisplay()
+    {
+        super.setNeedsDisplay()
+        
+        startedRenderingDate = Date()
+        renderedArea = 0
+        
+        print("--- needs display")
     }
 
     

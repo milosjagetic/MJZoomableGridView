@@ -15,10 +15,12 @@ internal struct LayoutProperties
     private(set) var lastReportedBounds: CGRect = .zero
     private(set) var remainderOnEachEnd: CGPoint = .zero
     private(set) var remaindersOnEachEnd: UIEdgeInsets = .zero
+    private(set) var boundsArea: CGFloat = 0
     
     mutating func calculateLayoutProperties(lastReportedBounds: CGRect, tileSideLength: CGFloat, pointsPerLine: UInt, originPlacement: OriginPlacement)
     {
         self.lastReportedBounds = lastReportedBounds
+        boundsArea = lastReportedBounds.width * lastReportedBounds.height
         
         let pointsPerLine: CGFloat = CGFloat(pointsPerLine)
         
