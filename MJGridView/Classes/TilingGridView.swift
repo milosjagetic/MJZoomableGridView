@@ -116,9 +116,11 @@ open class TilingGridView: UIView
             // actually draw the line
             context.move(to: CGPoint(x: isAxisHorizontal ? rect.origin.x : coordinate, y: isAxisHorizontal ? coordinate : rect.origin.y))
             context.addLine(to: CGPoint(x: isAxisHorizontal ? rect.maxX : coordinate, y: isAxisHorizontal ? coordinate : rect.maxY))
-            
+
+
             context.setStrokeColor((attributes?.color ?? gridProperties.lineColor).cgColor)
-            context.setLineDash(phase: isAxisHorizontal ? rect.minX : rect.minY, lengths: attributes?.dashes.map({$0 / zoomScale}) ?? [])
+            context.setLineDash(phase: (isAxisHorizontal ? rect.minX : rect.minY) + 2, lengths: attributes?.dashes.map({$0 / zoomScale}) ?? [])
+            context.setLineCap(attributes?.roundedCap == true ? .round : .butt)
             context.setLineWidth(lineWidth / zoomScale)
             context.strokePath()
         }
@@ -202,6 +204,11 @@ open class TilingGridView: UIView
     
     private func updateLayoutProperties()
     {
+        let bounds: CGRect = self.bounds
+        
+        ([gridProperties.horizontalAxisAttributes] + gridProperties.horizontalLineAttributes).forEach({$0?.calculateLineSegments(maxOffset: bounds.width)})
+        ([gridProperties.verticalAxisAttributes] + gridProperties.verticalLineAttributes).forEach({$0?.calculateLineSegments(maxOffset: bounds.height)})
+        
         layoutProperties.calculateLayoutProperties(lastReportedBounds: bounds, tileSideLength: sideLength, pointsPerLine: gridProperties.pixelsPerLine, originPlacement: gridProperties.originPlacement)
     }
 }
