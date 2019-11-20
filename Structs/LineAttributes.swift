@@ -14,11 +14,11 @@ public class LineAttributes
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Public -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
-    public var color: UIColor
-    public var divisor: Int
-    public var dashes: [CGFloat]
-    public var lineWidth: CGFloat
-    public var roundedCap: Bool
+    public let color: UIColor
+    public let divisor: Int
+    public let dashes: [CGFloat]
+    public let lineWidth: CGFloat
+    public let roundedCap: Bool
     
     public init(color: UIColor, divisor: Int, dashes: [CGFloat], lineWidth: CGFloat, roundedCap: Bool)
     {
@@ -34,6 +34,7 @@ public class LineAttributes
     //  MARK: Internal -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     internal var lineSegments: [Range<CGFloat>] = []
+    internal var dashOffsetWhenCentered: CGFloat = 0
     
     internal func calculateLineSegments(maxOffset: CGFloat)
     {
@@ -41,7 +42,10 @@ public class LineAttributes
 
         guard dashes.count > 1 else {return}
         
-        var currentOffset: CGFloat = 0
+        let dashesLength: CGFloat = dashes.reduce(0, {$0 + $1})
+
+        //so we get account if dash offset is used
+        var currentOffset: CGFloat = -dashesLength
         
         var isFull: Bool = true
         
@@ -54,9 +58,12 @@ public class LineAttributes
                     lineSegments.append(currentOffset..<(currentOffset + dash))
                 }
                 currentOffset += dash
+                
                 isFull.toggle()
             }
         }
+        
+        
+        dashOffsetWhenCentered = (maxOffset / 2).truncatingRemainder(dividingBy: dashesLength / 2)
     }
-
 }

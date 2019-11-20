@@ -126,6 +126,28 @@ open class TilingGridView: UIView
 
             let lineColor: CGColor = (attributes?.color ?? gridProperties.lineColor).cgColor
 
+            //determine phase offset when cetnering the line dash pattern
+            //relative to tile
+            let relativePhaseOffset: CGFloat
+            if isAxisHorizontal
+            {
+                switch gridProperties.originPlacement
+                {
+                case .topCenter, .center, .bottomCenter: relativePhaseOffset = -(attributes?.dashOffsetWhenCentered ?? 0)
+                default: relativePhaseOffset = 0
+                }
+            }
+            else
+            {
+                switch gridProperties.originPlacement
+                {
+                case .centerLeft, .center, .centerRight: relativePhaseOffset = -(attributes?.dashOffsetWhenCentered ?? 0)
+                default: relativePhaseOffset = 0
+                }
+            }
+            //absolute
+            let phaseOffset: CGFloat = relativePhaseOffset + (isAxisHorizontal ? rect.minX : rect.minY)
+
             let tileRange: Range<CGFloat> = isAxisHorizontal ? rect.minX..<rect.maxX : rect.minY..<rect.maxY
             
             //find line segments which have their caps cut off, eg. segments which line segments are rendered on the edges of the tiles
@@ -136,21 +158,25 @@ open class TilingGridView: UIView
 
                 context.setFillColor(lineColor)
 
-                // TOO TIME CONSUMING, THINK OF A BETTER WAY
+                // TOO TIME CONSUMING, THINK OF A BETTER WAY?
                 attributes?.lineSegments.forEach
                 {
-                    let leadingCapRange: Range<CGFloat> = ($0.lowerBound - halfWidth)..<$0.lowerBound
-                    let trailingCapRange: Range<CGFloat> = $0.upperBound..<($0.upperBound + halfWidth)
+                    let offsetLineSegment: Range<CGFloat> = ($0.lowerBound - relativePhaseOffset)..<($0.upperBound - relativePhaseOffset)
+                    let leadingCapRange: Range<CGFloat> = (offsetLineSegment.lowerBound - halfWidth)..<offsetLineSegment.lowerBound
+                    let trailingCapRange: Range<CGFloat> = offsetLineSegment.upperBound..<(offsetLineSegment.upperBound + halfWidth)
 
-
+                    
                     for currentCapRange in [leadingCapRange, trailingCapRange]
                     {
                         let currentOverlap: CGFloat = currentCapRange.clamped(to: tileRange).magnitude
-                        guard currentOverlap > 0 && !$0.overlaps(tileRange) else {continue}
-
+                        //do only caps within our tile && do only caps for lines outside the tile (caps that have actually been clipped)
+                        guard currentOverlap > 0 && !offsetLineSegment.overlaps(tileRange) else {continue}
+//
                         let isTrailing: Bool = currentCapRange == trailingCapRange
-                        let ellipseFrame: CGRect = CGRect(x: isAxisHorizontal ? currentCapRange.lowerBound - (isTrailing ? halfWidth : 0) : coordinate - halfWidth,
-                                                          y: isAxisHorizontal ? coordinate - halfWidth : currentCapRange.lowerBound,
+                        let x: CGFloat = isAxisHorizontal ? currentCapRange.lowerBound - (isTrailing ? halfWidth : 0) : coordinate - halfWidth
+                        let y: CGFloat = isAxisHorizontal ? coordinate - halfWidth : currentCapRange.lowerBound - (isTrailing ? halfWidth : 0)
+                        let ellipseFrame: CGRect = CGRect(x: x,
+                                                          y: y,
                                                           width: lineWidth,
                                                           height: lineWidth)
 
@@ -164,11 +190,11 @@ open class TilingGridView: UIView
             context.move(to: CGPoint(x: isAxisHorizontal ? rect.origin.x : coordinate, y: isAxisHorizontal ? coordinate : rect.origin.y))
             context.addLine(to: CGPoint(x: isAxisHorizontal ? rect.maxX : coordinate, y: isAxisHorizontal ? coordinate : rect.maxY))
 
-
             context.setStrokeColor(lineColor)
-            context.setLineDash(phase: (isAxisHorizontal ? rect.minX : rect.minY), lengths: attributes?.dashes ?? [])
+            context.setLineDash(phase:  phaseOffset, lengths: attributes?.dashes ?? [])
             context.setLineCap(attributes?.roundedCap == true ? .round : .butt)
             context.setLineWidth(lineWidth)
+            
             context.strokePath()
         }
     }
