@@ -162,7 +162,7 @@
 			path = "Target Support Files/Pods-MJGridView_Tests";
 			sourceTree = "<group>";
 		};
-		622D084423802FC800FE1292 /* Structs */ = {
+		622D084423802FC800FE1292 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				622D084523802FC800FE1292 /* LayoutProperties.swift */,
@@ -170,7 +170,7 @@
 				622D084723802FC800FE1292 /* LineAttributes.swift */,
 				622D084823802FC800FE1292 /* GridProperties.swift */,
 			);
-			path = Structs;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		820FE9041E83004565DB3088896D4F12 /* Support Files */ = {
@@ -199,7 +199,7 @@
 		AC5B527FB16F81E963731BB1DCD1C21B /* MJGridView */ = {
 			isa = PBXGroup;
 			children = (
-				622D084423802FC800FE1292 /* Structs */,
+				622D084423802FC800FE1292 /* Model */,
 				48680731727192C8C21E0C9577DA2A83 /* NoFadeTiledLayer.swift */,
 				52D9E20868E19FC5CF5E9A25420E5B0E /* ZoomableGridView.swift */,
 				CDCA621B54316C4D02FFD9AA4BC4F4C4 /* TilingGridView.swift */,
