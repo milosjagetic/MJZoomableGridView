@@ -55,6 +55,9 @@ class ViewController: UIViewController
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     @IBAction func spacingChanged(slider: UISlider!)
     {
+        let value: UInt = UInt(slider.value)
+        guard value != gridView.gridProperties.pixelsPerLine else {return}
+        
         gridView.gridProperties.pixelsPerLine = UInt(slider.value)
         spacingLabel.text = "Spacing: \(gridView.gridProperties.pixelsPerLine)"
     }
