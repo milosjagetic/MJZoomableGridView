@@ -62,7 +62,11 @@ class ViewController: UIViewController
     @IBAction func originPlacementChanged(slider: UISlider!)
     {
         let index: Int = Int(slider.value) % OriginPlacement.allCases.count
-        guard index != OriginPlacement.allCases.lastIndex(of: gridView.gridProperties.originPlacement) else {return}
+        guard index != OriginPlacement.allCases.lastIndex(of: gridView.gridProperties.originPlacement) else
+        {
+            placementLabel.text = "Placement: \(String.placementIcons.components(separatedBy: " ")[index])"
+            return
+        }
         
         gridView.gridProperties.originPlacement = OriginPlacement.allCases[index]
         placementLabel.text = "Placement: \(String.placementIcons.components(separatedBy: " ")[index])"
