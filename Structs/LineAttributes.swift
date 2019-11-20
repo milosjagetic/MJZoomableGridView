@@ -44,7 +44,7 @@ public class LineAttributes
         
         let dashesLength: CGFloat = dashes.reduce(0, {$0 + $1})
 
-        //so we get account if dash offset is used
+        //so we get ahead a bit if the dash offset is used
         var currentOffset: CGFloat = -dashesLength
         
         var isFull: Bool = true

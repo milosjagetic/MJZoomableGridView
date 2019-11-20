@@ -5,7 +5,7 @@
 //  Created by Milos Jagetic on 08/09/2019.
 //
 
-open class ScrollingGridView: UIView
+open class ZoomableGridView: UIView
 {
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Public properties -
@@ -86,7 +86,7 @@ open class ScrollingGridView: UIView
 //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
 //  MARK: UIScrollViewDelegate protocol implementation -
 //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
-extension ScrollingGridView: UIScrollViewDelegate
+extension ZoomableGridView: UIScrollViewDelegate
 {
     public func viewForZooming(in scrollView: UIScrollView) -> UIView?
     {

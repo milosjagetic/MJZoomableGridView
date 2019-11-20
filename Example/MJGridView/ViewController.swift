@@ -16,7 +16,7 @@ private extension String
 
 class ViewController: UIViewController
 {
-    @IBOutlet weak var gridView: ScrollingGridView!
+    @IBOutlet weak var gridView: ZoomableGridView!
     
     @IBOutlet weak var spacingLabel: UILabel!
     @IBOutlet weak var placementLabel: UILabel!

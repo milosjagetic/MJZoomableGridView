@@ -19,7 +19,7 @@
 		6F1AFB9AB586A82335C032F3EC91CC90 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
 		80B243A7867CC61AF4D7DB98E6CDD56F /* Pods-MJGridView_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2F245C552AEB364AAAC8D71C5E5E10 /* Pods-MJGridView_Tests-dummy.m */; };
 		8584F2E30054A2DE328BBF48606A34BE /* Pods-MJGridView_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E7AC338A2DE3C79FFDD1ABF0B124A1C /* Pods-MJGridView_Example-dummy.m */; };
-		D1A737F4522E5BA60452DBA27B0D7DFD /* ScrollingGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D9E20868E19FC5CF5E9A25420E5B0E /* ScrollingGridView.swift */; };
+		D1A737F4522E5BA60452DBA27B0D7DFD /* ZoomableGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D9E20868E19FC5CF5E9A25420E5B0E /* ZoomableGridView.swift */; };
 		E7343CF4583CBF92CBABAB271D3F3189 /* NoFadeTiledLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48680731727192C8C21E0C9577DA2A83 /* NoFadeTiledLayer.swift */; };
 		F49851DA1AEDB1380E9D2FF4EF0EDC0E /* TilingGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCA621B54316C4D02FFD9AA4BC4F4C4 /* TilingGridView.swift */; };
 		F592915166037C15DBDAE2D95C8C5B20 /* Pods-MJGridView_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 56A22F8DDF0CF39881E3868E1D94BA58 /* Pods-MJGridView_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -51,7 +51,7 @@
 		47E39844EFF6300C66BCB7C96DFC8160 /* MJGridView-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MJGridView-umbrella.h"; sourceTree = "<group>"; };
 		48680731727192C8C21E0C9577DA2A83 /* NoFadeTiledLayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NoFadeTiledLayer.swift; path = MJGridView/Classes/NoFadeTiledLayer.swift; sourceTree = "<group>"; };
 		5267434C00DEEE770846FDBEF0196D12 /* MJGridView-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MJGridView-prefix.pch"; sourceTree = "<group>"; };
-		52D9E20868E19FC5CF5E9A25420E5B0E /* ScrollingGridView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ScrollingGridView.swift; path = MJGridView/Classes/ScrollingGridView.swift; sourceTree = "<group>"; };
+		52D9E20868E19FC5CF5E9A25420E5B0E /* ZoomableGridView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZoomableGridView.swift; path = MJGridView/Classes/ZoomableGridView.swift; sourceTree = "<group>"; };
 		53D4426A4161C06DE16A5DBBB7EB8506 /* Pods-MJGridView_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-MJGridView_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		56A22F8DDF0CF39881E3868E1D94BA58 /* Pods-MJGridView_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MJGridView_Tests-umbrella.h"; sourceTree = "<group>"; };
 		597CCB01E1B2C2B996253DEC1E8AE2C8 /* MJGridView-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MJGridView-dummy.m"; sourceTree = "<group>"; };
@@ -201,7 +201,7 @@
 			children = (
 				622D084423802FC800FE1292 /* Structs */,
 				48680731727192C8C21E0C9577DA2A83 /* NoFadeTiledLayer.swift */,
-				52D9E20868E19FC5CF5E9A25420E5B0E /* ScrollingGridView.swift */,
+				52D9E20868E19FC5CF5E9A25420E5B0E /* ZoomableGridView.swift */,
 				CDCA621B54316C4D02FFD9AA4BC4F4C4 /* TilingGridView.swift */,
 				541B3E4F51B9F93B531A4928CB21B1A3 /* Pod */,
 				820FE9041E83004565DB3088896D4F12 /* Support Files */,
@@ -396,7 +396,7 @@
 				E7343CF4583CBF92CBABAB271D3F3189 /* NoFadeTiledLayer.swift in Sources */,
 				622D084923802FC800FE1292 /* LayoutProperties.swift in Sources */,
 				622D084A23802FC800FE1292 /* OriginPlacement.swift in Sources */,
-				D1A737F4522E5BA60452DBA27B0D7DFD /* ScrollingGridView.swift in Sources */,
+				D1A737F4522E5BA60452DBA27B0D7DFD /* ZoomableGridView.swift in Sources */,
 				F49851DA1AEDB1380E9D2FF4EF0EDC0E /* TilingGridView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
