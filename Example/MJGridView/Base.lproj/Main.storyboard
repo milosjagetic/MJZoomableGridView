@@ -63,11 +63,20 @@
                                             <action selector="toolboxButtonTappedWithButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="QT3-8F-M1P"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Nf-ub-mDt">
+                                        <rect key="frame" x="32" y="0.0" width="67" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="15"/>
+                                        <state key="normal" title="REDRAW"/>
+                                        <connections>
+                                            <action selector="redrawButtonTappedWithButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="DeH-kv-Orr"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="S1y-xf-yJW" firstAttribute="leading" secondItem="g0Y-os-xWe" secondAttribute="trailing" constant="8" id="64m-ka-Zf3"/>
                                     <constraint firstItem="WlL-U3-Bhq" firstAttribute="leading" secondItem="oMH-2t-RLY" secondAttribute="trailing" constant="8" id="Akh-ZB-wkl"/>
+                                    <constraint firstItem="6Nf-ub-mDt" firstAttribute="leading" secondItem="9HJ-wN-HVk" secondAttribute="leading" constant="32" id="CEo-w9-zbh"/>
                                     <constraint firstItem="WlL-U3-Bhq" firstAttribute="centerY" secondItem="oMH-2t-RLY" secondAttribute="centerY" id="Cg1-uZ-1f8"/>
                                     <constraint firstAttribute="trailing" secondItem="S1y-xf-yJW" secondAttribute="trailing" constant="8" id="J5l-I6-bcP"/>
                                     <constraint firstItem="oMH-2t-RLY" firstAttribute="top" secondItem="g0Y-os-xWe" secondAttribute="bottom" constant="8" id="WmB-W6-Jyl"/>
@@ -80,6 +89,7 @@
                                     <constraint firstItem="S1y-xf-yJW" firstAttribute="centerY" secondItem="g0Y-os-xWe" secondAttribute="centerY" id="qXQ-Ke-jGk"/>
                                     <constraint firstItem="oMH-2t-RLY" firstAttribute="leading" secondItem="9HJ-wN-HVk" secondAttribute="leading" constant="16" id="rek-qd-F8b"/>
                                     <constraint firstItem="g0Y-os-xWe" firstAttribute="top" secondItem="9HJ-wN-HVk" secondAttribute="top" constant="48" id="xZ6-vf-JyM"/>
+                                    <constraint firstItem="6Nf-ub-mDt" firstAttribute="centerY" secondItem="qKz-ia-uQJ" secondAttribute="centerY" id="zur-cY-6vo"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">

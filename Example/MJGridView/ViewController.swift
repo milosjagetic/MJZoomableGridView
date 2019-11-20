@@ -81,5 +81,10 @@ class ViewController: UIViewController
             self.view.layoutIfNeeded()
         })
     }
+    
+    @IBAction func redrawButtonTapped(button: UIButton!)
+    {
+        gridView.gridView.setNeedsDisplay()
+    }
 }
 
