@@ -13,7 +13,6 @@ internal struct LayoutProperties
     private(set) var verticalLineCount: UInt = 0
     private(set) var horizontalLineCount: UInt = 0
     private(set) var lastReportedBounds: CGRect = .zero
-    private(set) var remainderOnEachEnd: CGPoint = .zero
     private(set) var remaindersOnEachEnd: UIEdgeInsets = .zero
     private(set) var boundsArea: CGFloat = 0
     

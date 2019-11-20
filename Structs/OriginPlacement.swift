@@ -19,6 +19,7 @@ public enum OriginPlacement: CaseIterable
     case bottomLeft
     case centerLeft
     case topLeft
+    //TODO: custom placement
 //    case custom(CGFloat, CGFloat)
     
     public func origin(in rect: CGRect) -> CGPoint

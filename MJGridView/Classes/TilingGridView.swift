@@ -1,20 +1,3 @@
-private extension UIColor
-{
-    static var randomOpaque: UIColor
-    {
-        return UIColor(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1), alpha: 1)
-    }
-}
-
-private extension Range
-where Bound == CGFloat
-{
-    var magnitude: CGFloat
-    {
-        return upperBound - lowerBound
-    }
-}
-
 open class TilingGridView: UIView
 {
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
@@ -302,5 +285,26 @@ open class TilingGridView: UIView
         ([gridProperties.verticalAxisAttributes] + gridProperties.verticalLineAttributes).forEach({$0?.calculateLineSegments(maxOffset: bounds.height)})
         
         layoutProperties.calculateLayoutProperties(lastReportedBounds: bounds, tileSideLength: sideLength, pointsPerLine: gridProperties.pixelsPerLine, originPlacement: gridProperties.originPlacement)
+    }
+}
+
+
+//  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
+//  MARK: Helpers -
+//  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
+private extension UIColor
+{
+    static var randomOpaque: UIColor
+    {
+        return UIColor(red: .random(in: 0...1), green: .random(in: 0...1), blue: .random(in: 0...1), alpha: 1)
+    }
+}
+
+private extension Range
+where Bound == CGFloat
+{
+    var magnitude: CGFloat
+    {
+        return upperBound - lowerBound
     }
 }
