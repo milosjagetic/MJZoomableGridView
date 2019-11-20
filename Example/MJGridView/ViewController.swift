@@ -39,12 +39,14 @@ class ViewController: UIViewController
         
         spacingChanged(slider: spacingSlider)
         originPlacementChanged(slider: placementSlider)
+        
+        gridView.backgroundColor = UIColor(red: 73/255, green: 72/255, blue: 80/255, alpha: 1)
 
-        gridView.gridProperties.lineColor = UIColor(red: 85/255, green: 83/255, blue: 88/255, alpha: 1)
-        gridView.gridProperties.horizontalLineAttributes = [LineAttributes(color: .red, divisor: 3, dashes: [36, 36], lineWidth: 5, roundedCap: true)]
-        gridView.gridProperties.horizontalAxisAttributes = LineAttributes(color: UIColor(red: 237/255, green: 37/255, blue: 78/255, alpha: 1), divisor: 0, dashes: [221, 36, 0, 36], lineWidth: 10, roundedCap: true)
-        gridView.gridProperties.verticalLineAttributes = [LineAttributes(color: .blue, divisor: 3, dashes: [], lineWidth: 1, roundedCap: false)]
-        gridView.gridProperties.verticalAxisAttributes = LineAttributes(color: UIColor(red: 249/255, green: 220/255, blue: 92/255, alpha: 1), divisor: 0, dashes: [], lineWidth: 10, roundedCap: false)
+        gridView.gridProperties.lineColor = UIColor(red: 229/255, green: 252/255, blue: 255/255, alpha: 1)
+        gridView.gridProperties.horizontalLineAttributes = [LineAttributes(color: UIColor(red: 222/255, green: 26/255, blue: 26/255, alpha: 1), divisor: 3, dashes: [36, 36], lineWidth: 5, roundedCap: true)]
+        gridView.gridProperties.horizontalAxisAttributes = LineAttributes(color: UIColor(red: 172/255, green: 172/255, blue: 222/255, alpha: 1), divisor: 0, dashes: [30, 55, 30, 30], lineWidth: 10, roundedCap: true)
+        gridView.gridProperties.verticalLineAttributes = [LineAttributes(color: UIColor(red: 171/255, green: 218/255, blue: 252/255, alpha: 1), divisor: 3, dashes: [], lineWidth: 1, roundedCap: false)]
+        gridView.gridProperties.verticalAxisAttributes = LineAttributes(color: UIColor(red: 172/255, green: 172/255, blue: 222/255, alpha: 1), divisor: 0, dashes: [], lineWidth: 2, roundedCap: false)
     }
 
     
