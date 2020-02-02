@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
     <device id="ipad10_5" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,14 +17,14 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C3Y-ks-5je" customClass="ZoomableGridView" customModule="MJGridView">
-                                <rect key="frame" x="0.0" y="0.0" width="834" height="1112"/>
+                                <rect key="frame" x="0.0" y="0.0" width="834" height="1072"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="maximumZoomScale">
-                                        <real key="value" value="9"/>
+                                        <real key="value" value="8"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="minimumZoomScale">
-                                        <real key="value" value="1"/>
+                                        <real key="value" value="0.5"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
@@ -71,6 +71,18 @@
                                             <action selector="redrawButtonTappedWithButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="DeH-kv-Orr"/>
                                         </connections>
                                     </button>
+                                    <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" autorepeat="NO" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Xf5-Ft-ndR">
+                                        <rect key="frame" x="708" y="4" width="94" height="32"/>
+                                        <connections>
+                                            <action selector="stepperValueChanged:" destination="vXZ-lx-hvc" eventType="valueChanged" id="mxs-of-8hE"/>
+                                        </connections>
+                                    </stepper>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VGd-T4-qAh">
+                                        <rect key="frame" x="658" y="9.5" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
@@ -78,11 +90,15 @@
                                     <constraint firstItem="WlL-U3-Bhq" firstAttribute="leading" secondItem="oMH-2t-RLY" secondAttribute="trailing" constant="8" id="Akh-ZB-wkl"/>
                                     <constraint firstItem="6Nf-ub-mDt" firstAttribute="leading" secondItem="9HJ-wN-HVk" secondAttribute="leading" constant="32" id="CEo-w9-zbh"/>
                                     <constraint firstItem="WlL-U3-Bhq" firstAttribute="centerY" secondItem="oMH-2t-RLY" secondAttribute="centerY" id="Cg1-uZ-1f8"/>
+                                    <constraint firstItem="Xf5-Ft-ndR" firstAttribute="centerY" secondItem="VGd-T4-qAh" secondAttribute="centerY" id="Ek6-NL-Mfi"/>
                                     <constraint firstAttribute="trailing" secondItem="S1y-xf-yJW" secondAttribute="trailing" constant="8" id="J5l-I6-bcP"/>
+                                    <constraint firstItem="Xf5-Ft-ndR" firstAttribute="leading" secondItem="VGd-T4-qAh" secondAttribute="trailing" constant="8" id="KwV-4q-3kU"/>
                                     <constraint firstItem="oMH-2t-RLY" firstAttribute="top" secondItem="g0Y-os-xWe" secondAttribute="bottom" constant="8" id="WmB-W6-Jyl"/>
                                     <constraint firstItem="qKz-ia-uQJ" firstAttribute="top" secondItem="9HJ-wN-HVk" secondAttribute="top" id="WrQ-VB-Imn"/>
                                     <constraint firstItem="g0Y-os-xWe" firstAttribute="leading" secondItem="9HJ-wN-HVk" secondAttribute="leading" constant="16" id="e7E-KW-WE6"/>
                                     <constraint firstItem="WlL-U3-Bhq" firstAttribute="leading" secondItem="oMH-2t-RLY" secondAttribute="trailing" constant="8" id="eeS-Xx-j9D"/>
+                                    <constraint firstItem="Xf5-Ft-ndR" firstAttribute="centerY" secondItem="qKz-ia-uQJ" secondAttribute="centerY" constant="5" id="hzI-1b-U3I"/>
+                                    <constraint firstAttribute="trailing" secondItem="Xf5-Ft-ndR" secondAttribute="trailing" constant="32" id="i1h-jj-pka"/>
                                     <constraint firstItem="qKz-ia-uQJ" firstAttribute="centerX" secondItem="9HJ-wN-HVk" secondAttribute="centerX" id="jHV-6t-L8Z"/>
                                     <constraint firstAttribute="bottom" secondItem="oMH-2t-RLY" secondAttribute="bottom" constant="16" id="oLR-Si-Ig0"/>
                                     <constraint firstAttribute="trailing" secondItem="WlL-U3-Bhq" secondAttribute="trailing" constant="8" id="oyh-fF-heJ"/>
@@ -100,9 +116,9 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="C3Y-ks-5je" secondAttribute="bottom" id="5Jk-o4-JOM"/>
                             <constraint firstItem="9HJ-wN-HVk" firstAttribute="leading" secondItem="Sti-wf-h0t" secondAttribute="leading" id="E9b-9o-AQl"/>
                             <constraint firstItem="C3Y-ks-5je" firstAttribute="leading" secondItem="Sti-wf-h0t" secondAttribute="leading" id="ODY-Yo-GEB"/>
+                            <constraint firstItem="9HJ-wN-HVk" firstAttribute="top" secondItem="C3Y-ks-5je" secondAttribute="bottom" id="RuQ-yC-Fy9"/>
                             <constraint firstItem="C3Y-ks-5je" firstAttribute="trailing" secondItem="Sti-wf-h0t" secondAttribute="trailing" id="Zpu-Km-M6Q"/>
                             <constraint firstItem="9HJ-wN-HVk" firstAttribute="top" secondItem="Sti-wf-h0t" secondAttribute="bottom" priority="750" constant="-40" id="hIh-Dj-fC5"/>
                             <constraint firstItem="Sti-wf-h0t" firstAttribute="bottom" secondItem="9HJ-wN-HVk" secondAttribute="bottom" priority="500" id="mua-hK-6Sv"/>
@@ -118,11 +134,13 @@
                         <outlet property="spacingLabel" destination="g0Y-os-xWe" id="FxX-wc-saN"/>
                         <outlet property="spacingSlider" destination="S1y-xf-yJW" id="sMW-kV-Xj3"/>
                         <outlet property="toolboxHidden" destination="hIh-Dj-fC5" id="E1t-mc-yLi"/>
+                        <outlet property="zoomLabel" destination="VGd-T4-qAh" id="kOA-Kn-8MU"/>
+                        <outlet property="zoomStepper" destination="Xf5-Ft-ndR" id="7ag-aU-a2n"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="137.68115942028987" y="133.92857142857142"/>
+            <point key="canvasLocation" x="137.41007194244605" y="133.81294964028777"/>
         </scene>
     </scenes>
 </document>
