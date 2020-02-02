@@ -15,7 +15,7 @@ open class ZoomableGridView: UIView
     
     open var gridProperties: GridProperties = .init() {didSet {gridView.gridProperties = gridProperties}}
     
-    @IBInspectable var maximumZoomScale: CGFloat = 1
+    @IBInspectable open var maximumZoomScale: CGFloat = 1
     {
         didSet
         {
@@ -24,14 +24,27 @@ open class ZoomableGridView: UIView
         }
     }
     
-    @IBInspectable var minimumZoomScale: CGFloat = 1
+    @IBInspectable open var minimumZoomScale: CGFloat = 1
     {
         didSet
         {
+            scrollView.removeConstraint(gridWidth)
+            scrollView.removeConstraint(gridHeight)
+            
+            gridHeight = scrollView.heightAnchor.constraint(equalTo: gridView.heightAnchor, multiplier: minimumZoomScale)
+            gridHeight.isActive = true
+            
+            gridWidth = scrollView.widthAnchor.constraint(equalTo: gridView.widthAnchor, multiplier: minimumZoomScale)
+            gridWidth.isActive = true
+
             scrollView.minimumZoomScale = minimumZoomScale
             gridView.updateLevelsOfDetail(minZoom: minimumZoomScale, maxZoom: maximumZoomScale)
+            
         }
     }
+    
+    private var gridHeight: NSLayoutConstraint!
+    private var gridWidth: NSLayoutConstraint!
 
     
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
@@ -75,8 +88,11 @@ open class ZoomableGridView: UIView
         scrollView.addSubview(gridView)
         scrollView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[gridView]|", options: [], metrics: nil, views: ["gridView" : gridView]))
         scrollView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[gridView]|", options: [], metrics: nil, views: ["gridView" : gridView]))
-        scrollView.heightAnchor.constraint(equalTo: gridView.heightAnchor, multiplier: 1).isActive = true
-        scrollView.widthAnchor.constraint(equalTo: gridView.widthAnchor, multiplier: 1).isActive = true
+        gridHeight = scrollView.heightAnchor.constraint(equalTo: gridView.heightAnchor, multiplier: 1 / minimumZoomScale)
+        gridHeight.isActive = true
+        
+        gridWidth = scrollView.widthAnchor.constraint(equalTo: gridView.widthAnchor, multiplier: 1 / minimumZoomScale)
+        gridWidth.isActive = true
         
         self.gridView = gridView
     }
