@@ -208,7 +208,7 @@ open class TilingGridView: UIView
         context.saveGState()
         defer {context.restoreGState()}
         
-        drawRandomSquares(rect, context: context)
+//        drawRandomSquares(rect, context: context)
         drawGrid(rect, context: context)
         
         renderedArea += rect.width * rect.height
