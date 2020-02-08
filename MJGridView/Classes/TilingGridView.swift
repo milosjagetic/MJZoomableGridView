@@ -12,6 +12,8 @@ open class TilingGridView: UIView
         }
     }
     
+    open var debugLevel: DebugLevel = .none {didSet {setNeedsDisplay()}}
+    
     open override class var layerClass: AnyClass
     {
         return NoFadeTiledLayer.self
@@ -112,10 +114,10 @@ open class TilingGridView: UIView
 
             let lineColor: CGColor = (attributes?.color ?? gridProperties.lineColor).cgColor
 
-            if !isAxisHorizontal && rect.origin.y == 512
-            {
-//                print("relative: \(relativeCoordinate) coordinate: \(coordinate) maxC: \(maxCount) zs: \(layoutProperties.remaindersOnEachEnd)")
-            }
+//            if !isAxisHorizontal && rect.origin.y == 512
+//            {
+////                print("relative: \(relativeCoordinate) coordinate: \(coordinate) maxC: \(maxCount) zs: \(layoutProperties.remaindersOnEachEnd)")
+//            }
             
             //determine phase offset when cetnering the line dash pattern
             //relative to tile
@@ -208,8 +210,14 @@ open class TilingGridView: UIView
         context.saveGState()
         defer {context.restoreGState()}
         
-//        drawRandomSquares(rect, context: context)
+        if debugLevel.rawValue >= DebugLevel.randomSquares.rawValue
+        {
+            drawRandomSquares(rect, context: context)
+        }
+        
         drawGrid(rect, context: context)
+        
+        guard debugLevel.rawValue >= DebugLevel.performanceAnalysis.rawValue else {return}
         
         renderedArea += rect.width * rect.height
         if renderedArea == layoutProperties.boundsArea
@@ -228,6 +236,7 @@ open class TilingGridView: UIView
         startedRenderingDate = Date()
         renderedArea = 0
         
+        guard debugLevel.rawValue >= DebugLevel.performanceAnalysis.rawValue else {return}
         print("--- needs display")
     }
 
