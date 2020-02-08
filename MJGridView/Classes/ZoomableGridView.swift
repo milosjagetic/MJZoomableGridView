@@ -15,6 +15,8 @@ open class ZoomableGridView: UIView
     
     open var gridProperties: GridProperties = .init() {didSet {gridView.gridProperties = gridProperties}}
     
+    open var debugLevel: DebugLevel = .none {didSet {gridView.debugLevel = debugLevel}}
+    
     @IBInspectable open var maximumZoomScale: CGFloat = 1
     {
         didSet
@@ -43,6 +45,9 @@ open class ZoomableGridView: UIView
         }
     }
     
+    //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
+    //  MARK: Private properties -
+    //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     private var gridHeight: NSLayoutConstraint!
     private var gridWidth: NSLayoutConstraint!
 
