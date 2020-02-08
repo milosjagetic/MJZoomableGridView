@@ -103,7 +103,7 @@ open class TilingGridView: UIView
             if attributes == nil
             {
                 attributes = (isAxisHorizontal ? gridProperties.horizontalLineAttributes : gridProperties.verticalLineAttributes)
-                    .first(where: {relativeCoordinate.truncatingRemainder(dividingBy: CGFloat($0.divisor) * zoomScale) == 0})
+                    .first(where: {relativeCoordinate.truncatingRemainder(dividingBy: CGFloat($0.divisor)) == 0})
             }
 
             // determine line width
