@@ -115,6 +115,7 @@
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="9HJ-wN-HVk" firstAttribute="leading" secondItem="Sti-wf-h0t" secondAttribute="leading" id="E9b-9o-AQl"/>
                             <constraint firstItem="C3Y-ks-5je" firstAttribute="leading" secondItem="Sti-wf-h0t" secondAttribute="leading" id="ODY-Yo-GEB"/>
@@ -126,6 +127,9 @@
                             <constraint firstItem="Sti-wf-h0t" firstAttribute="trailing" secondItem="9HJ-wN-HVk" secondAttribute="trailing" id="yjT-F8-27S"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Sti-wf-h0t"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="RtS-Yq-QM4" appends="YES" id="ucR-V3-b9z"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="gridView" destination="C3Y-ks-5je" id="dUn-7d-d9w"/>
@@ -139,6 +143,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="RtS-Yq-QM4">
+                    <connections>
+                        <action selector="longPressActionWithRecognizer:" destination="vXZ-lx-hvc" id="h7g-PX-xHl"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="137.41007194244605" y="133.81294964028777"/>
         </scene>
