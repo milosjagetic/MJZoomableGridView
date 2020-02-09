@@ -8,7 +8,7 @@
 
 import UIKit
 
-public enum OriginPlacement: CaseIterable
+public enum OriginPlacement: Equatable
 {
     case center
     case topCenter
@@ -20,7 +20,7 @@ public enum OriginPlacement: CaseIterable
     case centerLeft
     case topLeft
     //TODO: custom placement
-//    case custom(CGFloat, CGFloat)
+    case custom(CGFloat, CGFloat)
     
     public func origin(in rect: CGRect) -> CGPoint
     {
@@ -35,28 +35,28 @@ public enum OriginPlacement: CaseIterable
         case .bottomLeft: return CGPoint(x: 0, y: rect.maxY)
         case .centerLeft: return CGPoint(x:0, y: rect.midY)
         case .topLeft: return CGPoint(x: 0, y: 0)
-//        case .custom(let x, let y): return CGPoint(x: x, y: y)
+        case .custom(let x, let y): return CGPoint(x: x, y: y)
         }
     }
 
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Equatable protocol implementation -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
-//    public static func ==(lhs: OriginPlacement, rhs: OriginPlacement) -> Bool
-//    {
-//        switch (lhs, rhs)
-//        {
-//        case (.center, .center): return true
-//        case (.topCenter, .topCenter): return true
-//        case (.topRight, .topRight): return true
-//        case (.centerRight, .centerRight): return true
-//        case (.bottomRight, .bottomRight): return true
-//        case (.bottomCenter, .bottomCenter): return true
-//        case (.bottomLeft, .bottomLeft): return true
-//        case (.centerLeft, .centerLeft): return true
-//        case (.topLeft, .topLeft): return true
-//        case (.custom(let lhsX, let lhsY), .custom(let rhsX, let rhsY)): return lhsX == rhsX && lhsY == rhsY
-//        default: return false
-//        }
-//    }
+    public static func ==(lhs: OriginPlacement, rhs: OriginPlacement) -> Bool
+    {
+        switch (lhs, rhs)
+        {
+        case (.center, .center): return true
+        case (.topCenter, .topCenter): return true
+        case (.topRight, .topRight): return true
+        case (.centerRight, .centerRight): return true
+        case (.bottomRight, .bottomRight): return true
+        case (.bottomCenter, .bottomCenter): return true
+        case (.bottomLeft, .bottomLeft): return true
+        case (.centerLeft, .centerLeft): return true
+        case (.topLeft, .topLeft): return true
+        case (.custom(let lhsX, let lhsY), .custom(let rhsX, let rhsY)): return lhsX == rhsX && lhsY == rhsY
+        default: return false
+        }
+    }
 }

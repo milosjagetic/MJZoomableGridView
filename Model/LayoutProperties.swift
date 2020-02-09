@@ -67,11 +67,14 @@ internal struct LayoutProperties
                 remaindersOnEachEnd.right = remaindersOnEachEnd.left
             case .topRight, .centerRight, .bottomRight:
                 remaindersOnEachEnd.left = widthPplRemainder == 0 ? pointsPerLine : widthPplRemainder
+            case .custom(let x, _):
+                remaindersOnEachEnd.left = x.truncatingRemainder(dividingBy: pointsPerLine)
+                remaindersOnEachEnd.right = (targetWidth - x).truncatingRemainder(dividingBy: pointsPerLine)
             }
             
             switch originPlacement
             {
-            case .topCenter, .center, .bottomCenter:
+            case .topCenter, .center, .bottomCenter, .custom(_, _):
                 if remaindersOnEachEnd.left == 0
                 {
                     verticalLineCount = UInt(targetWidth / pointsPerLine)
@@ -99,11 +102,14 @@ internal struct LayoutProperties
                 remaindersOnEachEnd.bottom = remaindersOnEachEnd.top
             case .bottomRight, .bottomCenter, .bottomLeft:
                 remaindersOnEachEnd.top = heightPplRemainder == 0 ? pointsPerLine : heightPplRemainder
+            case .custom(_, let y):
+                remaindersOnEachEnd.top = y.truncatingRemainder(dividingBy: pointsPerLine)
+                remaindersOnEachEnd.bottom = (targetHeight - y).truncatingRemainder(dividingBy: pointsPerLine)
             }
             
             switch originPlacement
             {
-            case .centerLeft, .center, .centerRight:
+            case .centerLeft, .center, .centerRight, .custom(_, _):
                 if remaindersOnEachEnd.top == 0
                 {
                     horizontalLineCount = UInt(targetHeight / pointsPerLine)
