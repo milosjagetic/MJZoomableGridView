@@ -23,9 +23,15 @@ open class TilingGridView: UIView
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Private/Internal properties -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
-    //there are two identical struct bcs of multithreading. Using only one struct will result in exc_bad_access and all manner of weird unexpected stuff
-    private var layoutProperties: LayoutProperties = .init()
-    private var _layoutProperties: LayoutProperties = .init()
+    //there are two identical struct bcs of multithreading. Using only one struct will result in exc_bad_access and all manner of weird unexpected stuff. While __layoutProperties is being mutated layoutProperties is used for rendering, once mutated it is assigned to layoutProperties to be used.
+    private var layoutProperties: LayoutProperties
+    {
+        DispatchQueue.main.sync
+        {
+            return __layoutProperties
+        }
+    }
+    private var __layoutProperties: LayoutProperties = .init()
     
     private let sideLength: CGFloat = 256
     private var startedRenderingDate: Date = Date()
@@ -74,6 +80,8 @@ open class TilingGridView: UIView
     {
         let isAxisHorizontal: Bool = axis == .horizontal
         let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
+        
+        let layoutProperties: LayoutProperties = LayoutProperties(lastReportedBounds: self.layoutProperties.lastReportedBounds, boundsArea: self.layoutProperties.boundsArea, verticalLineCounts: self.layoutProperties.verticalLineCounts, horizontalLineCounts: self.layoutProperties.horizontalLineCounts, remaindersOnEachEndArray: self.layoutProperties.remaindersOnEachEndArray)
         
         //end cases are cases where origin is at the other end (right / bottom depending on the axis). in these cases we shift rendering by a linewidth to make them renderable. not shifting would cause rendering outside bounds
         let isEndCase: Bool = (isAxisHorizontal ? [OriginPlacement.bottomCenter, .bottomLeft, .bottomRight] : [OriginPlacement.topRight, .centerRight, .bottomRight]).contains(gridProperties.originPlacement)
@@ -303,9 +311,9 @@ open class TilingGridView: UIView
         
         guard let layer: CATiledLayer = self.layer as? CATiledLayer else {return}
 
-        _layoutProperties.calculateLayoutProperties(lastReportedBounds: bounds, tileSideLength: sideLength, pointsPerLine: gridProperties.pixelsPerLine, originPlacement: gridProperties.originPlacement, levelsOfDetail: UInt(layer.levelsOfDetail), zoomInLevels: UInt(layer.levelsOfDetailBias))
+        __layoutProperties.calculateLayoutProperties(lastReportedBounds: bounds, tileSideLength: sideLength, pointsPerLine: gridProperties.pixelsPerLine, originPlacement: gridProperties.originPlacement, levelsOfDetail: UInt(layer.levelsOfDetail), zoomInLevels: UInt(layer.levelsOfDetailBias))
         
-        layoutProperties = LayoutProperties(lastReportedBounds: _layoutProperties.lastReportedBounds, boundsArea: _layoutProperties.boundsArea, verticalLineCounts: _layoutProperties.verticalLineCounts, horizontalLineCounts: _layoutProperties.horizontalLineCounts, remaindersOnEachEndArray: _layoutProperties.remaindersOnEachEndArray)
+//        layoutProperties = LayoutProperties(lastReportedBounds: __layoutProperties.lastReportedBounds, boundsArea: __layoutProperties.boundsArea, verticalLineCounts: __layoutProperties.verticalLineCounts, horizontalLineCounts: __layoutProperties.horizontalLineCounts, remaindersOnEachEndArray: __layoutProperties.remaindersOnEachEndArray)
 
     }
 }
@@ -328,5 +336,37 @@ where Bound == CGFloat
     var magnitude: CGFloat
     {
         return upperBound - lowerBound
+    }
+}
+
+@propertyWrapper
+struct Atomic<Value>
+{
+    private var value: Value
+    private let lock = NSLock()
+
+    init(wrappedValue value: Value)
+    {
+        self.value = value
+    }
+
+    var wrappedValue: Value
+    {
+      get { return load() }
+      set { store(newValue: newValue) }
+    }
+
+    func load() -> Value
+    {
+        lock.lock()
+        defer { lock.unlock() }
+        return value
+    }
+
+    mutating func store(newValue: Value)
+    {
+        lock.lock()
+        defer { lock.unlock() }
+        value = newValue
     }
 }

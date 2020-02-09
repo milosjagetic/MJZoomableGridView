@@ -13,27 +13,42 @@ internal struct LayoutProperties
     private(set) var lastReportedBounds: CGRect = .zero
     private(set) var boundsArea: CGFloat = 0
     
-    private(set) var verticalLineCounts: [CGFloat : UInt] = [:]
-    private(set) var horizontalLineCounts: [CGFloat : UInt] = [:]
-    private(set) var remaindersOnEachEndArray: [CGFloat : UIEdgeInsets] = [:]
+    @Atomic private(set) var verticalLineCounts: [CGFloat : UInt] = [:]
+    @Atomic private(set) var horizontalLineCounts: [CGFloat : UInt] = [:]
+    @Atomic private(set) var remaindersOnEachEndArray: [CGFloat : UIEdgeInsets] = [:]
+    
+    private(set) var __verticalLineCounts: [CGFloat : UInt] = [:]
+    private(set) var __horizontalLineCounts: [CGFloat : UInt] = [:]
+    private(set) var __remaindersOnEachEndArray: [CGFloat : UIEdgeInsets] = [:]
+    
+    init() {}
+    
+    init(lastReportedBounds: CGRect, boundsArea: CGFloat, verticalLineCounts: [CGFloat : UInt], horizontalLineCounts: [CGFloat : UInt], remaindersOnEachEndArray: [CGFloat : UIEdgeInsets])
+    {
+        self.lastReportedBounds = lastReportedBounds
+        self.boundsArea = boundsArea
+        self.verticalLineCounts = verticalLineCounts
+        self.horizontalLineCounts = horizontalLineCounts
+        self.remaindersOnEachEndArray = remaindersOnEachEndArray
+    }
 
     mutating func calculateLayoutProperties(lastReportedBounds: CGRect, tileSideLength: CGFloat, pointsPerLine: UInt, originPlacement: OriginPlacement, levelsOfDetail: UInt, zoomInLevels: UInt)
     {
         self.lastReportedBounds = lastReportedBounds
         boundsArea = lastReportedBounds.width * lastReportedBounds.height
 
-        verticalLineCounts = Dictionary<CGFloat, UInt>()
-        horizontalLineCounts = Dictionary<CGFloat, UInt>()
-        remaindersOnEachEndArray = Dictionary<CGFloat, UIEdgeInsets>()
-        
-        var remaindersOnEachEnd: UIEdgeInsets = .zero
-        var verticalLineCount: UInt = 0
-        var horizontalLineCount: UInt = 0
-        
+        __verticalLineCounts = Dictionary<CGFloat, UInt>()
+        __horizontalLineCounts = Dictionary<CGFloat, UInt>()
+        __remaindersOnEachEndArray = Dictionary<CGFloat, UIEdgeInsets>()
+                
         let zoomOutLevels: UInt = levelsOfDetail - zoomInLevels - 1
         
         for currentLevel in 0..<levelsOfDetail
         {
+            var remaindersOnEachEnd: UIEdgeInsets = .zero
+            var verticalLineCount: UInt = 0
+            var horizontalLineCount: UInt = 0
+
             let relativeLevel: Double = Double(currentLevel) - Double(zoomOutLevels)
             let zoomScale: CGFloat = CGFloat(pow(2, relativeLevel))
             
@@ -69,7 +84,7 @@ internal struct LayoutProperties
                 verticalLineCount = UInt(ceil(targetWidth / pointsPerLine))
             }
             
-            verticalLineCounts[zoomScale] = verticalLineCount
+            __verticalLineCounts[zoomScale] = verticalLineCount
             
             
             let heightPplRemainder: CGFloat = targetHeight.truncatingRemainder(dividingBy: pointsPerLine)
@@ -101,10 +116,14 @@ internal struct LayoutProperties
                 horizontalLineCount = UInt(ceil(targetHeight / pointsPerLine))
             }
 
-            horizontalLineCounts[zoomScale] = horizontalLineCount
+            __horizontalLineCounts[zoomScale] = horizontalLineCount
             
-            remaindersOnEachEndArray[zoomScale] = remaindersOnEachEnd
+            __remaindersOnEachEndArray[zoomScale] = remaindersOnEachEnd
         }
+        
+        verticalLineCounts = __verticalLineCounts
+        horizontalLineCounts = __horizontalLineCounts
+        remaindersOnEachEndArray = __remaindersOnEachEndArray
     }
     
     func verticalLineCount(scale: CGFloat) -> UInt
