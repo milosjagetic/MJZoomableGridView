@@ -273,7 +273,9 @@ open class TilingGridView: UIView
         {
         case .bottomLeft, .centerLeft, .topLeft: relativeLineIndex = CGFloat(absoluteLineIndex)
         case .bottomRight, .centerRight, .topRight: relativeLineIndex = n - CGFloat(absoluteLineIndex) - 1
-        case .custom(let x, _): relativeLineIndex = CGFloat(absoluteLineIndex) - ceil(((x / zoomScale) - layoutProperties.remaindersOnEachEnd(scale: zoomScale).left) / (CGFloat(gridProperties.pixelsPerLine) / zoomScale))
+        case .custom(let x, _):
+            let remainders: UIEdgeInsets = layoutProperties.remaindersOnEachEnd(scale: zoomScale)
+            relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((x - remainders.left - remainders.right) / (CGFloat(gridProperties.pixelsPerLine) / zoomScale))
 
         default: relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((n - 1)/2)
         }
@@ -288,7 +290,9 @@ open class TilingGridView: UIView
         {
         case .topLeft, .topRight, .topCenter: relativeLineIndex = CGFloat(absoluteLineIndex)
         case .bottomLeft, .bottomCenter, .bottomRight: relativeLineIndex = n - CGFloat(absoluteLineIndex) - 1
-        case .custom(_, let y): relativeLineIndex = CGFloat(absoluteLineIndex) - ceil(((y / zoomScale) - layoutProperties.remaindersOnEachEnd(scale: zoomScale).top) / (CGFloat(gridProperties.pixelsPerLine) / zoomScale))
+        case .custom(_, let y):
+            let remainders: UIEdgeInsets = layoutProperties.remaindersOnEachEnd(scale: zoomScale)
+            relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((y - remainders.top - remainders.bottom) / (CGFloat(gridProperties.pixelsPerLine) / zoomScale))
         default: relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((n - 1)/2)
         }
         return relativeLineIndex * gridProperties.scale / zoomScale
