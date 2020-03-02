@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// Placement of origin witihin the grid. Use `custom` for non trivial placements. `custom` placement's coordinates are relative to the ZoomableGridView's frame
 public enum OriginPlacement: Equatable
 {
     case center
@@ -19,7 +20,6 @@ public enum OriginPlacement: Equatable
     case bottomLeft
     case centerLeft
     case topLeft
-    //TODO: custom placement
     case custom(CGFloat, CGFloat)
     
     public func origin(in rect: CGRect) -> CGPoint

@@ -8,11 +8,14 @@
 import Foundation
 
 ///This struct contains properties which are constant for each layout of the UI. For performance reasons they are calculated once per layout and stored here just to keep things tidy
+// Maybe change it to class. Maybe it will make multithreading harder
 internal struct LayoutProperties
 {
     private(set) var lastReportedBounds: CGRect = .zero
     private(set) var boundsArea: CGFloat = 0
     
+    
+    // TODO: Do something about this Atomic and double proprties voodoo
     @Atomic private(set) var verticalLineCounts: [CGFloat : UInt] = [:]
     @Atomic private(set) var horizontalLineCounts: [CGFloat : UInt] = [:]
     @Atomic private(set) var remaindersOnEachEndArray: [CGFloat : UIEdgeInsets] = [:]
@@ -57,7 +60,10 @@ internal struct LayoutProperties
             let targetHeight: CGFloat = lastReportedBounds.height
             
             let widthPplRemainder: CGFloat = targetWidth.truncatingRemainder(dividingBy: pointsPerLine)
+            
             //do horizontal axis
+            
+            //remainders
             switch originPlacement
             {
             case .topLeft, .centerLeft, .bottomLeft:
@@ -72,6 +78,7 @@ internal struct LayoutProperties
                 remaindersOnEachEnd.right = (targetWidth - x).truncatingRemainder(dividingBy: pointsPerLine)
             }
             
+            //line count
             switch originPlacement
             {
             case .topCenter, .center, .bottomCenter, .custom(_, _):
@@ -92,7 +99,9 @@ internal struct LayoutProperties
             
             let heightPplRemainder: CGFloat = targetHeight.truncatingRemainder(dividingBy: pointsPerLine)
             
-            // vertical axis
+            //do vertical axis
+            
+            //remainders
             switch originPlacement
             {
             case .topLeft, .topCenter, .topRight:
@@ -107,6 +116,8 @@ internal struct LayoutProperties
                 remaindersOnEachEnd.bottom = (targetHeight - y).truncatingRemainder(dividingBy: pointsPerLine)
             }
             
+            
+            //line count
             switch originPlacement
             {
             case .centerLeft, .center, .centerRight, .custom(_, _):

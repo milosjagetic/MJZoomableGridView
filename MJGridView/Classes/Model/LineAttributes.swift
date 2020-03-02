@@ -9,15 +9,21 @@
 import Foundation
 import UIKit
 
+/// A struct defining attributes for each line divisble by `LineAttributes.divisor`
 public class LineAttributes
 {
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Public -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
+    /// Line's color
     public let color: UIColor
+    /// Value which determines when these line attributes are applied. e.g. if `divisor` is `6` every line which divides evenly with `6` (6, 12, 24...) has these line attributes applied to it
     public let divisor: Int
+    /// Line's dash pattern. See CGContext.setLineDash(offset:,dashes:) for more info.
     public let dashes: [CGFloat]
+    /// Line's width
     public let lineWidth: CGFloat
+    /// Wheather or not to put rounded caps on the of dashed lines. EXPERIMENTAL. Also resource intensive.
     public let roundedCap: Bool
     
     public init(color: UIColor, divisor: Int, dashes: [CGFloat], lineWidth: CGFloat, roundedCap: Bool)

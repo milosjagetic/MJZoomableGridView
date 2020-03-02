@@ -3,6 +3,7 @@ open class TilingGridView: UIView
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Public properties -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
+    /// Main configuration thingie. Use this to change grid properties. See each properties documentation for more details.
     open var gridProperties: GridProperties = .init()
     {
         didSet
@@ -11,9 +12,9 @@ open class TilingGridView: UIView
             setNeedsDisplay()
         }
     }
-    
+    /// Log debug level. See each case for more details
     open var debugLevel: DebugLevel = .none {didSet {setNeedsDisplay()}}
-    
+    /// Class used for tiling. You can use your own if you want to change fade duration or something.
     open override class var layerClass: AnyClass
     {
         return NoFadeTiledLayer.self
@@ -121,11 +122,6 @@ open class TilingGridView: UIView
             coordinate -= isEndCase ? 1 : 0
 
             let lineColor: CGColor = (attributes?.color ?? gridProperties.lineColor).cgColor
-
-//            if !isAxisHorizontal && rect.origin.y == 512
-//            {
-////                print("relative: \(relativeCoordinate) coordinate: \(coordinate) maxC: \(maxCount) zs: \(layoutProperties.remaindersOnEachEnd)")
-//            }
             
             //determine phase offset when cetnering the line dash pattern
             //relative to tile
@@ -319,9 +315,6 @@ open class TilingGridView: UIView
         guard let layer: CATiledLayer = self.layer as? CATiledLayer else {return}
 
         __layoutProperties.calculateLayoutProperties(lastReportedBounds: bounds, tileSideLength: sideLength, pointsPerLine: gridProperties.pixelsPerLine, originPlacement: gridProperties.originPlacement, levelsOfDetail: UInt(layer.levelsOfDetail), zoomInLevels: UInt(layer.levelsOfDetailBias))
-        
-//        layoutProperties = LayoutProperties(lastReportedBounds: __layoutProperties.lastReportedBounds, boundsArea: __layoutProperties.boundsArea, verticalLineCounts: __layoutProperties.verticalLineCounts, horizontalLineCounts: __layoutProperties.horizontalLineCounts, remaindersOnEachEndArray: __layoutProperties.remaindersOnEachEndArray)
-
     }
 }
 
