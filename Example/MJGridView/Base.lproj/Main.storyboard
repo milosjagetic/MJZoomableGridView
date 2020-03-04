@@ -27,6 +27,9 @@
                                         <real key="value" value="0.5"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="RtS-Yq-QM4" appends="YES" id="01F-Zd-K1O"/>
+                                </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9HJ-wN-HVk" userLabel="controlsView">
                                 <rect key="frame" x="0.0" y="1072" width="834" height="114"/>
@@ -127,9 +130,6 @@
                             <constraint firstItem="Sti-wf-h0t" firstAttribute="trailing" secondItem="9HJ-wN-HVk" secondAttribute="trailing" id="yjT-F8-27S"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Sti-wf-h0t"/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="RtS-Yq-QM4" appends="YES" id="ucR-V3-b9z"/>
-                        </connections>
                     </view>
                     <connections>
                         <outlet property="gridView" destination="C3Y-ks-5je" id="dUn-7d-d9w"/>
