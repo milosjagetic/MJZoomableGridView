@@ -69,20 +69,24 @@ open class TilingGridView: UIView
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     open func drawGrid(_ rect: CGRect, context: CGContext)
     {
+        let layoutProperties: LayoutProperties = LayoutProperties(lastReportedBounds: self.layoutProperties.lastReportedBounds, boundsArea: self.layoutProperties.boundsArea, verticalLineCounts: self.layoutProperties.verticalLineCounts, horizontalLineCounts: self.layoutProperties.horizontalLineCounts, remaindersOnEachEndArray: self.layoutProperties.remaindersOnEachEndArray, lineSpacing: self.layoutProperties.lineSpacing)
+
         let zoomScale: CGFloat = abs(context.ctm.a) / UIScreen.main.scale
-        let adjustedSpacing: CGFloat = CGFloat(gridProperties.pixelsPerLine) / zoomScale
+        let adjustedSpacing: CGFloat = layoutProperties.lineSpacing / zoomScale
+        
+        //maybe attach this to layout properties aswell
         let adjustedLineWidth: CGFloat = gridProperties.lineWidth / zoomScale
         
-        [NSLayoutConstraint.Axis.horizontal, .vertical].forEach({drawLines($0, rect: rect, adjustedSpacing: adjustedSpacing, adjustedLineWidth: adjustedLineWidth, context: context)})
+
+        [NSLayoutConstraint.Axis.horizontal, .vertical].forEach({drawLines($0, rect: rect, adjustedSpacing: adjustedSpacing, adjustedLineWidth: adjustedLineWidth, context: context, layoutProperties: layoutProperties)})
     }
 
     /// axis = horizontal->draw horizontal line
-    open func drawLines(_ axis: NSLayoutConstraint.Axis, rect: CGRect, adjustedSpacing: CGFloat, adjustedLineWidth: CGFloat, context: CGContext)
+    func drawLines(_ axis: NSLayoutConstraint.Axis, rect: CGRect, adjustedSpacing: CGFloat, adjustedLineWidth: CGFloat, context: CGContext, layoutProperties: LayoutProperties)
     {
         let isAxisHorizontal: Bool = axis == .horizontal
         let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
         
-        let layoutProperties: LayoutProperties = LayoutProperties(lastReportedBounds: self.layoutProperties.lastReportedBounds, boundsArea: self.layoutProperties.boundsArea, verticalLineCounts: self.layoutProperties.verticalLineCounts, horizontalLineCounts: self.layoutProperties.horizontalLineCounts, remaindersOnEachEndArray: self.layoutProperties.remaindersOnEachEndArray)
         
         //end cases are cases where origin is at the other end (right / bottom depending on the axis). in these cases we shift rendering by a linewidth to make them renderable. not shifting would cause rendering outside bounds
         let isEndCase: Bool = (isAxisHorizontal ? [OriginPlacement.bottomCenter, .bottomLeft, .bottomRight] : [OriginPlacement.topRight, .centerRight, .bottomRight]).contains(gridProperties.originPlacement)

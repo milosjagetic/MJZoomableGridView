@@ -14,6 +14,7 @@ internal struct LayoutProperties
     private(set) var lastReportedBounds: CGRect = .zero
     private(set) var boundsArea: CGFloat = 0
     
+    private(set) var lineSpacing: CGFloat = 0
     
     // TODO: Do something about this Atomic and double proprties voodoo
     @Atomic private(set) var verticalLineCounts: [CGFloat : UInt] = [:]
@@ -26,17 +27,19 @@ internal struct LayoutProperties
     
     init() {}
     
-    init(lastReportedBounds: CGRect, boundsArea: CGFloat, verticalLineCounts: [CGFloat : UInt], horizontalLineCounts: [CGFloat : UInt], remaindersOnEachEndArray: [CGFloat : UIEdgeInsets])
+    init(lastReportedBounds: CGRect, boundsArea: CGFloat, verticalLineCounts: [CGFloat : UInt], horizontalLineCounts: [CGFloat : UInt], remaindersOnEachEndArray: [CGFloat : UIEdgeInsets], lineSpacing: CGFloat)
     {
         self.lastReportedBounds = lastReportedBounds
         self.boundsArea = boundsArea
         self.verticalLineCounts = verticalLineCounts
         self.horizontalLineCounts = horizontalLineCounts
         self.remaindersOnEachEndArray = remaindersOnEachEndArray
+        self.lineSpacing = lineSpacing
     }
 
     mutating func calculateLayoutProperties(lastReportedBounds: CGRect, tileSideLength: CGFloat, pointsPerLine: UInt, originPlacement: OriginPlacement, levelsOfDetail: UInt, zoomInLevels: UInt)
     {
+        self.lineSpacing = CGFloat(pointsPerLine)
         self.lastReportedBounds = lastReportedBounds
         boundsArea = lastReportedBounds.width * lastReportedBounds.height
 
