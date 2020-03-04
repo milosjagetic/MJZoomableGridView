@@ -80,6 +80,7 @@ open class ZoomableGridView: UIView
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.backgroundColor = .clear
         scrollView.delegate = self
+        if #available(iOS 11.0, *) { scrollView.contentInsetAdjustmentBehavior = .never }
         
         addSubview(scrollView)
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[scrollView]|", options: [], metrics: nil, views: ["scrollView" : scrollView]))
