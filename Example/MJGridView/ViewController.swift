@@ -139,7 +139,7 @@ class ViewController: UIViewController
     @IBAction func longPressAction(recognizer: UILongPressGestureRecognizer!)
     {
         let point: CGPoint = recognizer.location(in: gridView.gridView)
-        gridView.gridProperties.originPlacement = .custom(point.x, point.y)
+        gridView.gridProperties.originPlacement = .custom(point)
     }
 
 }

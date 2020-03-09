@@ -76,15 +76,15 @@ internal struct LayoutProperties
                 remaindersOnEachEnd.right = remaindersOnEachEnd.left
             case .topRight, .centerRight, .bottomRight:
                 remaindersOnEachEnd.left = widthPplRemainder == 0 ? pointsPerLine : widthPplRemainder
-            case .custom(let x, _):
-                remaindersOnEachEnd.left = x.truncatingRemainder(dividingBy: pointsPerLine)
-                remaindersOnEachEnd.right = (targetWidth - x).truncatingRemainder(dividingBy: pointsPerLine)
+            case .custom(let point):
+                remaindersOnEachEnd.left = point.x.truncatingRemainder(dividingBy: pointsPerLine)
+                remaindersOnEachEnd.right = (targetWidth - point.x).truncatingRemainder(dividingBy: pointsPerLine)
             }
             
             //line count
             switch originPlacement
             {
-            case .topCenter, .center, .bottomCenter, .custom(_, _):
+            case .topCenter, .center, .bottomCenter, .custom(_):
                 if remaindersOnEachEnd.left == 0
                 {
                     verticalLineCount = UInt(targetWidth / pointsPerLine)
@@ -114,16 +114,16 @@ internal struct LayoutProperties
                 remaindersOnEachEnd.bottom = remaindersOnEachEnd.top
             case .bottomRight, .bottomCenter, .bottomLeft:
                 remaindersOnEachEnd.top = heightPplRemainder == 0 ? pointsPerLine : heightPplRemainder
-            case .custom(_, let y):
-                remaindersOnEachEnd.top = y.truncatingRemainder(dividingBy: pointsPerLine)
-                remaindersOnEachEnd.bottom = (targetHeight - y).truncatingRemainder(dividingBy: pointsPerLine)
+            case .custom(let point):
+                remaindersOnEachEnd.top = point.y.truncatingRemainder(dividingBy: pointsPerLine)
+                remaindersOnEachEnd.bottom = (targetHeight - point.y).truncatingRemainder(dividingBy: pointsPerLine)
             }
             
             
             //line count
             switch originPlacement
             {
-            case .centerLeft, .center, .centerRight, .custom(_, _):
+            case .centerLeft, .center, .centerRight, .custom(_):
                 if remaindersOnEachEnd.top == 0
                 {
                     horizontalLineCount = UInt(targetHeight / pointsPerLine)
@@ -159,5 +159,37 @@ internal struct LayoutProperties
     func remaindersOnEachEnd(scale: CGFloat) -> UIEdgeInsets
     {
         return remaindersOnEachEndArray[scale] ?? .zero
+    }
+}
+
+@propertyWrapper
+struct Atomic<Value>
+{
+    private var value: Value
+    private let lock = NSLock()
+
+    init(wrappedValue value: Value)
+    {
+        self.value = value
+    }
+
+    var wrappedValue: Value
+    {
+      get { return load() }
+      set { store(newValue: newValue) }
+    }
+
+    func load() -> Value
+    {
+        lock.lock()
+        defer { lock.unlock() }
+        return value
+    }
+
+    mutating func store(newValue: Value)
+    {
+        lock.lock()
+        defer { lock.unlock() }
+        value = newValue
     }
 }

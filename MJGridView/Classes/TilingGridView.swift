@@ -273,9 +273,9 @@ open class TilingGridView: UIView
         {
         case .bottomLeft, .centerLeft, .topLeft: relativeLineIndex = CGFloat(absoluteLineIndex)
         case .bottomRight, .centerRight, .topRight: relativeLineIndex = n - CGFloat(absoluteLineIndex) - 1
-        case .custom(let x, _):
+        case .custom(let point):
             let remainders: UIEdgeInsets = layoutProperties.remaindersOnEachEnd(scale: zoomScale)
-            relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((x - remainders.left - remainders.right) / (CGFloat(gridProperties.pixelsPerLine) / zoomScale))
+            relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((point.x - remainders.left - remainders.right) / (CGFloat(gridProperties.pixelsPerLine) / zoomScale))
 
         default: relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((n - 1)/2)
         }
@@ -290,9 +290,9 @@ open class TilingGridView: UIView
         {
         case .topLeft, .topRight, .topCenter: relativeLineIndex = CGFloat(absoluteLineIndex)
         case .bottomLeft, .bottomCenter, .bottomRight: relativeLineIndex = n - CGFloat(absoluteLineIndex) - 1
-        case .custom(_, let y):
+        case .custom(let point):
             let remainders: UIEdgeInsets = layoutProperties.remaindersOnEachEnd(scale: zoomScale)
-            relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((y - remainders.top - remainders.bottom) / (CGFloat(gridProperties.pixelsPerLine) / zoomScale))
+            relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((point.y - remainders.top - remainders.bottom) / (CGFloat(gridProperties.pixelsPerLine) / zoomScale))
         default: relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((n - 1)/2)
         }
         return relativeLineIndex * gridProperties.scale / zoomScale
@@ -340,37 +340,5 @@ where Bound == CGFloat
     var magnitude: CGFloat
     {
         return upperBound - lowerBound
-    }
-}
-
-@propertyWrapper
-struct Atomic<Value>
-{
-    private var value: Value
-    private let lock = NSLock()
-
-    init(wrappedValue value: Value)
-    {
-        self.value = value
-    }
-
-    var wrappedValue: Value
-    {
-      get { return load() }
-      set { store(newValue: newValue) }
-    }
-
-    func load() -> Value
-    {
-        lock.lock()
-        defer { lock.unlock() }
-        return value
-    }
-
-    mutating func store(newValue: Value)
-    {
-        lock.lock()
-        defer { lock.unlock() }
-        value = newValue
     }
 }

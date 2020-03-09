@@ -20,7 +20,7 @@ public enum OriginPlacement: Equatable
     case bottomLeft
     case centerLeft
     case topLeft
-    case custom(CGFloat, CGFloat)
+    case custom(CGPoint)
     
     public func origin(in rect: CGRect) -> CGPoint
     {
@@ -35,7 +35,7 @@ public enum OriginPlacement: Equatable
         case .bottomLeft: return CGPoint(x: 0, y: rect.maxY)
         case .centerLeft: return CGPoint(x:0, y: rect.midY)
         case .topLeft: return CGPoint(x: 0, y: 0)
-        case .custom(let x, let y): return CGPoint(x: x, y: y)
+        case .custom(let point): return point
         }
     }
 
@@ -55,7 +55,7 @@ public enum OriginPlacement: Equatable
         case (.bottomLeft, .bottomLeft): return true
         case (.centerLeft, .centerLeft): return true
         case (.topLeft, .topLeft): return true
-        case (.custom(let lhsX, let lhsY), .custom(let rhsX, let rhsY)): return lhsX == rhsX && lhsY == rhsY
+        case (.custom(let lhs), .custom(let rhs)): return lhs == rhs
         default: return false
         }
     }
