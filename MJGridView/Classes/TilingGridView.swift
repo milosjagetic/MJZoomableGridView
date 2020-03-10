@@ -84,21 +84,22 @@ open class TilingGridView: UIView
     /// axis = horizontal->draw horizontal line
     func drawLines(_ axis: NSLayoutConstraint.Axis, rect: CGRect, adjustedSpacing: CGFloat, adjustedLineWidth: CGFloat, context: CGContext, layoutProperties: LayoutProperties)
     {
-        let isAxisHorizontal: Bool = axis == .horizontal
+
+        let isLineHorizontal: Bool = axis == .horizontal
         let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
-        
+        let originPlacement: OriginPlacement = gridProperties.originPlacement
         
         //end cases are cases where origin is at the other end (right / bottom depending on the axis). in these cases we shift rendering by a linewidth to make them renderable. not shifting would cause rendering outside bounds
-        let isEndCase: Bool = (isAxisHorizontal ? [OriginPlacement.bottomCenter, .bottomLeft, .bottomRight] : [OriginPlacement.topRight, .centerRight, .bottomRight]).contains(gridProperties.originPlacement)
+        let isEndCase: Bool = (isLineHorizontal ? [OriginPlacement.bottomCenter, .bottomLeft, .bottomRight] : [OriginPlacement.topRight, .centerRight, .bottomRight]).contains(originPlacement)
         // if the lines don't line up evenly to view bounds, this is the leftover space, depends on origin placement too
         let remaindersOnEachEnd: UIEdgeInsets = layoutProperties.remaindersOnEachEnd(scale: zoomScale)
-        let globalSpacing: CGFloat = (isAxisHorizontal ? remaindersOnEachEnd.top : remaindersOnEachEnd.left)
+        let globalSpacing: CGFloat = (isLineHorizontal ? remaindersOnEachEnd.top : remaindersOnEachEnd.left)
         //spacing relevant to calculating index/number of lines when rendering
         let spacingForCount: CGFloat = isEndCase ? globalSpacing - adjustedLineWidth : globalSpacing
         //number of lines at the end of given rect
-        let maxCount: UInt = UInt(ceil(max(0, (isAxisHorizontal ? rect.maxY : rect.maxX) - spacingForCount) / adjustedSpacing)) + 1
+        let maxCount: UInt = UInt(ceil(max(0, (isLineHorizontal ? rect.maxY : rect.maxX) - spacingForCount) / adjustedSpacing)) + 1
         //number of lines at the begging of given rect
-        let prevCount: UInt = UInt(max(0, ceil(max(0, (isAxisHorizontal ? rect.minY : rect.minX) - spacingForCount) / adjustedSpacing) - 1))
+        let prevCount: UInt = UInt(max(0, ceil(max(0, (isLineHorizontal ? rect.minY : rect.minX) - spacingForCount) / adjustedSpacing) - 1))
         // -1/+1 is added because lines at the beggining of the next tile will be cut in half, so additional line at the end/begginging of the current (also cut in half) is added (this should be changed because it's probably problematic in certain cases)
 
         //skip rects with no lines
@@ -108,14 +109,14 @@ open class TilingGridView: UIView
         for i in prevCount..<maxCount
         {
             var coordinate: CGFloat = CGFloat(i) * adjustedSpacing + globalSpacing
-            let relativeCoordinate: CGFloat = isAxisHorizontal ? originRelativeY(for: i, zoomScale: zoomScale, layoutProperties: layoutProperties) : originRelativeX(for: i, zoomScale: zoomScale, layoutProperties: layoutProperties)
+            let relativeCoordinate: CGFloat = isLineHorizontal ? originRelativeY(for: i, zoomScale: zoomScale, layoutProperties: layoutProperties) : originRelativeX(for: i, zoomScale: zoomScale, layoutProperties: layoutProperties)
             
             // get appropriate attributes for the current line index
             var attributes: LineAttributes?
-            if relativeCoordinate == 0 { attributes = isAxisHorizontal ? gridProperties.horizontalAxisAttributes : gridProperties.verticalAxisAttributes }
+            if relativeCoordinate == 0 { attributes = isLineHorizontal ? gridProperties.horizontalAxisAttributes : gridProperties.verticalAxisAttributes }
             if attributes == nil
             {
-                attributes = (isAxisHorizontal ? gridProperties.horizontalLineAttributes : gridProperties.verticalLineAttributes)
+                attributes = (isLineHorizontal ? gridProperties.horizontalLineAttributes : gridProperties.verticalLineAttributes)
                     .first(where: {relativeCoordinate.truncatingRemainder(dividingBy: CGFloat($0.divisor)) == 0})
             }
 
@@ -130,9 +131,9 @@ open class TilingGridView: UIView
             //determine phase offset when cetnering the line dash pattern
             //relative to tile
             let relativePhaseOffset: CGFloat
-            if isAxisHorizontal
+            if isLineHorizontal
             {
-                switch gridProperties.originPlacement
+                switch originPlacement
                 {
                 case .topCenter, .center, .bottomCenter: relativePhaseOffset = -(attributes?.dashOffsetWhenCentered ?? 0)
                 default: relativePhaseOffset = 0
@@ -140,19 +141,20 @@ open class TilingGridView: UIView
             }
             else
             {
-                switch gridProperties.originPlacement
+                switch originPlacement
                 {
                 case .centerLeft, .center, .centerRight: relativePhaseOffset = -(attributes?.dashOffsetWhenCentered ?? 0)
                 default: relativePhaseOffset = 0
                 }
             }
             //absolute
-            let phaseOffset: CGFloat = relativePhaseOffset + (isAxisHorizontal ? rect.minX : rect.minY)
+            let phaseOffset: CGFloat = relativePhaseOffset + (isLineHorizontal ? rect.minX : rect.minY)
 
-            let tileRange: Range<CGFloat> = isAxisHorizontal ? rect.minX..<rect.maxX : rect.minY..<rect.maxY
+            let tileRange: Range<CGFloat> = isLineHorizontal ? rect.minX..<rect.maxX : rect.minY..<rect.maxY
             
             //find line segments which have their caps cut off, eg. segments which line segments are rendered on the edges of the tiles
             //draw circles to fix cut off caps
+            //!!!! bad access here (xA)
             if attributes?.roundedCap == true
             {
                 let halfWidth: CGFloat = lineWidth / 2
@@ -162,6 +164,7 @@ open class TilingGridView: UIView
                 // TOO TIME CONSUMING, THINK OF A BETTER WAY?
                 attributes?.lineSegments.forEach
                 {
+                    //!!!! out of bounds crash. Probably related to (xA), fix: move grid properties under layout properties
                     let offsetLineSegment: Range<CGFloat> = ($0.lowerBound - relativePhaseOffset)..<($0.upperBound - relativePhaseOffset)
                     let leadingCapRange: Range<CGFloat> = (offsetLineSegment.lowerBound - halfWidth)..<offsetLineSegment.lowerBound
                     let trailingCapRange: Range<CGFloat> = offsetLineSegment.upperBound..<(offsetLineSegment.upperBound + halfWidth)
@@ -174,8 +177,8 @@ open class TilingGridView: UIView
                         guard currentOverlap > 0 && !offsetLineSegment.overlaps(tileRange) else {continue}
 //
                         let isTrailing: Bool = currentCapRange == trailingCapRange
-                        let x: CGFloat = isAxisHorizontal ? currentCapRange.lowerBound - (isTrailing ? halfWidth : 0) : coordinate - halfWidth
-                        let y: CGFloat = isAxisHorizontal ? coordinate - halfWidth : currentCapRange.lowerBound - (isTrailing ? halfWidth : 0)
+                        let x: CGFloat = isLineHorizontal ? currentCapRange.lowerBound - (isTrailing ? halfWidth : 0) : coordinate - halfWidth
+                        let y: CGFloat = isLineHorizontal ? coordinate - halfWidth : currentCapRange.lowerBound - (isTrailing ? halfWidth : 0)
                         let ellipseFrame: CGRect = CGRect(x: x,
                                                           y: y,
                                                           width: lineWidth,
@@ -187,9 +190,12 @@ open class TilingGridView: UIView
 
             }
             
+            let originPosition: CGPoint = originPlacement.origin(in: layoutProperties.lastReportedBounds)
+
+
             // actually draw the line
-            context.move(to: CGPoint(x: isAxisHorizontal ? rect.origin.x : coordinate, y: isAxisHorizontal ? coordinate : rect.origin.y))
-            context.addLine(to: CGPoint(x: isAxisHorizontal ? rect.maxX : coordinate, y: isAxisHorizontal ? coordinate : rect.maxY))
+            context.move(to: CGPoint(x: isLineHorizontal ? rect.origin.x : coordinate, y: isLineHorizontal ? coordinate : rect.origin.y))
+            context.addLine(to: CGPoint(x: isLineHorizontal ? rect.maxX : coordinate, y: isLineHorizontal ? coordinate : rect.maxY))
 
             context.setStrokeColor(lineColor)
             context.setLineDash(phase:  phaseOffset, lengths: attributes?.dashes ?? [])
@@ -197,6 +203,50 @@ open class TilingGridView: UIView
             context.setLineWidth(lineWidth)
             
             context.strokePath()
+            
+
+            context.setTextDrawingMode(.fill)
+            
+            // draw labels
+            // skips horiontal axis label for relative coordinate 0, to avoid duplicates
+            guard isLineHorizontal || relativeCoordinate != 0 else {continue}
+            
+            var labelAttributes: [NSAttributedString.Key : Any] = isLineHorizontal ? gridProperties.verticalAxisLabelAttributes : gridProperties.horizontalAxisLabelAttributes
+            if let font = labelAttributes[.font] as? UIFont
+            {
+                labelAttributes[.font] = font.withSize(font.pointSize / zoomScale)
+            }
+
+            let attrString: NSAttributedString = .init(string: Int(relativeCoordinate).description, attributes: labelAttributes)
+            let size: CGSize = attrString.size()
+
+            var horizontalOffset: CGFloat = isLineHorizontal ? (gridProperties.verticalAxisLabelInsets.left - gridProperties.verticalAxisLabelInsets.right) : (gridProperties.horizontalAxisLabelInsets.left - gridProperties.horizontalAxisLabelInsets.right)
+            horizontalOffset /= zoomScale
+            
+            var verticalOffset: CGFloat = isLineHorizontal ? (gridProperties.verticalAxisLabelInsets.top - gridProperties.verticalAxisLabelInsets.bottom) : (gridProperties.horizontalAxisLabelInsets.top - gridProperties.horizontalAxisLabelInsets.bottom)
+            verticalOffset /= zoomScale
+
+            if isLineHorizontal
+            {
+                if (rect.minX..<rect.maxX).contains(originPosition.x) ||
+                    (rect.minX - (originPosition.x + horizontalOffset) < size.width) ||
+                    (rect.minY - (coordinate + verticalOffset) < size.height)
+                {
+                    let stringRect: CGRect = .init(x: (isLineHorizontal ? originPosition.x : coordinate) + horizontalOffset, y: (isLineHorizontal ? coordinate : originPosition.y) + verticalOffset, width: size.width, height: size.height)
+                    attrString.draw(in: stringRect)
+                }
+            }
+            else
+            {
+                if (rect.minY..<rect.maxY).contains(originPosition.y) ||
+                    (rect.minY - (originPosition.y + verticalOffset) < size.height) ||
+                    (rect.minX - (coordinate + horizontalOffset) < size.width)
+                {
+                    let stringRect: CGRect = .init(x: (isLineHorizontal ? originPosition.x : coordinate) + horizontalOffset, y: (isLineHorizontal ? coordinate : originPosition.y) + verticalOffset, width: size.width, height: size.height)
+                    attrString.draw(in: stringRect)
+
+                }
+            }
         }
     }
 
