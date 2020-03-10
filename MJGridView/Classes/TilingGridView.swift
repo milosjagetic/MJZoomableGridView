@@ -162,9 +162,10 @@ open class TilingGridView: UIView
                 context.setFillColor(lineColor)
 
                 // TOO TIME CONSUMING, THINK OF A BETTER WAY?
+                //!!!! bad access here (xB)
                 attributes?.lineSegments.forEach
                 {
-                    //!!!! out of bounds crash. Probably related to (xA), fix: move grid properties under layout properties
+                    //!!!! out of bounds crash. Probably related to (xA) and (xB), fix: move grid properties under layout properties (xC)
                     let offsetLineSegment: Range<CGFloat> = ($0.lowerBound - relativePhaseOffset)..<($0.upperBound - relativePhaseOffset)
                     let leadingCapRange: Range<CGFloat> = (offsetLineSegment.lowerBound - halfWidth)..<offsetLineSegment.lowerBound
                     let trailingCapRange: Range<CGFloat> = offsetLineSegment.upperBound..<(offsetLineSegment.upperBound + halfWidth)
@@ -203,10 +204,7 @@ open class TilingGridView: UIView
             context.setLineWidth(lineWidth)
             
             context.strokePath()
-            
-
-            context.setTextDrawingMode(.fill)
-            
+                        
             // draw labels
             // skips horiontal axis label for relative coordinate 0, to avoid duplicates
             guard isLineHorizontal || relativeCoordinate != 0 else {continue}
@@ -217,7 +215,7 @@ open class TilingGridView: UIView
                 labelAttributes[.font] = font.withSize(font.pointSize / zoomScale)
             }
 
-            let attrString: NSAttributedString = .init(string: Int(relativeCoordinate).description, attributes: labelAttributes)
+            let attrString: NSAttributedString = .init(string: String(format: (isLineHorizontal ? gridProperties.verticalAxisLabelFormat : gridProperties.horizontalAxisLabelFormat), relativeCoordinate), attributes: labelAttributes)
             let size: CGSize = attrString.size()
 
             var horizontalOffset: CGFloat = isLineHorizontal ? (gridProperties.verticalAxisLabelInsets.left - gridProperties.verticalAxisLabelInsets.right) : (gridProperties.horizontalAxisLabelInsets.left - gridProperties.horizontalAxisLabelInsets.right)
@@ -329,7 +327,7 @@ open class TilingGridView: UIView
 
         default: relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((n - 1)/2)
         }
-        return relativeLineIndex * gridProperties.scale / zoomScale
+        return relativeLineIndex * gridProperties.horizontalScale / zoomScale
     }
     
     private func originRelativeY(for absoluteLineIndex: UInt, zoomScale: CGFloat, layoutProperties: LayoutProperties) -> CGFloat
@@ -345,7 +343,7 @@ open class TilingGridView: UIView
             relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((point.y - remainders.top - remainders.bottom) / (CGFloat(gridProperties.pixelsPerLine) / zoomScale))
         default: relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((n - 1)/2)
         }
-        return relativeLineIndex * gridProperties.scale / zoomScale
+        return relativeLineIndex * gridProperties.verticalScale / zoomScale
     }
     
     ///Draws a grid of randomly colored squares. Corresponds to placement of tiles. For debug purposes only

@@ -11,6 +11,7 @@ private struct __
 {
     static let defaultAttributes: [NSAttributedString.Key : Any] = [.font : UIFont.systemFont(ofSize: 20),
                                                                     .foregroundColor: UIColor.gray]
+    static let defaultLabelFormat: String = "%.1f"
 }
 
 /// A struct for configuring the grid.
@@ -35,8 +36,10 @@ public struct GridProperties
     /// Spacing between the lines
     public var pixelsPerLine: UInt = 112
     
-    /// Scale of the whole grid. e.g. if `1`, line on the right, next to origin will have value of `1`, the one on the left `-1`. if  `10` then `10` and `-10`.
-    public var scale: CGFloat = 1
+    /// Scale of the whole grid. e.g. if `1`, line on the right, next to origin will have value of `1`, the one on the left `-1`. if  `10` then `10` and `-10`. For positive values negative part of the scale is on the left side of origin. If negative value given the scale is reversed.
+    public var horizontalScale: CGFloat = 1
+    /// Scale of the whole grid. e.g. if `1`, line on the bottom, next to origin will have value of `1`, the one on the top `-1`. if  `10` then `10` and `-10`. For positive values negative part of the scale is above the origin. If negative value given the scale is reversed.
+    public var verticalScale: CGFloat = 1
     
     /// Origins position within the view
     public var originPlacement: OriginPlacement = .center
@@ -52,6 +55,12 @@ public struct GridProperties
     
     /// Horizontal axis label attributes
     public var horizontalAxisLabelAttributes: [NSAttributedString.Key : Any] = __.defaultAttributes
+    
+    /// Horizontal axis label format
+    public var horizontalAxisLabelFormat: String = __.defaultLabelFormat
+    
+    /// Vertical axis label format
+    public var verticalAxisLabelFormat: String = __.defaultLabelFormat
     
     public init() {}
 }
