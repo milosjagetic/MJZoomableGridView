@@ -82,7 +82,7 @@ open class TilingGridView: UIView
     }
 
     /// axis = horizontal->draw horizontal line
-    func drawLines(_ axis: NSLayoutConstraint.Axis, rect: CGRect, adjustedSpacing: CGFloat, adjustedLineWidth: CGFloat, context: CGContext, layoutProperties: LayoutProperties)
+    private func drawLines(_ axis: NSLayoutConstraint.Axis, rect: CGRect, adjustedSpacing: CGFloat, adjustedLineWidth: CGFloat, context: CGContext, layoutProperties: LayoutProperties)
     {
 
         let isLineHorizontal: Bool = axis == .horizontal
@@ -191,7 +191,6 @@ open class TilingGridView: UIView
 
             }
             
-            let originPosition: CGPoint = originPlacement.origin(in: layoutProperties.lastReportedBounds)
 
 
             // actually draw the line
@@ -206,46 +205,56 @@ open class TilingGridView: UIView
             context.strokePath()
                         
             // draw labels
-            // skips horiontal axis label for relative coordinate 0, to avoid duplicates
-            guard isLineHorizontal || relativeCoordinate != 0 else {continue}
-            
-            var labelAttributes: [NSAttributedString.Key : Any] = isLineHorizontal ? gridProperties.verticalAxisLabelAttributes : gridProperties.horizontalAxisLabelAttributes
-            if let font = labelAttributes[.font] as? UIFont
+            drawLabels(in: rect, coordinate: coordinate,
+                       relativeCoordinate: relativeCoordinate, zoomScale: zoomScale,
+                       isDrawingHorizontalLines: isLineHorizontal, layoutProperties: layoutProperties)
+        }
+    }
+    
+    private func drawLabels(in rect: CGRect, coordinate: CGFloat, relativeCoordinate: CGFloat, zoomScale: CGFloat, isDrawingHorizontalLines: Bool, layoutProperties: LayoutProperties)
+    {
+        // skips horiontal axis label for relative coordinate 0, to avoid duplicates
+        guard isDrawingHorizontalLines || relativeCoordinate != 0 else {return}
+        
+        let originPosition: CGPoint = gridProperties.originPlacement.origin(in: layoutProperties.lastReportedBounds)
+
+        var labelAttributes: [NSAttributedString.Key : Any] = isDrawingHorizontalLines ? gridProperties.verticalAxisLabelAttributes : gridProperties.horizontalAxisLabelAttributes
+        if let font = labelAttributes[.font] as? UIFont
+        {
+            labelAttributes[.font] = font.withSize(font.pointSize / zoomScale)
+        }
+
+        let attrString: NSAttributedString = .init(string: String(format: (isDrawingHorizontalLines ? gridProperties.verticalAxisLabelFormat : gridProperties.horizontalAxisLabelFormat), relativeCoordinate == 0 ? 0 : relativeCoordinate), attributes: labelAttributes)
+        let size: CGSize = attrString.size()
+
+        var horizontalOffset: CGFloat = isDrawingHorizontalLines ? (gridProperties.verticalAxisLabelInsets.left - gridProperties.verticalAxisLabelInsets.right) : (gridProperties.horizontalAxisLabelInsets.left - gridProperties.horizontalAxisLabelInsets.right)
+        horizontalOffset /= zoomScale
+        
+        var verticalOffset: CGFloat = isDrawingHorizontalLines ? (gridProperties.verticalAxisLabelInsets.top - gridProperties.verticalAxisLabelInsets.bottom) : (gridProperties.horizontalAxisLabelInsets.top - gridProperties.horizontalAxisLabelInsets.bottom)
+        verticalOffset /= zoomScale
+
+        if isDrawingHorizontalLines
+        {
+            if (rect.minX..<rect.maxX).contains(originPosition.x) ||
+                (rect.minX - (originPosition.x + horizontalOffset) < size.width) ||
+                (rect.minY - (coordinate + verticalOffset) < size.height)
             {
-                labelAttributes[.font] = font.withSize(font.pointSize / zoomScale)
-            }
-
-            let attrString: NSAttributedString = .init(string: String(format: (isLineHorizontal ? gridProperties.verticalAxisLabelFormat : gridProperties.horizontalAxisLabelFormat), relativeCoordinate), attributes: labelAttributes)
-            let size: CGSize = attrString.size()
-
-            var horizontalOffset: CGFloat = isLineHorizontal ? (gridProperties.verticalAxisLabelInsets.left - gridProperties.verticalAxisLabelInsets.right) : (gridProperties.horizontalAxisLabelInsets.left - gridProperties.horizontalAxisLabelInsets.right)
-            horizontalOffset /= zoomScale
-            
-            var verticalOffset: CGFloat = isLineHorizontal ? (gridProperties.verticalAxisLabelInsets.top - gridProperties.verticalAxisLabelInsets.bottom) : (gridProperties.horizontalAxisLabelInsets.top - gridProperties.horizontalAxisLabelInsets.bottom)
-            verticalOffset /= zoomScale
-
-            if isLineHorizontal
-            {
-                if (rect.minX..<rect.maxX).contains(originPosition.x) ||
-                    (rect.minX - (originPosition.x + horizontalOffset) < size.width) ||
-                    (rect.minY - (coordinate + verticalOffset) < size.height)
-                {
-                    let stringRect: CGRect = .init(x: (isLineHorizontal ? originPosition.x : coordinate) + horizontalOffset, y: (isLineHorizontal ? coordinate : originPosition.y) + verticalOffset, width: size.width, height: size.height)
-                    attrString.draw(in: stringRect)
-                }
-            }
-            else
-            {
-                if (rect.minY..<rect.maxY).contains(originPosition.y) ||
-                    (rect.minY - (originPosition.y + verticalOffset) < size.height) ||
-                    (rect.minX - (coordinate + horizontalOffset) < size.width)
-                {
-                    let stringRect: CGRect = .init(x: (isLineHorizontal ? originPosition.x : coordinate) + horizontalOffset, y: (isLineHorizontal ? coordinate : originPosition.y) + verticalOffset, width: size.width, height: size.height)
-                    attrString.draw(in: stringRect)
-
-                }
+                let stringRect: CGRect = .init(x: (isDrawingHorizontalLines ? originPosition.x : coordinate) + horizontalOffset, y: (isDrawingHorizontalLines ? coordinate : originPosition.y) + verticalOffset, width: size.width, height: size.height)
+                attrString.draw(in: stringRect)
             }
         }
+        else
+        {
+            if (rect.minY..<rect.maxY).contains(originPosition.y) ||
+                (rect.minY - (originPosition.y + verticalOffset) < size.height) ||
+                (rect.minX - (coordinate + horizontalOffset) < size.width)
+            {
+                let stringRect: CGRect = .init(x: (isDrawingHorizontalLines ? originPosition.x : coordinate) + horizontalOffset, y: (isDrawingHorizontalLines ? coordinate : originPosition.y) + verticalOffset, width: size.width, height: size.height)
+                attrString.draw(in: stringRect)
+
+            }
+        }
+
     }
 
 

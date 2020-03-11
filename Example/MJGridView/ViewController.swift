@@ -71,7 +71,7 @@ class ViewController: UIViewController
         gridView.gridProperties.verticalAxisLabelFormat = "%.4lf"
 
         gridView.gridProperties.horizontalScale = 10
-        gridView.gridProperties.verticalScale = -0.1
+        gridView.gridProperties.verticalScale = -0.01
 
         gridView.backgroundColor = UIColor(red: 146/255, green: 144/255, blue: 160/255, alpha: 1)
         
