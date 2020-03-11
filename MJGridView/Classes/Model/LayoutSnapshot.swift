@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 ///This struct contains properties which are constant for each layout of the UI. For performance reasons they are calculated once per layout and stored here just to keep things tidy
 // Maybe change it to class. Maybe it will make multithreading harder
 internal struct LayoutSnapshot
@@ -14,7 +15,7 @@ internal struct LayoutSnapshot
     private(set) var lastReportedBounds: CGRect = .zero
     private(set) var boundsArea: CGFloat = 0
     
-    private(set) var lineSpacing: CGFloat = 0
+    var lineSpacing: CGFloat {CGFloat(gridProperties.pixelsPerLine)}
     
     // TODO: Do something about this Atomic and double proprties voodoo
     @Atomic private(set) var verticalLineCounts: [CGFloat : UInt] = [:]
@@ -25,22 +26,41 @@ internal struct LayoutSnapshot
     private(set) var __horizontalLineCounts: [CGFloat : UInt] = [:]
     private(set) var __remaindersOnEachEndArray: [CGFloat : UIEdgeInsets] = [:]
     
+    private(set) var gridProperties: GridProperties = .init()
+    
+    
+    //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
+    //  MARK: Lifecycle protocol implementation -
+    //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     init() {}
     
-    init(lastReportedBounds: CGRect, boundsArea: CGFloat, verticalLineCounts: [CGFloat : UInt], horizontalLineCounts: [CGFloat : UInt], remaindersOnEachEndArray: [CGFloat : UIEdgeInsets], lineSpacing: CGFloat)
+    init(lastReportedBounds: CGRect,
+         boundsArea: CGFloat,
+         verticalLineCounts: [CGFloat : UInt],
+         horizontalLineCounts: [CGFloat : UInt],
+         remaindersOnEachEndArray: [CGFloat : UIEdgeInsets],
+         gridProperties: GridProperties)
     {
         self.lastReportedBounds = lastReportedBounds
         self.boundsArea = boundsArea
         self.verticalLineCounts = verticalLineCounts
         self.horizontalLineCounts = horizontalLineCounts
         self.remaindersOnEachEndArray = remaindersOnEachEndArray
-        self.lineSpacing = lineSpacing
+        self.gridProperties = gridProperties.copy()
     }
-
-    mutating func calculateLayoutProperties(lastReportedBounds: CGRect, tileSideLength: CGFloat, pointsPerLine: UInt, originPlacement: OriginPlacement, levelsOfDetail: UInt, zoomInLevels: UInt)
+    
+    
+    //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
+    //  MARK: Layout -
+    //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
+    mutating func calculateLayoutProperties(lastReportedBounds: CGRect,
+                                            levelsOfDetail: UInt,
+                                            zoomInLevels: UInt,
+                                            gridProperties: GridProperties)
     {
-        self.lineSpacing = CGFloat(pointsPerLine)
         self.lastReportedBounds = lastReportedBounds
+        self.gridProperties = gridProperties.copy()
+        
         boundsArea = lastReportedBounds.width * lastReportedBounds.height
 
         __verticalLineCounts = Dictionary<CGFloat, UInt>()
@@ -48,6 +68,7 @@ internal struct LayoutSnapshot
         __remaindersOnEachEndArray = Dictionary<CGFloat, UIEdgeInsets>()
                 
         let zoomOutLevels: UInt = levelsOfDetail - zoomInLevels - 1
+        let originPlacement: OriginPlacement = gridProperties.originPlacement
         
         for currentLevel in 0..<levelsOfDetail
         {
@@ -58,7 +79,7 @@ internal struct LayoutSnapshot
             let relativeLevel: Double = Double(currentLevel) - Double(zoomOutLevels)
             let zoomScale: CGFloat = CGFloat(pow(2, relativeLevel))
             
-            let pointsPerLine: CGFloat = CGFloat(pointsPerLine) / zoomScale
+            let pointsPerLine: CGFloat = CGFloat(gridProperties.pixelsPerLine) / zoomScale
             let targetWidth: CGFloat = lastReportedBounds.width
             let targetHeight: CGFloat = lastReportedBounds.height
             
@@ -146,6 +167,10 @@ internal struct LayoutSnapshot
         remaindersOnEachEndArray = __remaindersOnEachEndArray
     }
     
+    
+    //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
+    //  MARK: Accessors -
+    //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     func verticalLineCount(scale: CGFloat) -> UInt
     {
         return verticalLineCounts[scale] ?? 0
@@ -159,6 +184,20 @@ internal struct LayoutSnapshot
     func remaindersOnEachEnd(scale: CGFloat) -> UIEdgeInsets
     {
         return remaindersOnEachEndArray[scale] ?? .zero
+    }
+    
+    
+    //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
+    //  MARK: Copy -
+    //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
+    func copy() -> LayoutSnapshot
+    {
+        return .init(lastReportedBounds: lastReportedBounds,
+                     boundsArea: boundsArea,
+                     verticalLineCounts: verticalLineCounts,
+                     horizontalLineCounts: horizontalLineCounts,
+                     remaindersOnEachEndArray: remaindersOnEachEndArray,
+                     gridProperties: gridProperties)
     }
 }
 

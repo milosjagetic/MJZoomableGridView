@@ -62,5 +62,27 @@ public struct GridProperties
     /// Vertical axis label format
     public var verticalAxisLabelFormat: String = __.defaultLabelFormat
     
-    public init() {}
+    
+    //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
+    //  MARK: Copy -
+    //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
+    func copy() -> GridProperties
+    {
+        return .init(horizontalLineAttributes: horizontalLineAttributes,
+                     horizontalAxisAttributes: horizontalAxisAttributes,
+                     verticalLineAttributes: verticalLineAttributes,
+                     verticalAxisAttributes: verticalAxisAttributes,
+                     lineWidth: lineWidth,
+                     lineColor: lineColor,
+                     pixelsPerLine: pixelsPerLine,
+                     horizontalScale: horizontalScale,
+                     verticalScale: verticalScale,
+                     originPlacement: originPlacement,
+                     verticalAxisLabelInsets: verticalAxisLabelInsets,
+                     horizontalAxisLabelInsets: horizontalAxisLabelInsets,
+                     verticalAxisLabelAttributes: verticalAxisLabelAttributes,
+                     horizontalAxisLabelAttributes: horizontalAxisLabelAttributes,
+                     horizontalAxisLabelFormat: horizontalAxisLabelFormat,
+                     verticalAxisLabelFormat: verticalAxisLabelFormat)
+    }
 }

@@ -25,14 +25,14 @@ open class TilingGridView: UIView
     //  MARK: Private/Internal properties -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     //there are two identical struct bcs of multithreading. Using only one struct will result in exc_bad_access and all manner of weird unexpected stuff. While __layoutProperties is being mutated layoutProperties is used for rendering, once mutated it is assigned to layoutProperties to be used.
-    private var layoutProperties: LayoutSnapshot
+    private var layoutSnapshot: LayoutSnapshot
     {
         DispatchQueue.main.sync
         {
-            return __layoutProperties
+            return __layoutSnapshot
         }
     }
-    private var __layoutProperties: LayoutSnapshot = .init()
+    private var __layoutSnapshot: LayoutSnapshot = .init()
     
     private let sideLength: CGFloat = 256
     private var startedRenderingDate: Date = Date()
@@ -69,22 +69,22 @@ open class TilingGridView: UIView
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     open func drawGrid(_ rect: CGRect, context: CGContext)
     {
-        let layoutProperties: LayoutSnapshot = LayoutSnapshot(lastReportedBounds: self.layoutProperties.lastReportedBounds, boundsArea: self.layoutProperties.boundsArea, verticalLineCounts: self.layoutProperties.verticalLineCounts, horizontalLineCounts: self.layoutProperties.horizontalLineCounts, remaindersOnEachEndArray: self.layoutProperties.remaindersOnEachEndArray, lineSpacing: self.layoutProperties.lineSpacing)
+        let layoutSnapshot: LayoutSnapshot = self.layoutSnapshot.copy()
 
         let zoomScale: CGFloat = abs(context.ctm.a) / UIScreen.main.scale
-        let adjustedSpacing: CGFloat = layoutProperties.lineSpacing / zoomScale
+        let adjustedSpacing: CGFloat = layoutSnapshot.lineSpacing / zoomScale
         
         //maybe attach this to layout properties aswell
-        let adjustedLineWidth: CGFloat = gridProperties.lineWidth / zoomScale
+        let adjustedLineWidth: CGFloat = layoutSnapshot.gridProperties.lineWidth / zoomScale
         
 
-        [NSLayoutConstraint.Axis.horizontal, .vertical].forEach({drawLines($0, rect: rect, adjustedSpacing: adjustedSpacing, adjustedLineWidth: adjustedLineWidth, context: context, layoutProperties: layoutProperties)})
+        [NSLayoutConstraint.Axis.horizontal, .vertical].forEach({drawLines($0, rect: rect, adjustedSpacing: adjustedSpacing, adjustedLineWidth: adjustedLineWidth, context: context, layoutSnapshot: layoutSnapshot)})
     }
 
     /// axis = horizontal->draw horizontal line
-    private func drawLines(_ axis: NSLayoutConstraint.Axis, rect: CGRect, adjustedSpacing: CGFloat, adjustedLineWidth: CGFloat, context: CGContext, layoutProperties: LayoutSnapshot)
+    private func drawLines(_ axis: NSLayoutConstraint.Axis, rect: CGRect, adjustedSpacing: CGFloat, adjustedLineWidth: CGFloat, context: CGContext, layoutSnapshot: LayoutSnapshot)
     {
-
+        let gridProperties: GridProperties = layoutSnapshot.gridProperties
         let isLineHorizontal: Bool = axis == .horizontal
         let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
         let originPlacement: OriginPlacement = gridProperties.originPlacement
@@ -92,7 +92,7 @@ open class TilingGridView: UIView
         //end cases are cases where origin is at the other end (right / bottom depending on the axis). in these cases we shift rendering by a linewidth to make them renderable. not shifting would cause rendering outside bounds
         let isEndCase: Bool = (isLineHorizontal ? [OriginPlacement.bottomCenter, .bottomLeft, .bottomRight] : [OriginPlacement.topRight, .centerRight, .bottomRight]).contains(originPlacement)
         // if the lines don't line up evenly to view bounds, this is the leftover space, depends on origin placement too
-        let remaindersOnEachEnd: UIEdgeInsets = layoutProperties.remaindersOnEachEnd(scale: zoomScale)
+        let remaindersOnEachEnd: UIEdgeInsets = layoutSnapshot.remaindersOnEachEnd(scale: zoomScale)
         let globalSpacing: CGFloat = (isLineHorizontal ? remaindersOnEachEnd.top : remaindersOnEachEnd.left)
         //spacing relevant to calculating index/number of lines when rendering
         let spacingForCount: CGFloat = isEndCase ? globalSpacing - adjustedLineWidth : globalSpacing
@@ -109,7 +109,7 @@ open class TilingGridView: UIView
         for i in prevCount..<maxCount
         {
             var coordinate: CGFloat = CGFloat(i) * adjustedSpacing + globalSpacing
-            let relativeCoordinate: CGFloat = isLineHorizontal ? originRelativeY(for: i, zoomScale: zoomScale, layoutProperties: layoutProperties) : originRelativeX(for: i, zoomScale: zoomScale, layoutProperties: layoutProperties)
+            let relativeCoordinate: CGFloat = isLineHorizontal ? originRelativeY(for: i, zoomScale: zoomScale, layoutSnapshot: layoutSnapshot) : originRelativeX(for: i, zoomScale: zoomScale, layoutSnapshot: layoutSnapshot)
             
             // get appropriate attributes for the current line index
             var attributes: LineAttributes?
@@ -128,95 +128,117 @@ open class TilingGridView: UIView
 
             let lineColor: CGColor = (attributes?.color ?? gridProperties.lineColor).cgColor
             
-            //determine phase offset when cetnering the line dash pattern
-            //relative to tile
-            let relativePhaseOffset: CGFloat
-            if isLineHorizontal
-            {
-                switch originPlacement
-                {
-                case .topCenter, .center, .bottomCenter: relativePhaseOffset = -(attributes?.dashOffsetWhenCentered ?? 0)
-                default: relativePhaseOffset = 0
-                }
-            }
-            else
-            {
-                switch originPlacement
-                {
-                case .centerLeft, .center, .centerRight: relativePhaseOffset = -(attributes?.dashOffsetWhenCentered ?? 0)
-                default: relativePhaseOffset = 0
-                }
-            }
-            //absolute
-            let phaseOffset: CGFloat = relativePhaseOffset + (isLineHorizontal ? rect.minX : rect.minY)
-
-            let tileRange: Range<CGFloat> = isLineHorizontal ? rect.minX..<rect.maxX : rect.minY..<rect.maxY
-            
-            //find line segments which have their caps cut off, eg. segments which line segments are rendered on the edges of the tiles
-            //draw circles to fix cut off caps
-            //!!!! bad access here (xA)
-            if attributes?.roundedCap == true
-            {
-                let halfWidth: CGFloat = lineWidth / 2
-
-                context.setFillColor(lineColor)
-
-                // TOO TIME CONSUMING, THINK OF A BETTER WAY?
-                //!!!! bad access here (xB)
-                attributes?.lineSegments.forEach
-                {
-                    //!!!! out of bounds crash. Probably related to (xA) and (xB), fix: move grid properties under layout properties (xC)
-                    let offsetLineSegment: Range<CGFloat> = ($0.lowerBound - relativePhaseOffset)..<($0.upperBound - relativePhaseOffset)
-                    let leadingCapRange: Range<CGFloat> = (offsetLineSegment.lowerBound - halfWidth)..<offsetLineSegment.lowerBound
-                    let trailingCapRange: Range<CGFloat> = offsetLineSegment.upperBound..<(offsetLineSegment.upperBound + halfWidth)
-
-                    
-                    for currentCapRange in [leadingCapRange, trailingCapRange]
-                    {
-                        let currentOverlap: CGFloat = currentCapRange.clamped(to: tileRange).magnitude
-                        //do only caps within our tile && do only caps for lines outside the tile (caps that have actually been clipped)
-                        guard currentOverlap > 0 && !offsetLineSegment.overlaps(tileRange) else {continue}
-//
-                        let isTrailing: Bool = currentCapRange == trailingCapRange
-                        let x: CGFloat = isLineHorizontal ? currentCapRange.lowerBound - (isTrailing ? halfWidth : 0) : coordinate - halfWidth
-                        let y: CGFloat = isLineHorizontal ? coordinate - halfWidth : currentCapRange.lowerBound - (isTrailing ? halfWidth : 0)
-                        let ellipseFrame: CGRect = CGRect(x: x,
-                                                          y: y,
-                                                          width: lineWidth,
-                                                          height: lineWidth)
-
-                        context.fillEllipse(in: ellipseFrame)
-                    }
-                }
-
-            }
-            
-
+            //draw cutoff line caps
+            drawCutOffLineCaps(in: rect,
+                               isLineHorizontal: isLineHorizontal,
+                               originPlacement: originPlacement,
+                               context: context,
+                               lineWidth: lineWidth,
+                               lineColor: lineColor,
+                               coordinate: coordinate,
+                               attributes: attributes)
 
             // actually draw the line
             context.move(to: CGPoint(x: isLineHorizontal ? rect.origin.x : coordinate, y: isLineHorizontal ? coordinate : rect.origin.y))
             context.addLine(to: CGPoint(x: isLineHorizontal ? rect.maxX : coordinate, y: isLineHorizontal ? coordinate : rect.maxY))
 
             context.setStrokeColor(lineColor)
-            context.setLineDash(phase:  phaseOffset, lengths: attributes?.dashes ?? [])
             context.setLineCap(attributes?.roundedCap == true ? .round : .butt)
             context.setLineWidth(lineWidth)
             
             context.strokePath()
                         
             // draw labels
-            drawLabels(in: rect, coordinate: coordinate,
-                       relativeCoordinate: relativeCoordinate, zoomScale: zoomScale,
-                       isDrawingHorizontalLines: isLineHorizontal, layoutProperties: layoutProperties)
+            drawLabels(in: rect,
+                       coordinate: coordinate,
+                       relativeCoordinate: relativeCoordinate,
+                       zoomScale: zoomScale,
+                       isDrawingHorizontalLines: isLineHorizontal,
+                       layoutSnapshot: layoutSnapshot)
         }
     }
     
-    private func drawLabels(in rect: CGRect, coordinate: CGFloat, relativeCoordinate: CGFloat, zoomScale: CGFloat, isDrawingHorizontalLines: Bool, layoutProperties: LayoutSnapshot)
+    private func drawCutOffLineCaps(in rect: CGRect,
+                                    isLineHorizontal: Bool,
+                                    originPlacement: OriginPlacement,
+                                    context: CGContext,
+                                    lineWidth: CGFloat,
+                                    lineColor: CGColor,
+                                    coordinate: CGFloat,
+                                    attributes: LineAttributes?)
+    {
+        //determine phase offset when cetnering the line dash pattern
+        //relative to tile
+        let relativePhaseOffset: CGFloat
+        if isLineHorizontal
+        {
+            switch originPlacement
+            {
+            case .topCenter, .center, .bottomCenter: relativePhaseOffset = -(attributes?.dashOffsetWhenCentered ?? 0)
+            default: relativePhaseOffset = 0
+            }
+        }
+        else
+        {
+            switch originPlacement
+            {
+            case .centerLeft, .center, .centerRight: relativePhaseOffset = -(attributes?.dashOffsetWhenCentered ?? 0)
+            default: relativePhaseOffset = 0
+            }
+        }
+        //absolute
+        let phaseOffset: CGFloat = relativePhaseOffset + (isLineHorizontal ? rect.minX : rect.minY)
+
+        let tileRange: Range<CGFloat> = isLineHorizontal ? rect.minX..<rect.maxX : rect.minY..<rect.maxY
+        
+        //find line segments which have their caps cut off, eg. segments which line segments are rendered on the edges of the tiles
+        //draw circles to fix cut off caps
+        //!!!! bad access here (xA) (most likely fixed by moving gridProperties under LayoutSnapshot, but the comment remains if any more crashes happen)
+        if attributes?.roundedCap == true
+        {
+            let halfWidth: CGFloat = lineWidth / 2
+
+            context.setFillColor(lineColor)
+
+            // TOO TIME CONSUMING, THINK OF A BETTER WAY?
+            //!!!! bad access here (xB)(most likely fixed by moving gridProperties under LayoutSnapshot, but the comment remains if any more crashes happen)
+            attributes?.lineSegments.forEach
+            {
+                //!!!! out of bounds crash. Probably related to (xA) and (xB), fix: move grid properties under layout properties (xC)(most likely fixed by moving gridProperties under LayoutSnapshot, but the comment remains if any more crashes happen)
+                let offsetLineSegment: Range<CGFloat> = ($0.lowerBound - relativePhaseOffset)..<($0.upperBound - relativePhaseOffset)
+                let leadingCapRange: Range<CGFloat> = (offsetLineSegment.lowerBound - halfWidth)..<offsetLineSegment.lowerBound
+                let trailingCapRange: Range<CGFloat> = offsetLineSegment.upperBound..<(offsetLineSegment.upperBound + halfWidth)
+
+                
+                for currentCapRange in [leadingCapRange, trailingCapRange]
+                {
+                    let currentOverlap: CGFloat = currentCapRange.clamped(to: tileRange).magnitude
+                    //do only caps within our tile && do only caps for lines outside the tile (caps that have actually been clipped)
+                    guard currentOverlap > 0 && !offsetLineSegment.overlaps(tileRange) else {continue}
+//
+                    let isTrailing: Bool = currentCapRange == trailingCapRange
+                    let x: CGFloat = isLineHorizontal ? currentCapRange.lowerBound - (isTrailing ? halfWidth : 0) : coordinate - halfWidth
+                    let y: CGFloat = isLineHorizontal ? coordinate - halfWidth : currentCapRange.lowerBound - (isTrailing ? halfWidth : 0)
+                    let ellipseFrame: CGRect = CGRect(x: x,
+                                                      y: y,
+                                                      width: lineWidth,
+                                                      height: lineWidth)
+
+                    context.fillEllipse(in: ellipseFrame)
+                }
+            }
+
+        }
+        
+        context.setLineDash(phase:  phaseOffset, lengths: attributes?.dashes ?? [])
+    }
+    
+    private func drawLabels(in rect: CGRect, coordinate: CGFloat, relativeCoordinate: CGFloat, zoomScale: CGFloat, isDrawingHorizontalLines: Bool, layoutSnapshot: LayoutSnapshot)
     {
         // skips horiontal axis label for relative coordinate 0, to avoid duplicates
         guard isDrawingHorizontalLines || relativeCoordinate != 0 else {return}
         
-        let originPosition: CGPoint = gridProperties.originPlacement.origin(in: layoutProperties.lastReportedBounds)
+        let originPosition: CGPoint = gridProperties.originPlacement.origin(in: layoutSnapshot.lastReportedBounds)
 
         var labelAttributes: [NSAttributedString.Key : Any] = isDrawingHorizontalLines ? gridProperties.verticalAxisLabelAttributes : gridProperties.horizontalAxisLabelAttributes
         if let font = labelAttributes[.font] as? UIFont
@@ -285,7 +307,7 @@ open class TilingGridView: UIView
         guard debugLevel.rawValue >= DebugLevel.performanceAnalysis.rawValue else {return}
         
         renderedArea += rect.width * rect.height
-        if renderedArea == layoutProperties.boundsArea
+        if renderedArea == layoutSnapshot.boundsArea
         {
             let time: TimeInterval = Date().timeIntervalSince(startedRenderingDate)
             averageTme = averageTme == 0 ? time : (averageTme + time) / 2
@@ -322,45 +344,45 @@ open class TilingGridView: UIView
         setNeedsDisplay()
     }
     
-    private func originRelativeX(for absoluteLineIndex: UInt, zoomScale: CGFloat, layoutProperties: LayoutSnapshot) -> CGFloat
+    private func originRelativeX(for absoluteLineIndex: UInt, zoomScale: CGFloat, layoutSnapshot: LayoutSnapshot) -> CGFloat
     {
-        let n: CGFloat = CGFloat(layoutProperties.verticalLineCount(scale: zoomScale))
+        let n: CGFloat = CGFloat(layoutSnapshot.verticalLineCount(scale: zoomScale))
         let relativeLineIndex: CGFloat
-        switch gridProperties.originPlacement
+        switch layoutSnapshot.gridProperties.originPlacement
         {
         case .bottomLeft, .centerLeft, .topLeft: relativeLineIndex = CGFloat(absoluteLineIndex)
         case .bottomRight, .centerRight, .topRight: relativeLineIndex = n - CGFloat(absoluteLineIndex) - 1
         case .custom(let point):
-            let remainders: UIEdgeInsets = layoutProperties.remaindersOnEachEnd(scale: zoomScale)
-            relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((point.x - remainders.left - remainders.right) / (CGFloat(gridProperties.pixelsPerLine) / zoomScale))
+            let remainders: UIEdgeInsets = layoutSnapshot.remaindersOnEachEnd(scale: zoomScale)
+            relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((point.x - remainders.left - remainders.right) / (CGFloat(layoutSnapshot.gridProperties.pixelsPerLine) / zoomScale))
 
         default: relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((n - 1)/2)
         }
-        return relativeLineIndex * gridProperties.horizontalScale / zoomScale
+        return relativeLineIndex * layoutSnapshot.gridProperties.horizontalScale / zoomScale
     }
     
-    private func originRelativeY(for absoluteLineIndex: UInt, zoomScale: CGFloat, layoutProperties: LayoutSnapshot) -> CGFloat
+    private func originRelativeY(for absoluteLineIndex: UInt, zoomScale: CGFloat, layoutSnapshot: LayoutSnapshot) -> CGFloat
     {
-        let n: CGFloat = CGFloat(layoutProperties.horizontalLineCount(scale: zoomScale))
+        let n: CGFloat = CGFloat(layoutSnapshot.horizontalLineCount(scale: zoomScale))
         let relativeLineIndex: CGFloat
-        switch gridProperties.originPlacement
+        switch layoutSnapshot.gridProperties.originPlacement
         {
         case .topLeft, .topRight, .topCenter: relativeLineIndex = CGFloat(absoluteLineIndex)
         case .bottomLeft, .bottomCenter, .bottomRight: relativeLineIndex = n - CGFloat(absoluteLineIndex) - 1
         case .custom(let point):
-            let remainders: UIEdgeInsets = layoutProperties.remaindersOnEachEnd(scale: zoomScale)
-            relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((point.y - remainders.top - remainders.bottom) / (CGFloat(gridProperties.pixelsPerLine) / zoomScale))
+            let remainders: UIEdgeInsets = layoutSnapshot.remaindersOnEachEnd(scale: zoomScale)
+            relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((point.y - remainders.top - remainders.bottom) / (CGFloat(layoutSnapshot.gridProperties.pixelsPerLine) / zoomScale))
         default: relativeLineIndex = CGFloat(absoluteLineIndex) - ceil((n - 1)/2)
         }
-        return relativeLineIndex * gridProperties.verticalScale / zoomScale
+        return relativeLineIndex * layoutSnapshot.gridProperties.verticalScale / zoomScale
     }
     
     ///Draws a grid of randomly colored squares. Corresponds to placement of tiles. For debug purposes only
     private func drawRandomSquares(_ rect: CGRect, context: CGContext)
     {
         var rect: CGRect = rect
-        rect.origin.x = rect.origin.x > layoutProperties.lastReportedBounds.width ? 0 : rect.origin.x
-        rect.origin.y = rect.origin.y > layoutProperties.lastReportedBounds.height ? 0 : rect.origin.y
+        rect.origin.x = rect.origin.x > layoutSnapshot.lastReportedBounds.width ? 0 : rect.origin.x
+        rect.origin.y = rect.origin.y > layoutSnapshot.lastReportedBounds.height ? 0 : rect.origin.y
         context.setFillColor(UIColor.randomOpaque.withAlphaComponent(0.3).cgColor)
         context.fill(rect)
     }
@@ -375,7 +397,7 @@ open class TilingGridView: UIView
         
         guard let layer: CATiledLayer = self.layer as? CATiledLayer else {return}
 
-        __layoutProperties.calculateLayoutProperties(lastReportedBounds: bounds, tileSideLength: sideLength, pointsPerLine: gridProperties.pixelsPerLine, originPlacement: gridProperties.originPlacement, levelsOfDetail: UInt(layer.levelsOfDetail), zoomInLevels: UInt(layer.levelsOfDetailBias))
+        __layoutSnapshot.calculateLayoutProperties(lastReportedBounds: bounds, levelsOfDetail: UInt(layer.levelsOfDetail), zoomInLevels: UInt(layer.levelsOfDetailBias), gridProperties: gridProperties)
     }
 }
 
