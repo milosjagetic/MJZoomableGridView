@@ -9,7 +9,7 @@ import Foundation
 
 ///This struct contains properties which are constant for each layout of the UI. For performance reasons they are calculated once per layout and stored here just to keep things tidy
 // Maybe change it to class. Maybe it will make multithreading harder
-internal struct LayoutProperties
+internal struct LayoutSnapshot
 {
     private(set) var lastReportedBounds: CGRect = .zero
     private(set) var boundsArea: CGFloat = 0

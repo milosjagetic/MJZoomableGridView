@@ -14,7 +14,7 @@
 		4605920CF4107DBCCAC4A370E54E6C79 /* DebugLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78614736EA0B29D15CBAC072E277C7B0 /* DebugLevel.swift */; };
 		622E2B11240456CB00758BE0 /* OriginPlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD74EFAE548C744CFF3C8CE5BD4B2959 /* OriginPlacement.swift */; };
 		622E2B12240456CD00758BE0 /* LineAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3574D968AAE2BD97A1BD0CE2DA3C8387 /* LineAttributes.swift */; };
-		622E2B13240456CF00758BE0 /* LayoutProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8C4F138420E30499C00457999FE103 /* LayoutProperties.swift */; };
+		622E2B13240456CF00758BE0 /* LayoutSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8C4F138420E30499C00457999FE103 /* LayoutSnapshot.swift */; };
 		622E2B14240456D100758BE0 /* GridProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7D8B1E55D9E22D39A6E03B940511C9 /* GridProperties.swift */; };
 		8A9DEF6D0DFBB0866FCF6BB46743BC38 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
 		9D97728241F10B4DB805A67AF156F6F1 /* MJGridView-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A4C8F5E2C512A02F8B1723552900D289 /* MJGridView-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -41,7 +41,7 @@
 		2F8A349656B52A63B49392D1900F76B6 /* Pods_MJGridView_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MJGridView_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		3574D968AAE2BD97A1BD0CE2DA3C8387 /* LineAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LineAttributes.swift; sourceTree = "<group>"; };
-		3A8C4F138420E30499C00457999FE103 /* LayoutProperties.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LayoutProperties.swift; sourceTree = "<group>"; };
+		3A8C4F138420E30499C00457999FE103 /* LayoutSnapshot.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LayoutSnapshot.swift; sourceTree = "<group>"; };
 		3B330ADBC3C04DC877121F6F89590D14 /* Pods-MJGridView_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MJGridView_Example-umbrella.h"; sourceTree = "<group>"; };
 		41459AE20FE7C46EF9CEFDFE150ED5AE /* Pods-MJGridView_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-MJGridView_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		4C9DC07B087432D513355765C6C8E8E4 /* Pods-MJGridView_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-MJGridView_Example-frameworks.sh"; sourceTree = "<group>"; };
@@ -181,7 +181,7 @@
 			children = (
 				78614736EA0B29D15CBAC072E277C7B0 /* DebugLevel.swift */,
 				7F7D8B1E55D9E22D39A6E03B940511C9 /* GridProperties.swift */,
-				3A8C4F138420E30499C00457999FE103 /* LayoutProperties.swift */,
+				3A8C4F138420E30499C00457999FE103 /* LayoutSnapshot.swift */,
 				3574D968AAE2BD97A1BD0CE2DA3C8387 /* LineAttributes.swift */,
 				DD74EFAE548C744CFF3C8CE5BD4B2959 /* OriginPlacement.swift */,
 			);
@@ -318,7 +318,7 @@
 				622E2B12240456CD00758BE0 /* LineAttributes.swift in Sources */,
 				37B56EAFDAB4011EBA2D8899CBA9A18B /* MJGridView-dummy.m in Sources */,
 				0FB343DA2E940B9CD1E7360A85D3A1F3 /* NoFadeTiledLayer.swift in Sources */,
-				622E2B13240456CF00758BE0 /* LayoutProperties.swift in Sources */,
+				622E2B13240456CF00758BE0 /* LayoutSnapshot.swift in Sources */,
 				622E2B11240456CB00758BE0 /* OriginPlacement.swift in Sources */,
 				622E2B14240456D100758BE0 /* GridProperties.swift in Sources */,
 				9E5431DBFDD6815068F66862F50D322C /* TilingGridView.swift in Sources */,

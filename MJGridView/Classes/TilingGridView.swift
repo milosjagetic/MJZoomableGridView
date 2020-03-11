@@ -25,14 +25,14 @@ open class TilingGridView: UIView
     //  MARK: Private/Internal properties -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     //there are two identical struct bcs of multithreading. Using only one struct will result in exc_bad_access and all manner of weird unexpected stuff. While __layoutProperties is being mutated layoutProperties is used for rendering, once mutated it is assigned to layoutProperties to be used.
-    private var layoutProperties: LayoutProperties
+    private var layoutProperties: LayoutSnapshot
     {
         DispatchQueue.main.sync
         {
             return __layoutProperties
         }
     }
-    private var __layoutProperties: LayoutProperties = .init()
+    private var __layoutProperties: LayoutSnapshot = .init()
     
     private let sideLength: CGFloat = 256
     private var startedRenderingDate: Date = Date()
@@ -69,7 +69,7 @@ open class TilingGridView: UIView
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
     open func drawGrid(_ rect: CGRect, context: CGContext)
     {
-        let layoutProperties: LayoutProperties = LayoutProperties(lastReportedBounds: self.layoutProperties.lastReportedBounds, boundsArea: self.layoutProperties.boundsArea, verticalLineCounts: self.layoutProperties.verticalLineCounts, horizontalLineCounts: self.layoutProperties.horizontalLineCounts, remaindersOnEachEndArray: self.layoutProperties.remaindersOnEachEndArray, lineSpacing: self.layoutProperties.lineSpacing)
+        let layoutProperties: LayoutSnapshot = LayoutSnapshot(lastReportedBounds: self.layoutProperties.lastReportedBounds, boundsArea: self.layoutProperties.boundsArea, verticalLineCounts: self.layoutProperties.verticalLineCounts, horizontalLineCounts: self.layoutProperties.horizontalLineCounts, remaindersOnEachEndArray: self.layoutProperties.remaindersOnEachEndArray, lineSpacing: self.layoutProperties.lineSpacing)
 
         let zoomScale: CGFloat = abs(context.ctm.a) / UIScreen.main.scale
         let adjustedSpacing: CGFloat = layoutProperties.lineSpacing / zoomScale
@@ -82,7 +82,7 @@ open class TilingGridView: UIView
     }
 
     /// axis = horizontal->draw horizontal line
-    private func drawLines(_ axis: NSLayoutConstraint.Axis, rect: CGRect, adjustedSpacing: CGFloat, adjustedLineWidth: CGFloat, context: CGContext, layoutProperties: LayoutProperties)
+    private func drawLines(_ axis: NSLayoutConstraint.Axis, rect: CGRect, adjustedSpacing: CGFloat, adjustedLineWidth: CGFloat, context: CGContext, layoutProperties: LayoutSnapshot)
     {
 
         let isLineHorizontal: Bool = axis == .horizontal
@@ -211,7 +211,7 @@ open class TilingGridView: UIView
         }
     }
     
-    private func drawLabels(in rect: CGRect, coordinate: CGFloat, relativeCoordinate: CGFloat, zoomScale: CGFloat, isDrawingHorizontalLines: Bool, layoutProperties: LayoutProperties)
+    private func drawLabels(in rect: CGRect, coordinate: CGFloat, relativeCoordinate: CGFloat, zoomScale: CGFloat, isDrawingHorizontalLines: Bool, layoutProperties: LayoutSnapshot)
     {
         // skips horiontal axis label for relative coordinate 0, to avoid duplicates
         guard isDrawingHorizontalLines || relativeCoordinate != 0 else {return}
@@ -322,7 +322,7 @@ open class TilingGridView: UIView
         setNeedsDisplay()
     }
     
-    private func originRelativeX(for absoluteLineIndex: UInt, zoomScale: CGFloat, layoutProperties: LayoutProperties) -> CGFloat
+    private func originRelativeX(for absoluteLineIndex: UInt, zoomScale: CGFloat, layoutProperties: LayoutSnapshot) -> CGFloat
     {
         let n: CGFloat = CGFloat(layoutProperties.verticalLineCount(scale: zoomScale))
         let relativeLineIndex: CGFloat
@@ -339,7 +339,7 @@ open class TilingGridView: UIView
         return relativeLineIndex * gridProperties.horizontalScale / zoomScale
     }
     
-    private func originRelativeY(for absoluteLineIndex: UInt, zoomScale: CGFloat, layoutProperties: LayoutProperties) -> CGFloat
+    private func originRelativeY(for absoluteLineIndex: UInt, zoomScale: CGFloat, layoutProperties: LayoutSnapshot) -> CGFloat
     {
         let n: CGFloat = CGFloat(layoutProperties.horizontalLineCount(scale: zoomScale))
         let relativeLineIndex: CGFloat
