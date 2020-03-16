@@ -67,8 +67,8 @@ class ViewController: UIViewController
         spacingChanged(slider: spacingSlider)
         originPlacementChanged(slider: placementSlider)
         
-        gridView.gridProperties.horizontalAxisLabelFormat = "%.4lf"
-        gridView.gridProperties.verticalAxisLabelFormat = "%.4lf"
+        gridView.gridProperties.horizontalAxisLabelFormat = "%.2lf"
+        gridView.gridProperties.verticalAxisLabelFormat = "%.0lf"
 
         gridView.gridProperties.horizontalScale = 10
         gridView.gridProperties.verticalScale = -10

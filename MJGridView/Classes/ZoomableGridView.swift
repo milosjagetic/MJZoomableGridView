@@ -118,7 +118,7 @@ extension ZoomableGridView: UIScrollViewDelegate
 {
     public func viewForZooming(in scrollView: UIScrollView) -> UIView?
     {
-        return gridView
+        return gridContainerView
     }
 }
 
