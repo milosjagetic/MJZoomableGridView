@@ -34,7 +34,7 @@ public struct GridProperties
     public var lineColor: UIColor = .black
     
     /// Spacing between the lines
-    public var pixelsPerLine: UInt = 112
+    public var lineSpacing: UInt = 112
     
     /// Scale of the whole grid. e.g. if `1`, line on the right, next to origin will have value of `1`, the one on the left `-1`. if  `10` then `10` and `-10`. For positive values negative part of the scale is on the left side of origin. If negative value given the scale is reversed.
     public var horizontalScale: CGFloat = 1
@@ -74,7 +74,7 @@ public struct GridProperties
                      verticalAxisAttributes: verticalAxisAttributes,
                      lineWidth: lineWidth,
                      lineColor: lineColor,
-                     pixelsPerLine: pixelsPerLine,
+                     lineSpacing: lineSpacing,
                      horizontalScale: horizontalScale,
                      verticalScale: verticalScale,
                      originPlacement: originPlacement,

@@ -108,10 +108,10 @@ class ViewController: UIViewController
     @IBAction func spacingChanged(slider: UISlider!)
     {
         let value: UInt = UInt(slider.value)
-        guard value != gridView.gridProperties.pixelsPerLine else {return}
+        guard value != gridView.gridProperties.lineSpacing else {return}
         
-        gridView.gridProperties.pixelsPerLine = UInt(slider.value)
-        spacingLabel.text = "Spacing: \(gridView.gridProperties.pixelsPerLine)"
+        gridView.gridProperties.lineSpacing = UInt(slider.value)
+        spacingLabel.text = "Spacing: \(gridView.gridProperties.lineSpacing)"
     }
 
     @IBAction func originPlacementChanged(slider: UISlider!)

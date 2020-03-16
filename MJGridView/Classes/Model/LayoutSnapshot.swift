@@ -15,7 +15,7 @@ internal struct LayoutSnapshot
     private(set) var lastReportedBounds: CGRect = .zero
     private(set) var boundsArea: CGFloat = 0
     
-    var lineSpacing: CGFloat {CGFloat(gridProperties.pixelsPerLine)}
+    var lineSpacing: CGFloat {CGFloat(gridProperties.lineSpacing)}
     
     // TODO: Do something about this Atomic and double proprties voodoo
     @Atomic private(set) var verticalLineCounts: [CGFloat : UInt] = [:]
@@ -79,7 +79,7 @@ internal struct LayoutSnapshot
             let relativeLevel: Double = Double(currentLevel) - Double(zoomOutLevels)
             let zoomScale: CGFloat = CGFloat(pow(2, relativeLevel))
             
-            let pointsPerLine: CGFloat = CGFloat(gridProperties.pixelsPerLine) / zoomScale
+            let pointsPerLine: CGFloat = CGFloat(gridProperties.lineSpacing) / zoomScale
             let targetWidth: CGFloat = lastReportedBounds.width
             let targetHeight: CGFloat = lastReportedBounds.height
             
