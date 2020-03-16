@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'MJGridView'
   s.version          = '0.6.5'
-  s.summary          = 'A short description of MJGridView.'
+  s.summary          = 'A view for displaying a zoomable coordinate grid.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,25 +18,17 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+A view for displaying a zoomable coordinate grid. Grid is rendered with more details as it's zoomed in, or rendered with less details as it's zoomed out.
+Made using `CATiledLayer`. Rendered in a grid of tiles, each tile asynchronously on a separate thread.
                        DESC
 
-  s.homepage         = 'https://github.com/Miloš Jagetić/MJGridView'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
+  s.homepage         = 'https://github.com/milosjagetic/MJZoomableGridView'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Miloš Jagetić' => 'milos.jagetic@gmail.com' }
   s.source           = { :git => 'https://github.com/Miloš Jagetić/MJGridView.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '9.0'
 
   s.source_files = 'MJGridView/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'MJGridView' => ['MJGridView/Assets/*.png']
-  # }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end
