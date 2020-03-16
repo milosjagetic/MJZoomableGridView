@@ -71,22 +71,21 @@ open class TilingGridView: UIView
     {
         let layoutSnapshot: LayoutSnapshot = self.layoutSnapshot.copy()
 
-        let zoomScale: CGFloat = abs(context.ctm.a) / UIScreen.main.scale
+        let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
         let adjustedSpacing: CGFloat = layoutSnapshot.lineSpacing / zoomScale
         
         //maybe attach this to layout properties aswell
         let adjustedLineWidth: CGFloat = layoutSnapshot.gridProperties.lineWidth / zoomScale
         
 
-        [NSLayoutConstraint.Axis.horizontal, .vertical].forEach({drawLines($0, rect: rect, adjustedSpacing: adjustedSpacing, adjustedLineWidth: adjustedLineWidth, context: context, layoutSnapshot: layoutSnapshot)})
+        [NSLayoutConstraint.Axis.horizontal, .vertical].forEach({drawLines($0, rect: rect, zoomScale: zoomScale, adjustedSpacing: adjustedSpacing, adjustedLineWidth: adjustedLineWidth, context: context, layoutSnapshot: layoutSnapshot)})
     }
 
     /// axis = horizontal->draw horizontal line
-    private func drawLines(_ axis: NSLayoutConstraint.Axis, rect: CGRect, adjustedSpacing: CGFloat, adjustedLineWidth: CGFloat, context: CGContext, layoutSnapshot: LayoutSnapshot)
+    private func drawLines(_ axis: NSLayoutConstraint.Axis, rect: CGRect, zoomScale: CGFloat, adjustedSpacing: CGFloat, adjustedLineWidth: CGFloat, context: CGContext, layoutSnapshot: LayoutSnapshot)
     {
         let gridProperties: GridProperties = layoutSnapshot.gridProperties
         let isLineHorizontal: Bool = axis == .horizontal
-        let zoomScale: CGFloat = context.ctm.a / UIScreen.main.scale
         let originPlacement: OriginPlacement = gridProperties.originPlacement
         
         //end cases are cases where origin is at the other end (right / bottom depending on the axis). in these cases we shift rendering by a linewidth to make them renderable. not shifting would cause rendering outside bounds
@@ -175,6 +174,7 @@ open class TilingGridView: UIView
             switch originPlacement
             {
             case .topCenter, .center, .bottomCenter: relativePhaseOffset = -(attributes?.dashOffsetWhenCentered ?? 0)
+            case .custom(let point): relativePhaseOffset = -point.x + (attributes?.dashes.reduce(0, {$0 + $1}) ?? 0) / 2
             default: relativePhaseOffset = 0
             }
         }
@@ -183,6 +183,7 @@ open class TilingGridView: UIView
             switch originPlacement
             {
             case .centerLeft, .center, .centerRight: relativePhaseOffset = -(attributes?.dashOffsetWhenCentered ?? 0)
+            case .custom(let point): relativePhaseOffset = -point.y  + (attributes?.dashes.reduce(0, {$0 + $1}) ?? 0) / 2
             default: relativePhaseOffset = 0
             }
         }
@@ -335,8 +336,8 @@ open class TilingGridView: UIView
     {
         guard let layer = self.layer as? NoFadeTiledLayer else {return}
         
-        let zoomInLevelsOfDetail: Int = Int(ceil(log2(maxZoom)))
-        let zoomOutLevelsOfDetail: Int = Int(ceil(abs(log2(minZoom))))
+        let zoomInLevelsOfDetail: Int = Int(floor(log2(maxZoom)))
+        let zoomOutLevelsOfDetail: Int = Int(floor(abs(log2(minZoom))))
         
         layer.levelsOfDetail = zoomInLevelsOfDetail + zoomOutLevelsOfDetail + 1
         layer.levelsOfDetailBias = zoomInLevelsOfDetail
