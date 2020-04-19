@@ -19,7 +19,7 @@ Made using `CATiledLayer`. Rendered in a grid of tiles, each tile asynchronously
   s.homepage         = 'https://github.com/milosjagetic/MJZoomableGridView'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Miloš Jagetić' => 'milos.jagetic@gmail.com' }
-  s.source           = { :git => 'https://github.com/Miloš Jagetić/MJGridView.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/milosjagetic/MJZoomableGridView.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '9.0'
   s.swift_versions   = '5.0'
