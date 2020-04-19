@@ -37,6 +37,8 @@ Made using `CATiledLayer`. Rendered in a grid of tiles, each tile asynchronously
   <img src="readme/origin3.jpg" width=33% /> 
 </p>
 
+![zoom/scrool](readme/zoomTrimmed.gif)
+
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
