@@ -1,5 +1,5 @@
 PODS:
-  - MJGridView (0.6.5)
+  - MJGridView (0.6.6)
 
 DEPENDENCIES:
   - MJGridView (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  MJGridView: 1323053624e4247d752db1b6fbbc21fad5da2d39
+  MJGridView: 717d3f52db6a9e3ddcb1ff26771f8c9b0137749d
 
 PODFILE CHECKSUM: 5498c0eb36951c29d36518e28e0f5100b19cdd1b
 
