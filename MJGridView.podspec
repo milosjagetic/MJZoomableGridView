@@ -7,7 +7,7 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'MJGridView'
+  s.name             = 'MJZoomableCoordinateView'
   s.version          = '0.6.6'
   s.summary          = 'A view for displaying a zoomable coordinate grid.'
 
