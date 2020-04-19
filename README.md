@@ -1,6 +1,5 @@
 # MJGridView
 
-[![CI Status](https://img.shields.io/travis/Miloš Jagetić/MJGridView.svg?style=flat)](https://travis-ci.org/Miloš Jagetić/MJGridView)
 [![Version](https://img.shields.io/cocoapods/v/MJGridView.svg?style=flat)](https://cocoapods.org/pods/MJGridView)
 [![License](https://img.shields.io/cocoapods/l/MJGridView.svg?style=flat)](https://cocoapods.org/pods/MJGridView)
 [![Platform](https://img.shields.io/cocoapods/p/MJGridView.svg?style=flat)](https://cocoapods.org/pods/MJGridView)
@@ -27,11 +26,20 @@ Made using `CATiledLayer`. Rendered in a grid of tiles, each tile asynchronously
 - Customize via `gridProperties` (See `GridProperties` documentation for more details), `minimumZoomScale` and `maximumZoomScale`.
 - Zoom your own views alongside the grid view by adding them to `gridContainerView`
 
+## Some Examples
+<p float="center">
+  <img src="readme/spacing1.jpg" width=49% />
+  <img src="readme/spacing2.jpg" width=49% /> 
+</p>
+<p float="center">
+  <img src="readme/origin1.jpg" width=33% />
+  <img src="readme/origin2.jpg" width=33% /> 
+  <img src="readme/origin3.jpg" width=33% /> 
+</p>
+
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
-
-## Requirements
 
 ## Installation
 
