@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import MJGridView
+import MJZoomableCoordinateView
 
 extension OriginPlacement
 {

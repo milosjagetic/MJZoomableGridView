@@ -7,151 +7,129 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		007D4965CAB8310362171EF652C9F85B /* GridProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE64A472C6E334ED3D31B0CE7A9DE10 /* GridProperties.swift */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		0DD87302DF1869B18AEF61B52C50AFF7 /* Pods-MJGridView_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DB59F42309A5147572116646D36530 /* Pods-MJGridView_Example-dummy.m */; };
-		161362FED18D360998465AEE1ED33077 /* Pods-MJGridView_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B330ADBC3C04DC877121F6F89590D14 /* Pods-MJGridView_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		468824B21F3F525E48E1F6904E8A47AF /* TilingGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9E03F128E542D1AE1C88AF29E1C7BE /* TilingGridView.swift */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		5350B4505E48B46F712286DBAE0D19EF /* LineAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2966CA2A9AFF1A81F68C09613B698A1 /* LineAttributes.swift */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		5D90F20111CE2272F30D4A187C1C3751 /* MJGridView-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BF906913A4EE80F6BEEA9CFA70CAFD0D /* MJGridView-dummy.m */; };
-		6DAA573BD87A6228ED2691A12224FADB /* NoFadeTiledLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923CFCA2ABB59AE4A16628FAA0BEE552 /* NoFadeTiledLayer.swift */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		73188D6CAC48050A6911F0433E888083 /* ZoomableGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F12E3D7C872BF6C0235719593B3062 /* ZoomableGridView.swift */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		7A8BC13455DE6E1DD8D60A4D7A2E79EE /* LayoutSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A87A6DAE1C1D21CE8C6EE051E3DB2A /* LayoutSnapshot.swift */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		8A9DEF6D0DFBB0866FCF6BB46743BC38 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
-		951625214A10E38A1542A40699BE501A /* DebugLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B078AE51B74E6ACFCFD5F01FCC0AB /* DebugLevel.swift */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		9DBED1B62C7C54831D1BE1B9208F0083 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
-		A4E2ED486AB4A916BFA15F4E3E75CB1C /* MJGridView-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B5E6ABAED43B587AE87F91672D9982CC /* MJGridView-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B1263EAA01CC7A7A325A04ED41EF6923 /* OriginPlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD2E308E6B87B27C0067275B95560FF /* OriginPlacement.swift */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		08B368BDA46E60CBFF9AD4F67BD1B7CF /* LineAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69303A81EC52AF6C6DA137B394EE205 /* LineAttributes.swift */; };
+		0940AAD82C56464C3E31486F2321676B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
+		2E48A1CF7B5B59C0AD36DF44590D0073 /* Pods-MJGridView_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B330ADBC3C04DC877121F6F89590D14 /* Pods-MJGridView_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2FDF2F166C8E30BC3FE291C9579A18DF /* LayoutSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = F392B54415733194A08E654BBB761CE8 /* LayoutSnapshot.swift */; };
+		30127795D4B4F455D40412C30A262943 /* Pods-MJGridView_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DB59F42309A5147572116646D36530 /* Pods-MJGridView_Example-dummy.m */; };
+		43F68F52B7DF5A60D352B5E32D8C401E /* ZoomableGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A005E8B3DDAB82349220B00B22AB67 /* ZoomableGridView.swift */; };
+		5F83EBE5682089C4D4FEEDB4AAC6A832 /* NoFadeTiledLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD1AB38CD9215F52B8D72AA843A21C7 /* NoFadeTiledLayer.swift */; };
+		7D049526C3C8B161087F7F75128D4328 /* GridProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CB9393EDA9554B9CAF9DF36F13EE6B /* GridProperties.swift */; };
+		8A8E4939CBA3E30ADAA836E56A38C4AE /* MJZoomableCoordinateView-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C7B7C4C369FBAC43A7A0E82B1B80D5E /* MJZoomableCoordinateView-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		94B8939831E63CB05798A727335432B2 /* TilingGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5DA55D6B5A80AD4D035AD950100246 /* TilingGridView.swift */; };
+		9A5B08481E1CE221385754B43C5B04C1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
+		C542E62F58A62624FB458464563EB907 /* DebugLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F16563D27CB00DBC427C61D741AE93 /* DebugLevel.swift */; };
+		C851E0FFA57C3A2F3B831F47FEBCE40F /* MJZoomableCoordinateView-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9A299FEF32D3D9D75B4578A1847C16 /* MJZoomableCoordinateView-dummy.m */; };
+		F0B8EC7550E9AC38968A3F81E8636DAB /* OriginPlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06951B76080B54D42AF9BFCFACB4BBD4 /* OriginPlacement.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		8290AA00AFF34D01EA71DD7F4D5A7C9C /* PBXContainerItemProxy */ = {
+		15F01E0604484EAF55E5FD1BFE4ED595 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 560127987E1F2E5E748FE4B32C1EF274;
-			remoteInfo = MJGridView;
+			remoteGlobalIDString = 6EFB8E1608D3CE6FB55E2282A6490C8C;
+			remoteInfo = MJZoomableCoordinateView;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		06951B76080B54D42AF9BFCFACB4BBD4 /* OriginPlacement.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OriginPlacement.swift; sourceTree = "<group>"; };
+		0ED50BFAAE27EF91B22CBBC89402A935 /* MJZoomableCoordinateView.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = MJZoomableCoordinateView.modulemap; sourceTree = "<group>"; };
 		12E2BFCAF0E8E37ECD7A80BB82EA5519 /* Pods-MJGridView_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-MJGridView_Example-acknowledgements.plist"; sourceTree = "<group>"; };
-		22A87A6DAE1C1D21CE8C6EE051E3DB2A /* LayoutSnapshot.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LayoutSnapshot.swift; sourceTree = "<group>"; };
-		2B8BE060657E6C96C8B699F1DE0B66EA /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		13326D1D934EB6215D053AFF8BE95C28 /* MJZoomableCoordinateView-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "MJZoomableCoordinateView-Info.plist"; sourceTree = "<group>"; };
+		16CAC7FEAAE3F09A2C714841CCECB010 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
 		2F8A349656B52A63B49392D1900F76B6 /* Pods_MJGridView_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_MJGridView_Example.framework; path = "Pods-MJGridView_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		34A9B55E8A882C706C280A05D64259AC /* MJZoomableCoordinateView.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = MJZoomableCoordinateView.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		39A005E8B3DDAB82349220B00B22AB67 /* ZoomableGridView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZoomableGridView.swift; path = MJGridView/Classes/ZoomableGridView.swift; sourceTree = "<group>"; };
 		3B330ADBC3C04DC877121F6F89590D14 /* Pods-MJGridView_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MJGridView_Example-umbrella.h"; sourceTree = "<group>"; };
+		3BD1AB38CD9215F52B8D72AA843A21C7 /* NoFadeTiledLayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NoFadeTiledLayer.swift; path = MJGridView/Classes/NoFadeTiledLayer.swift; sourceTree = "<group>"; };
 		41459AE20FE7C46EF9CEFDFE150ED5AE /* Pods-MJGridView_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-MJGridView_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
-		41B3E74570802C7F3F834B99BBE5920B /* MJGridView-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "MJGridView-Info.plist"; sourceTree = "<group>"; };
+		4484789B9C46D23C13623BA7DDB2F462 /* MJZoomableCoordinateView.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MJZoomableCoordinateView.xcconfig; sourceTree = "<group>"; };
 		4C9DC07B087432D513355765C6C8E8E4 /* Pods-MJGridView_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-MJGridView_Example-frameworks.sh"; sourceTree = "<group>"; };
 		4CCDCF6F14D325721FA0BDF906036B43 /* Pods-MJGridView_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-MJGridView_Example-Info.plist"; sourceTree = "<group>"; };
+		52D045BDAB7970D7073C9460BF6D215E /* MJZoomableCoordinateView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = MJZoomableCoordinateView.framework; path = MJZoomableCoordinateView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		53DB59F42309A5147572116646D36530 /* Pods-MJGridView_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MJGridView_Example-dummy.m"; sourceTree = "<group>"; };
 		6B4E65E3D733646C3200BD3CCA4E958B /* Pods-MJGridView_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-MJGridView_Example.modulemap"; sourceTree = "<group>"; };
-		923CFCA2ABB59AE4A16628FAA0BEE552 /* NoFadeTiledLayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NoFadeTiledLayer.swift; path = MJGridView/Classes/NoFadeTiledLayer.swift; sourceTree = "<group>"; };
-		9B56BACDE267568F0F2E7B54EDB6CF65 /* MJGridView.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MJGridView.xcconfig; sourceTree = "<group>"; };
+		6B9A299FEF32D3D9D75B4578A1847C16 /* MJZoomableCoordinateView-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MJZoomableCoordinateView-dummy.m"; sourceTree = "<group>"; };
+		6C7B7C4C369FBAC43A7A0E82B1B80D5E /* MJZoomableCoordinateView-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MJZoomableCoordinateView-umbrella.h"; sourceTree = "<group>"; };
+		7E07CC7D6A4A9BE6A2AB170612AC88A3 /* MJZoomableCoordinateView-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MJZoomableCoordinateView-prefix.pch"; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A6A158376279AEBA1A4276C0C0BD9F94 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
 		A8E3F00086D7C673067EEB4E6BA1D0BD /* Pods-MJGridView_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MJGridView_Example.release.xcconfig"; sourceTree = "<group>"; };
-		A9B3EFB0DF53E2B7E93F5DD35A9618AF /* MJGridView.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = MJGridView.modulemap; sourceTree = "<group>"; };
-		B3F12E3D7C872BF6C0235719593B3062 /* ZoomableGridView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ZoomableGridView.swift; path = MJGridView/Classes/ZoomableGridView.swift; sourceTree = "<group>"; };
-		B5E6ABAED43B587AE87F91672D9982CC /* MJGridView-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MJGridView-umbrella.h"; sourceTree = "<group>"; };
-		BA9E03F128E542D1AE1C88AF29E1C7BE /* TilingGridView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TilingGridView.swift; path = MJGridView/Classes/TilingGridView.swift; sourceTree = "<group>"; };
 		BBCBF21882849EDD7333C02C473C9147 /* Pods-MJGridView_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MJGridView_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		BCD2E308E6B87B27C0067275B95560FF /* OriginPlacement.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OriginPlacement.swift; sourceTree = "<group>"; };
-		BCE64A472C6E334ED3D31B0CE7A9DE10 /* GridProperties.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GridProperties.swift; sourceTree = "<group>"; };
-		BF906913A4EE80F6BEEA9CFA70CAFD0D /* MJGridView-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MJGridView-dummy.m"; sourceTree = "<group>"; };
-		C2966CA2A9AFF1A81F68C09613B698A1 /* LineAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LineAttributes.swift; sourceTree = "<group>"; };
-		DB9B078AE51B74E6ACFCFD5F01FCC0AB /* DebugLevel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DebugLevel.swift; sourceTree = "<group>"; };
-		E20EFA7EEF80472B65951CBFE0AC2524 /* MJGridView-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MJGridView-prefix.pch"; sourceTree = "<group>"; };
-		E6AE1AB6DC65D674361C8B38F78BD568 /* MJGridView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = MJGridView.framework; path = MJGridView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F5A9393A09989AE948286CA90F2A400F /* MJGridView.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = MJGridView.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		C69303A81EC52AF6C6DA137B394EE205 /* LineAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LineAttributes.swift; sourceTree = "<group>"; };
+		C8CB9393EDA9554B9CAF9DF36F13EE6B /* GridProperties.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GridProperties.swift; sourceTree = "<group>"; };
+		DE5DA55D6B5A80AD4D035AD950100246 /* TilingGridView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TilingGridView.swift; path = MJGridView/Classes/TilingGridView.swift; sourceTree = "<group>"; };
+		F392B54415733194A08E654BBB761CE8 /* LayoutSnapshot.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LayoutSnapshot.swift; sourceTree = "<group>"; };
+		F9F16563D27CB00DBC427C61D741AE93 /* DebugLevel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DebugLevel.swift; sourceTree = "<group>"; };
+		FB9528A1EA0155293B6AEE69230C93F9 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		5BA22DA8FA3B27644C97AA56FD52B064 /* Frameworks */ = {
+		C52704C88D3002A3338AFF0919CD93EA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8A9DEF6D0DFBB0866FCF6BB46743BC38 /* Foundation.framework in Frameworks */,
+				0940AAD82C56464C3E31486F2321676B /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DC71EC77DCF46D74E1FF503F0EF412E4 /* Frameworks */ = {
+		CE6088FBB1BE9B5DB960E975E0D33D0C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DBED1B62C7C54831D1BE1B9208F0083 /* Foundation.framework in Frameworks */,
+				9A5B08481E1CE221385754B43C5B04C1 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0B9D7BFEDB1ACF6F1AF19429BEDDCD4C /* Support Files */ = {
+		38A535E1D0AD6AB25D5F4E648D069644 /* MJZoomableCoordinateView */ = {
 			isa = PBXGroup;
 			children = (
-				A9B3EFB0DF53E2B7E93F5DD35A9618AF /* MJGridView.modulemap */,
-				9B56BACDE267568F0F2E7B54EDB6CF65 /* MJGridView.xcconfig */,
-				BF906913A4EE80F6BEEA9CFA70CAFD0D /* MJGridView-dummy.m */,
-				41B3E74570802C7F3F834B99BBE5920B /* MJGridView-Info.plist */,
-				E20EFA7EEF80472B65951CBFE0AC2524 /* MJGridView-prefix.pch */,
-				B5E6ABAED43B587AE87F91672D9982CC /* MJGridView-umbrella.h */,
+				3BD1AB38CD9215F52B8D72AA843A21C7 /* NoFadeTiledLayer.swift */,
+				DE5DA55D6B5A80AD4D035AD950100246 /* TilingGridView.swift */,
+				39A005E8B3DDAB82349220B00B22AB67 /* ZoomableGridView.swift */,
+				A6C814412ED7E52922AACBAEF303C102 /* Model */,
+				81C569795A2F374EB1306346CAC8D91A /* Pod */,
+				E6185B7B3D9B1DD00371056170F0AFC7 /* Support Files */,
 			);
-			name = "Support Files";
-			path = "Example/Pods/Target Support Files/MJGridView";
+			name = MJZoomableCoordinateView;
+			path = ../..;
 			sourceTree = "<group>";
 		};
-		1335A2ABAADB3BA23A917059DAEB8E27 /* Model */ = {
+		51B1BED6F6E90C248E77062418C54D8C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DB9B078AE51B74E6ACFCFD5F01FCC0AB /* DebugLevel.swift */,
-				BCE64A472C6E334ED3D31B0CE7A9DE10 /* GridProperties.swift */,
-				22A87A6DAE1C1D21CE8C6EE051E3DB2A /* LayoutSnapshot.swift */,
-				C2966CA2A9AFF1A81F68C09613B698A1 /* LineAttributes.swift */,
-				BCD2E308E6B87B27C0067275B95560FF /* OriginPlacement.swift */,
-			);
-			name = Model;
-			path = MJGridView/Classes/Model;
-			sourceTree = "<group>";
-		};
-		5ED8C7F8D89928C59E8976835BF8A444 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				E6AE1AB6DC65D674361C8B38F78BD568 /* MJGridView.framework */,
+				52D045BDAB7970D7073C9460BF6D215E /* MJZoomableCoordinateView.framework */,
 				2F8A349656B52A63B49392D1900F76B6 /* Pods_MJGridView_Example.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		6D47F89BB3168369488C674DF2A91238 /* Pod */ = {
+		81C569795A2F374EB1306346CAC8D91A /* Pod */ = {
 			isa = PBXGroup;
 			children = (
-				2B8BE060657E6C96C8B699F1DE0B66EA /* LICENSE */,
-				F5A9393A09989AE948286CA90F2A400F /* MJGridView.podspec */,
-				A6A158376279AEBA1A4276C0C0BD9F94 /* README.md */,
+				FB9528A1EA0155293B6AEE69230C93F9 /* LICENSE */,
+				34A9B55E8A882C706C280A05D64259AC /* MJZoomableCoordinateView.podspec */,
+				16CAC7FEAAE3F09A2C714841CCECB010 /* README.md */,
 			);
 			name = Pod;
 			sourceTree = "<group>";
 		};
-		80ED0944F4975C2D406E64C232F1CF94 /* Development Pods */ = {
+		A6C814412ED7E52922AACBAEF303C102 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				964F6B6302C22B94507BFFDB50B90BE2 /* MJGridView */,
+				F9F16563D27CB00DBC427C61D741AE93 /* DebugLevel.swift */,
+				C8CB9393EDA9554B9CAF9DF36F13EE6B /* GridProperties.swift */,
+				F392B54415733194A08E654BBB761CE8 /* LayoutSnapshot.swift */,
+				C69303A81EC52AF6C6DA137B394EE205 /* LineAttributes.swift */,
+				06951B76080B54D42AF9BFCFACB4BBD4 /* OriginPlacement.swift */,
 			);
-			name = "Development Pods";
-			sourceTree = "<group>";
-		};
-		964F6B6302C22B94507BFFDB50B90BE2 /* MJGridView */ = {
-			isa = PBXGroup;
-			children = (
-				923CFCA2ABB59AE4A16628FAA0BEE552 /* NoFadeTiledLayer.swift */,
-				BA9E03F128E542D1AE1C88AF29E1C7BE /* TilingGridView.swift */,
-				B3F12E3D7C872BF6C0235719593B3062 /* ZoomableGridView.swift */,
-				1335A2ABAADB3BA23A917059DAEB8E27 /* Model */,
-				6D47F89BB3168369488C674DF2A91238 /* Pod */,
-				0B9D7BFEDB1ACF6F1AF19429BEDDCD4C /* Support Files */,
-			);
-			name = MJGridView;
-			path = ../..;
+			name = Model;
+			path = MJGridView/Classes/Model;
 			sourceTree = "<group>";
 		};
 		AEE9741FA6B2BA829A10D919BD18C0D9 /* Targets Support Files */ = {
@@ -160,6 +138,14 @@
 				F427565DBDE80EF1318FDFAC17B78DCE /* Pods-MJGridView_Example */,
 			);
 			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		BAB05481F69CFE87763BA803801F033E /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				38A535E1D0AD6AB25D5F4E648D069644 /* MJZoomableCoordinateView */,
+			);
+			name = "Development Pods";
 			sourceTree = "<group>";
 		};
 		C0834CEBB1379A84116EF29F93051C60 /* iOS */ = {
@@ -174,9 +160,9 @@
 			isa = PBXGroup;
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
-				80ED0944F4975C2D406E64C232F1CF94 /* Development Pods */,
+				BAB05481F69CFE87763BA803801F033E /* Development Pods */,
 				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
-				5ED8C7F8D89928C59E8976835BF8A444 /* Products */,
+				51B1BED6F6E90C248E77062418C54D8C /* Products */,
 				AEE9741FA6B2BA829A10D919BD18C0D9 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
@@ -187,6 +173,20 @@
 				C0834CEBB1379A84116EF29F93051C60 /* iOS */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E6185B7B3D9B1DD00371056170F0AFC7 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				0ED50BFAAE27EF91B22CBBC89402A935 /* MJZoomableCoordinateView.modulemap */,
+				4484789B9C46D23C13623BA7DDB2F462 /* MJZoomableCoordinateView.xcconfig */,
+				6B9A299FEF32D3D9D75B4578A1847C16 /* MJZoomableCoordinateView-dummy.m */,
+				13326D1D934EB6215D053AFF8BE95C28 /* MJZoomableCoordinateView-Info.plist */,
+				7E07CC7D6A4A9BE6A2AB170612AC88A3 /* MJZoomableCoordinateView-prefix.pch */,
+				6C7B7C4C369FBAC43A7A0E82B1B80D5E /* MJZoomableCoordinateView-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "Example/Pods/Target Support Files/MJZoomableCoordinateView";
 			sourceTree = "<group>";
 		};
 		F427565DBDE80EF1318FDFAC17B78DCE /* Pods-MJGridView_Example */ = {
@@ -209,19 +209,19 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		912AFB1A17007874ED9C676CDE4A5FE2 /* Headers */ = {
+		5FD7F5CEC49A4FBE558FF98EA8A4F0B3 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				161362FED18D360998465AEE1ED33077 /* Pods-MJGridView_Example-umbrella.h in Headers */,
+				8A8E4939CBA3E30ADAA836E56A38C4AE /* MJZoomableCoordinateView-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9A51D7B7727AC72706BEC21341628A03 /* Headers */ = {
+		B1DEC24104531FA5611A28A78A59C680 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A4E2ED486AB4A916BFA15F4E3E75CB1C /* MJGridView-umbrella.h in Headers */,
+				2E48A1CF7B5B59C0AD36DF44590D0073 /* Pods-MJGridView_Example-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,39 +230,39 @@
 /* Begin PBXNativeTarget section */
 		25EC66E40EE903260C9E6B0ADB956FE0 /* Pods-MJGridView_Example */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2EEA51DC82035AED1035EDAE7065195F /* Build configuration list for PBXNativeTarget "Pods-MJGridView_Example" */;
+			buildConfigurationList = A8F2B435799B36E55B66B9BC28872F3F /* Build configuration list for PBXNativeTarget "Pods-MJGridView_Example" */;
 			buildPhases = (
-				912AFB1A17007874ED9C676CDE4A5FE2 /* Headers */,
-				A977315C0B156C74D76D128CBCD0D135 /* Sources */,
-				5BA22DA8FA3B27644C97AA56FD52B064 /* Frameworks */,
-				BD74CB66E391F1481424D53B9DA72734 /* Resources */,
+				B1DEC24104531FA5611A28A78A59C680 /* Headers */,
+				6E3FA22901ADC92CCEC63DED10CA669E /* Sources */,
+				C52704C88D3002A3338AFF0919CD93EA /* Frameworks */,
+				917B7A51E3BDB6D349395DAEFAB0FA11 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				4D6C9AB4DCAA8A5E39455477B3C1D63A /* PBXTargetDependency */,
+				5541A11346D5FEC81DE7F921DD215193 /* PBXTargetDependency */,
 			);
 			name = "Pods-MJGridView_Example";
 			productName = "Pods-MJGridView_Example";
 			productReference = 2F8A349656B52A63B49392D1900F76B6 /* Pods_MJGridView_Example.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		560127987E1F2E5E748FE4B32C1EF274 /* MJGridView */ = {
+		6EFB8E1608D3CE6FB55E2282A6490C8C /* MJZoomableCoordinateView */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AD911F8FA3E41C4C43F56680AFAD78AE /* Build configuration list for PBXNativeTarget "MJGridView" */;
+			buildConfigurationList = 8BE5F3EEFE0B310F53E26EB72D7EBE8D /* Build configuration list for PBXNativeTarget "MJZoomableCoordinateView" */;
 			buildPhases = (
-				9A51D7B7727AC72706BEC21341628A03 /* Headers */,
-				18F035CC53947F2E58139867FF9287F9 /* Sources */,
-				DC71EC77DCF46D74E1FF503F0EF412E4 /* Frameworks */,
-				C1305C0A028E7092FABE7B269EC9908B /* Resources */,
+				5FD7F5CEC49A4FBE558FF98EA8A4F0B3 /* Headers */,
+				D81CBEFE7C5122DB6B4A19CCA2250B85 /* Sources */,
+				CE6088FBB1BE9B5DB960E975E0D33D0C /* Frameworks */,
+				A26292D4401966D98987D930B9CFED44 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = MJGridView;
-			productName = MJGridView;
-			productReference = E6AE1AB6DC65D674361C8B38F78BD568 /* MJGridView.framework */;
+			name = MJZoomableCoordinateView;
+			productName = MJZoomableCoordinateView;
+			productReference = 52D045BDAB7970D7073C9460BF6D215E /* MJZoomableCoordinateView.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -282,25 +282,25 @@
 				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
-			productRefGroup = 5ED8C7F8D89928C59E8976835BF8A444 /* Products */;
+			productRefGroup = 51B1BED6F6E90C248E77062418C54D8C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				560127987E1F2E5E748FE4B32C1EF274 /* MJGridView */,
+				6EFB8E1608D3CE6FB55E2282A6490C8C /* MJZoomableCoordinateView */,
 				25EC66E40EE903260C9E6B0ADB956FE0 /* Pods-MJGridView_Example */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		BD74CB66E391F1481424D53B9DA72734 /* Resources */ = {
+		917B7A51E3BDB6D349395DAEFAB0FA11 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C1305C0A028E7092FABE7B269EC9908B /* Resources */ = {
+		A26292D4401966D98987D930B9CFED44 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -310,75 +310,43 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		18F035CC53947F2E58139867FF9287F9 /* Sources */ = {
+		6E3FA22901ADC92CCEC63DED10CA669E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				951625214A10E38A1542A40699BE501A /* DebugLevel.swift in Sources */,
-				007D4965CAB8310362171EF652C9F85B /* GridProperties.swift in Sources */,
-				7A8BC13455DE6E1DD8D60A4D7A2E79EE /* LayoutSnapshot.swift in Sources */,
-				5350B4505E48B46F712286DBAE0D19EF /* LineAttributes.swift in Sources */,
-				5D90F20111CE2272F30D4A187C1C3751 /* MJGridView-dummy.m in Sources */,
-				6DAA573BD87A6228ED2691A12224FADB /* NoFadeTiledLayer.swift in Sources */,
-				B1263EAA01CC7A7A325A04ED41EF6923 /* OriginPlacement.swift in Sources */,
-				468824B21F3F525E48E1F6904E8A47AF /* TilingGridView.swift in Sources */,
-				73188D6CAC48050A6911F0433E888083 /* ZoomableGridView.swift in Sources */,
+				30127795D4B4F455D40412C30A262943 /* Pods-MJGridView_Example-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A977315C0B156C74D76D128CBCD0D135 /* Sources */ = {
+		D81CBEFE7C5122DB6B4A19CCA2250B85 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0DD87302DF1869B18AEF61B52C50AFF7 /* Pods-MJGridView_Example-dummy.m in Sources */,
+				C542E62F58A62624FB458464563EB907 /* DebugLevel.swift in Sources */,
+				7D049526C3C8B161087F7F75128D4328 /* GridProperties.swift in Sources */,
+				2FDF2F166C8E30BC3FE291C9579A18DF /* LayoutSnapshot.swift in Sources */,
+				08B368BDA46E60CBFF9AD4F67BD1B7CF /* LineAttributes.swift in Sources */,
+				C851E0FFA57C3A2F3B831F47FEBCE40F /* MJZoomableCoordinateView-dummy.m in Sources */,
+				5F83EBE5682089C4D4FEEDB4AAC6A832 /* NoFadeTiledLayer.swift in Sources */,
+				F0B8EC7550E9AC38968A3F81E8636DAB /* OriginPlacement.swift in Sources */,
+				94B8939831E63CB05798A727335432B2 /* TilingGridView.swift in Sources */,
+				43F68F52B7DF5A60D352B5E32D8C401E /* ZoomableGridView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		4D6C9AB4DCAA8A5E39455477B3C1D63A /* PBXTargetDependency */ = {
+		5541A11346D5FEC81DE7F921DD215193 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = MJGridView;
-			target = 560127987E1F2E5E748FE4B32C1EF274 /* MJGridView */;
-			targetProxy = 8290AA00AFF34D01EA71DD7F4D5A7C9C /* PBXContainerItemProxy */;
+			name = MJZoomableCoordinateView;
+			target = 6EFB8E1608D3CE6FB55E2282A6490C8C /* MJZoomableCoordinateView */;
+			targetProxy = 15F01E0604484EAF55E5FD1BFE4ED595 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		0D7E6D440890914680DE9920C63784C9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9B56BACDE267568F0F2E7B54EDB6CF65 /* MJGridView.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/MJGridView/MJGridView-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/MJGridView/MJGridView-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/MJGridView/MJGridView.modulemap";
-				PRODUCT_MODULE_NAME = MJGridView;
-				PRODUCT_NAME = MJGridView;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		1618663CC8D98EE56D0C5C29CB270486 /* Debug */ = {
+		0F9AB4071D118D1504552B4326268838 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BBCBF21882849EDD7333C02C473C9147 /* Pods-MJGridView_Example.debug.xcconfig */;
 			buildSettings = {
@@ -411,38 +379,7 @@
 			};
 			name = Debug;
 		};
-		73BD82CE0A8738A52DDF25EA57EC46EF /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9B56BACDE267568F0F2E7B54EDB6CF65 /* MJGridView.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/MJGridView/MJGridView-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/MJGridView/MJGridView-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/MJGridView/MJGridView.modulemap";
-				PRODUCT_MODULE_NAME = MJGridView;
-				PRODUCT_NAME = MJGridView;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		7449F8A013EF87277798AF7FC65AE2D1 /* Release */ = {
+		5C954DBAAC7D6CF1128B8F5B6CAE0B84 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A8E3F00086D7C673067EEB4E6BA1D0BD /* Pods-MJGridView_Example.release.xcconfig */;
 			buildSettings = {
@@ -469,6 +406,38 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		A04F51753B4AFC3190FF1BD2E31B7FC2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4484789B9C46D23C13623BA7DDB2F462 /* MJZoomableCoordinateView.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/MJZoomableCoordinateView/MJZoomableCoordinateView-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/MJZoomableCoordinateView/MJZoomableCoordinateView-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/MJZoomableCoordinateView/MJZoomableCoordinateView.modulemap";
+				PRODUCT_MODULE_NAME = MJZoomableCoordinateView;
+				PRODUCT_NAME = MJZoomableCoordinateView;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -600,18 +569,40 @@
 			};
 			name = Debug;
 		};
+		E4761CEB196590D32927C6356D395703 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4484789B9C46D23C13623BA7DDB2F462 /* MJZoomableCoordinateView.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/MJZoomableCoordinateView/MJZoomableCoordinateView-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/MJZoomableCoordinateView/MJZoomableCoordinateView-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/MJZoomableCoordinateView/MJZoomableCoordinateView.modulemap";
+				PRODUCT_MODULE_NAME = MJZoomableCoordinateView;
+				PRODUCT_NAME = MJZoomableCoordinateView;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2EEA51DC82035AED1035EDAE7065195F /* Build configuration list for PBXNativeTarget "Pods-MJGridView_Example" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1618663CC8D98EE56D0C5C29CB270486 /* Debug */,
-				7449F8A013EF87277798AF7FC65AE2D1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -621,11 +612,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AD911F8FA3E41C4C43F56680AFAD78AE /* Build configuration list for PBXNativeTarget "MJGridView" */ = {
+		8BE5F3EEFE0B310F53E26EB72D7EBE8D /* Build configuration list for PBXNativeTarget "MJZoomableCoordinateView" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				73BD82CE0A8738A52DDF25EA57EC46EF /* Debug */,
-				0D7E6D440890914680DE9920C63784C9 /* Release */,
+				E4761CEB196590D32927C6356D395703 /* Debug */,
+				A04F51753B4AFC3190FF1BD2E31B7FC2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A8F2B435799B36E55B66B9BC28872F3F /* Build configuration list for PBXNativeTarget "Pods-MJGridView_Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0F9AB4071D118D1504552B4326268838 /* Debug */,
+				5C954DBAAC7D6CF1128B8F5B6CAE0B84 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

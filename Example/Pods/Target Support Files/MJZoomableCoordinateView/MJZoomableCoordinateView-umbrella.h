@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double MJGridViewVersionNumber;
-FOUNDATION_EXPORT const unsigned char MJGridViewVersionString[];
+FOUNDATION_EXPORT double MJZoomableCoordinateViewVersionNumber;
+FOUNDATION_EXPORT const unsigned char MJZoomableCoordinateViewVersionString[];
 

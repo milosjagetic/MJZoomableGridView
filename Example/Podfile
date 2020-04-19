@@ -1,6 +1,6 @@
 use_frameworks!
 
 target 'MJGridView_Example' do
-  pod 'MJGridView', :path => '../'
+  pod 'MJZoomableCoordinateView', :path => '../'
 
 end

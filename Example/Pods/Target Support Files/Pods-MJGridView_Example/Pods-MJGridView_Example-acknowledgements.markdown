@@ -1,7 +1,7 @@
 # Acknowledgements
 This application makes use of the following third party libraries:
 
-## MJGridView
+## MJZoomableCoordinateView
 
 Copyright (c) 2019 Miloš Jagetić <milos.jagetic@gmail.com>
 
