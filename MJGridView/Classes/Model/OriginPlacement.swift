@@ -8,7 +8,8 @@
 
 import UIKit
 
-public enum OriginPlacement: CaseIterable
+/// Placement of origin witihin the grid. Use `custom` for non trivial placements. `custom` placement's coordinates are relative to the ZoomableGridView's frame
+public enum OriginPlacement: Equatable
 {
     case center
     case topCenter
@@ -19,7 +20,7 @@ public enum OriginPlacement: CaseIterable
     case bottomLeft
     case centerLeft
     case topLeft
-//    case custom(CGFloat, CGFloat)
+    case custom(CGPoint)
     
     public func origin(in rect: CGRect) -> CGPoint
     {
@@ -34,28 +35,28 @@ public enum OriginPlacement: CaseIterable
         case .bottomLeft: return CGPoint(x: 0, y: rect.maxY)
         case .centerLeft: return CGPoint(x:0, y: rect.midY)
         case .topLeft: return CGPoint(x: 0, y: 0)
-//        case .custom(let x, let y): return CGPoint(x: x, y: y)
+        case .custom(let point): return point
         }
     }
 
     //  //= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\\
     //  MARK: Equatable protocol implementation -
     //  \\= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =//
-//    public static func ==(lhs: OriginPlacement, rhs: OriginPlacement) -> Bool
-//    {
-//        switch (lhs, rhs)
-//        {
-//        case (.center, .center): return true
-//        case (.topCenter, .topCenter): return true
-//        case (.topRight, .topRight): return true
-//        case (.centerRight, .centerRight): return true
-//        case (.bottomRight, .bottomRight): return true
-//        case (.bottomCenter, .bottomCenter): return true
-//        case (.bottomLeft, .bottomLeft): return true
-//        case (.centerLeft, .centerLeft): return true
-//        case (.topLeft, .topLeft): return true
-//        case (.custom(let lhsX, let lhsY), .custom(let rhsX, let rhsY)): return lhsX == rhsX && lhsY == rhsY
-//        default: return false
-//        }
-//    }
+    public static func ==(lhs: OriginPlacement, rhs: OriginPlacement) -> Bool
+    {
+        switch (lhs, rhs)
+        {
+        case (.center, .center): return true
+        case (.topCenter, .topCenter): return true
+        case (.topRight, .topRight): return true
+        case (.centerRight, .centerRight): return true
+        case (.bottomRight, .bottomRight): return true
+        case (.bottomCenter, .bottomCenter): return true
+        case (.bottomLeft, .bottomLeft): return true
+        case (.centerLeft, .centerLeft): return true
+        case (.topLeft, .topLeft): return true
+        case (.custom(let lhs), .custom(let rhs)): return lhs == rhs
+        default: return false
+        }
+    }
 }

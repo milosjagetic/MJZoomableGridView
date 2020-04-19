@@ -1,9 +1,9 @@
 {
   "name": "MJGridView",
-  "version": "0.1.0",
-  "summary": "A short description of MJGridView.",
-  "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/Miloš Jagetić/MJGridView",
+  "version": "0.6.6",
+  "summary": "A view for displaying a zoomable coordinate grid.",
+  "description": "A view for displaying a zoomable coordinate grid. Grid is rendered with more details as it's zoomed in, or rendered with less details as it's zoomed out.\nMade using `CATiledLayer`. Rendered in a grid of tiles, each tile asynchronously on a separate thread.",
+  "homepage": "https://github.com/milosjagetic/MJZoomableGridView",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
@@ -13,10 +13,10 @@
   },
   "source": {
     "git": "https://github.com/Miloš Jagetić/MJGridView.git",
-    "tag": "0.1.0"
+    "tag": "0.6.6"
   },
   "platforms": {
-    "ios": "9.0"
+    "ios": null
   },
   "source_files": "MJGridView/Classes/**/*"
 }

@@ -24,9 +24,12 @@
                                         <real key="value" value="8"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="minimumZoomScale">
-                                        <real key="value" value="0.5"/>
+                                        <real key="value" value="0.14999999999999999"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="RtS-Yq-QM4" appends="YES" id="01F-Zd-K1O"/>
+                                </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9HJ-wN-HVk" userLabel="controlsView">
                                 <rect key="frame" x="0.0" y="1072" width="834" height="114"/>
@@ -115,6 +118,7 @@
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="9HJ-wN-HVk" firstAttribute="leading" secondItem="Sti-wf-h0t" secondAttribute="leading" id="E9b-9o-AQl"/>
                             <constraint firstItem="C3Y-ks-5je" firstAttribute="leading" secondItem="Sti-wf-h0t" secondAttribute="leading" id="ODY-Yo-GEB"/>
@@ -139,6 +143,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="RtS-Yq-QM4">
+                    <connections>
+                        <action selector="longPressActionWithRecognizer:" destination="vXZ-lx-hvc" id="h7g-PX-xHl"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="137.41007194244605" y="133.81294964028777"/>
         </scene>
